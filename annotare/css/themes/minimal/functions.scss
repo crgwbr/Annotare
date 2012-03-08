@@ -1,0 +1,68 @@
+// =================================================================================
+// Mixins and Functions
+// =================================================================================
+@mixin box($color) {
+  background: $color;
+  border: 1px solid darken($color, 20%);
+  border-radius: 2px;
+  padding: $gutter-width-percentage / 2;
+}
+
+@mixin input() {
+  border: 1px solid #999;
+  font-size: 1.3em;
+  @include sans;
+  border-radius: $border-radius;
+  background: $app-background;
+  padding: $gutter-width-percentage / 2 $gutter-width-percentage;
+}
+
+@mixin container() {
+  margin: 0 auto;
+	padding: 0;
+	width: 95%;
+	max-width: ($max-width) + px;
+}
+
+@function grid_width($nbr) {
+  @return ((($column-width / $max-width) * $nbr) * 100%) + (($nbr - 1) * $gutter-width-percentage);
+}
+
+@mixin grid($nbr) {
+	float:left;
+	margin: $gutter-width-percentage / 2;
+	width: grid_width($nbr);
+	box-sizing: border-box;
+}
+
+@mixin grid_container($nbr) {
+	float:left;
+	width: grid_width($nbr) + $gutter-width-percentage;
+	box-sizing: border-box;
+}
+
+@mixin alpha() {
+  margin-left: 0;
+}
+
+@mixin omega() {
+  margin-right: 0;
+}
+
+@mixin sans { font-family: $sans; }
+@mixin serif { font-family: $serif; }
+
+@mixin extra-light { font-weight: 100; }
+@mixin light { font-weight: 200; }
+@mixin normal { font-weight: 400; }
+@mixin bold { font-weight: 800; }
+@mixin extra-bold { font-weight: 900; }
+
+@mixin cursive { 
+  @include serif;
+  @include light;
+  font-style: italic;
+}
+
+@mixin hide { display: none; }
+@mixin reset { margin: 0 0 0 0; padding: 0 0 0 0; }

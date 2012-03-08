@@ -1,0 +1,43 @@
+$html-font-size: 11px;
+$base-size: 1em;
+$line-height: 1.7;
+
+$page-background: #EEE url('/img/white_texture.png') repeat;
+$app-background: rgba(255, 255, 255, 0.4);
+
+$font-color: #222;
+
+$secondary: #52ABD1;
+$secondary_red: red($secondary);
+$secondary_green: green($secondary);
+$secondary_blue: blue($secondary);
+$secondary: rgba($secondary_red, $secondary_green, $secondary_blue, 0.3);
+
+$tertiary: #D15252;
+$tertiary_red: red($tertiary);
+$tertiary_green: green($tertiary);
+$tertiary_blue: blue($tertiary);
+$tertiary: rgba($tertiary_red, $tertiary_green, $tertiary_green, 0.3);
+
+$quaternary: #68B364;
+$quaternary_red: red($quaternary);
+$quaternary_green: green($quaternary);
+$quaternary_blue: blue($quaternary);
+$quaternary: rgba($quaternary_red, $quaternary_green, $quaternary_blue, 0.3);
+
+$black: rgba(0, 0, 0, 0.8);
+
+$column-nbr: 12;
+$column-width: 80;
+$gutter-width: 20;
+$max-width: (($column-nbr * $column-width) + ($column-nbr * $gutter-width));
+$gutter-width-percentage: (($gutter-width / $max-width) * 100%);
+
+$golden: 1.61803399;
+$ratio: $golden;
+
+$border-radius: 3px;
+
+$sans: Verdana, 'Bitstream Vera Sans', sans-serif;
+$serif: 'Neuton', Palatino, Georgia, serif;
+$code: Menlo, Consolas, Inconsolata, monospace;

@@ -1,0 +1,357 @@
+// =================================================================================
+// Minimal Annotare Theme
+// =================================================================================
+
+@import 'settings.scss';
+@import 'type.scss';
+@import 'functions.scss';
+
+// =================================================================================
+// Basic Typographic and element Styles
+// =================================================================================
+html {
+  font-size: $html-font-size;
+}
+
+body {
+  background: $page-background;
+  color: $font-color;
+  
+  font-size: $base-size;
+  line-height: $line-height;
+  font-family: $sans;
+  
+  box-sizing: border-box;
+  
+  width: 100%;
+  @include reset;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include serif;
+  @include normal;
+  line-height: 1;
+  color: lighten($font-color, 10%);
+  margin: 20px 0 0 0;
+  a { color: lighten($font-color, 10%); }
+}
+
+h1 {
+  font-size: modular-scale(3);
+}
+h2 {
+  font-size: modular-scale(2);
+}
+h3 {
+  font-size: modular-scale(1);
+}
+h4 {
+  font-size: modular-scale(1);
+}
+h5 {
+  font-size: modular-scale(1);
+}
+h6 {
+  font-size: modular-scale(0);
+  @include sans();
+  @include bold();
+}
+
+p {
+  margin: 0 0 20px 0;
+}
+
+a {
+  text-decoration: none;
+  color: $font-color;
+  font-weight: bold;
+}
+
+pre {
+  @include box(lighten($secondary, 10%));
+}
+code {
+  font-family: $code;
+}
+
+blockquote {
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 8px solid $secondary;
+}
+
+
+// =================================================================================
+// Basic Grid Containers and Structure
+// =================================================================================
+section {
+  &.one-column {
+    article {
+      @include grid_container(12);
+    }
+    aside {
+      display: none;
+    }
+  }
+  &.two-column {
+    article {
+      @include grid_container(8);
+    }
+    aside {
+      @include grid_container(4);
+    }
+  }
+}
+
+.wrap {
+  display: block;
+  position: relative;
+  @extend .clearfix;
+}
+
+#grid-container {
+  @include container;
+  position: relative;
+}
+
+#application {
+  margin-top: 56px;
+  margin-bottom: 56px;
+}
+
+#dialog, .notification {
+  h1, h2, h3, h4, h5, h6 {
+    @include serif;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  @include sans;
+  font-size: 1.1em;
+}
+
+
+// =================================================================================
+// Header and Footer Navigation Bars
+// =================================================================================
+header {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  @include container();
+  
+  nav {
+    @include grid(12); 
+    @include box($black);
+    border-top: none;
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    
+    h1 {
+      float: left;
+    }
+    
+    h1, ul, ul li {
+      &, a, a:visited, a:hover, a:active {
+        @include sans();
+        @include normal();
+        margin: 0;
+        font-size: modular-scale(0);
+        line-height: $line-height;
+        color: #EEE;
+        display: inline-block;
+      }
+    }
+    
+    ul {
+      float: right;
+      li {
+        display: inline-block;
+        margin: 0 0 0 20px;
+      }
+    }
+  }
+}
+
+.tool-bar-wrap {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  @include container();
+  
+  nav {
+    @include grid(12);
+    @include box($black);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0;
+  
+    a, label {
+      font-size: modular-scale(0);
+      line-height: $line-height;
+      color: #EEE;
+      font-weight: bold;
+      display: inline-block;
+      margin-right: 20px;
+    }
+  
+    input[type='range'] {
+      position: relative;
+      top: 5px;
+    }
+  }
+}
+
+
+// =================================================================================
+// Highlights and Notes
+// =================================================================================
+.note {
+  padding: 0 0.5% !important;
+  
+  &:nth-child(even), &:nth-child(even) .note-detail {
+    @include box($secondary);
+  }
+  &:nth-child(odd), &:nth-child(odd) .note-detail {
+    @include box($quaternary);
+  }
+  .note-detail {
+    max-width: grid_width(4);
+    padding: 0 0.5% !important;
+    display: inline-block;
+    height: $base-size * $line-height;
+    position: absolute;
+    right: 1%;
+    z-index: 5000;
+    overflow: hidden;
+  }
+  &:hover .note-detail, .note-detail:focus {
+    height: auto;
+    z-index: 6000;
+    outline: none;
+  }
+  .note-detail:focus {
+    box-shadow: inset 0 0 2px #666;
+    outline: none;
+  }
+}
+.highlight {
+  @include box($tertiary);
+  padding: 0 0.5%;
+}
+
+
+// =================================================================================
+// Specific Views
+// =================================================================================
+#detail-view, #history-view {
+  .wrap {
+    @include grid(12);
+    @include box($app-background);
+    margin-bottom: 56px;
+  }
+}
+
+#list-view {
+  form#search-form {
+    @include grid(12);
+    input {
+      @include input();
+      width: 100%;
+      &:focus { outline: none; }
+    }
+  }
+  
+  p.new-document {
+  	cursor: pointer;    	
+  	border-radius: $border-radius;
+  	@include box($secondary);
+  }
+  
+  article {
+    @include grid(4);
+    height: 200px;
+    float: left;
+    cursor: pointer;
+    border-radius: $border-radius;
+    overflow: hidden;
+    
+    @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
+      @include grid(6);
+    }
+    @media handheld and (max-width: 500px), screen and (max-width: 500px) {
+      @include grid(12);
+    }
+    
+    &:nth-child(odd) {
+      @include box($secondary);
+    }
+    &:nth-child(even) {
+      $temp_red: red($quaternary);
+      $temp_green: green($quaternary);
+      $temp_blue: blue($quaternary);
+      $temp: rgba($temp_red, $temp_green, $temp_blue, 0.3);
+      @include box($temp);
+    }
+    h1 {
+      font-size: modular-scale(2);
+    }
+  }
+  
+  #tool-bar {
+    @include hide;
+  }
+}
+
+#edit-view, #new-document-view {
+  h1, h2 { @include grid(12); }
+  textarea, input[type="text"] {
+    @include input();
+    @include grid(12);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: $code;
+    line-height: $line-height;
+    font-size: 1.3em;
+    
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  textarea { height: 400px; }
+  
+  .annotation {   
+    @include grid(4);
+       
+    &:nth-child(odd) {
+      @include box($secondary);
+    }
+    &:nth-child(even) {
+      @include box($quaternary);
+    }
+    border-radius: $border-radius;
+    position: relative;
+    blockquote, .attachment {
+      font-size: 1.3em;
+      font-family: $code;
+    }
+    blockquote {
+      border-left: 3px solid lighten($font-color, 20%);
+      color: lighten($font-color, 20%);
+    }
+    .delete {
+      font-family: $sans;
+      font-size: 1em;
+      position: absolute;
+      bottom: 5px;
+      right: 10px;
+    }
+  }
+}
+
+
+
+
+
+
