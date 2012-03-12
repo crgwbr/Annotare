@@ -587,7 +587,7 @@ pre {
   background: rgba(122, 191, 220, 0.3);
   border: 1px solid rgba(50, 148, 190, 0.3);
   border-radius: 2px;
-  padding: 0.833%; }
+  padding: 1.042%; }
 
 code {
   font-family: Menlo, Consolas, Inconsolata, monospace; }
@@ -619,8 +619,8 @@ section.two-column aside {
 #grid-container {
   margin: 0 auto;
   padding: 0;
-  width: 95%;
-  max-width: 1200px;
+  width: 98%;
+  max-width: 1920px;
   position: relative; }
 
 #application {
@@ -641,17 +641,17 @@ header {
   z-index: 9999;
   margin: 0 auto;
   padding: 0;
-  width: 95%;
-  max-width: 1200px; }
+  width: 98%;
+  max-width: 1920px; }
   header nav {
     float: left;
-    margin: 0.833%;
-    width: 98.333%;
+    margin: 1.042%;
+    width: 97.917%;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     border-radius: 2px;
-    padding: 0.833%;
+    padding: 1.042%;
     border-top: none;
     margin-top: 0;
     border-top-left-radius: 0;
@@ -678,17 +678,17 @@ header {
   z-index: 9999;
   margin: 0 auto;
   padding: 0;
-  width: 95%;
-  max-width: 1200px; }
+  width: 98%;
+  max-width: 1920px; }
   .tool-bar-wrap nav {
     float: left;
-    margin: 0.833%;
-    width: 98.333%;
+    margin: 1.042%;
+    width: 97.917%;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     border-radius: 2px;
-    padding: 0.833%;
+    padding: 1.042%;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-bottom: 0; }
@@ -709,14 +709,14 @@ header {
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 0.833%; }
+    padding: 1.042%; }
   .note:nth-child(odd), .note:nth-child(odd) .note-detail {
     background: rgba(104, 179, 100, 0.3);
     border: 1px solid rgba(61, 119, 58, 0.3);
     border-radius: 2px;
-    padding: 0.833%; }
+    padding: 1.042%; }
   .note .note-detail {
-    max-width: 31.667%;
+    max-width: 31.25%;
     padding: 0 0.5% !important;
     display: inline-block;
     height: 1.7em;
@@ -736,24 +736,24 @@ header {
   background: rgba(209, 82, 82, 0.3);
   border: 1px solid rgba(149, 40, 40, 0.3);
   border-radius: 2px;
-  padding: 0.833%;
+  padding: 1.042%;
   padding: 0 0.5%; }
 
 #detail-view .wrap, #history-view .wrap {
   float: left;
-  margin: 0.833%;
-  width: 98.333%;
+  margin: 1.042%;
+  width: 97.917%;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.4);
   border: 1px solid rgba(204, 204, 204, 0.4);
   border-radius: 2px;
-  padding: 0.833%;
+  padding: 1.042%;
   margin-bottom: 56px; }
 
 #list-view form#search-form {
   float: left;
-  margin: 0.833%;
-  width: 98.333%;
+  margin: 1.042%;
+  width: 97.917%;
   box-sizing: border-box; }
   #list-view form#search-form input {
     border: 1px solid #999;
@@ -761,7 +761,7 @@ header {
     font-family: Verdana, "Bitstream Vera Sans", sans-serif;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.4);
-    padding: 0.833% 1.667%;
+    padding: 1.042% 2.083%;
     width: 100%; }
     #list-view form#search-form input:focus {
       outline: none; }
@@ -771,11 +771,11 @@ header {
   background: rgba(82, 171, 209, 0.3);
   border: 1px solid rgba(40, 117, 149, 0.3);
   border-radius: 2px;
-  padding: 0.833%; }
+  padding: 1.042%; }
 #list-view article {
   float: left;
-  margin: 0.833%;
-  width: 31.667%;
+  margin: 1.042%;
+  width: 31.25%;
   box-sizing: border-box;
   height: 200px;
   float: left;
@@ -785,25 +785,25 @@ header {
   @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
     #list-view article {
       float: left;
-      margin: 0.833%;
-      width: 48.333%;
+      margin: 1.042%;
+      width: 47.917%;
       box-sizing: border-box; } }
   @media handheld and (max-width: 500px), screen and (max-width: 500px) {
     #list-view article {
       float: left;
-      margin: 0.833%;
-      width: 98.333%;
+      margin: 1.042%;
+      width: 97.917%;
       box-sizing: border-box; } }
   #list-view article:nth-child(odd) {
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 0.833%; }
+    padding: 1.042%; }
   #list-view article:nth-child(even) {
     background: rgba(104, 179, 100, 0.3);
     border: 1px solid rgba(61, 119, 58, 0.3);
     border-radius: 2px;
-    padding: 0.833%; }
+    padding: 1.042%; }
   #list-view article h1 {
     font-size: 2.618em; }
 #list-view #tool-bar {
@@ -811,8 +811,8 @@ header {
 
 #edit-view h1, #edit-view h2, #new-document-view h1, #new-document-view h2 {
   float: left;
-  margin: 0.833%;
-  width: 98.333%;
+  margin: 1.042%;
+  width: 97.917%;
   box-sizing: border-box; }
 #edit-view textarea, #edit-view input[type="text"], #new-document-view textarea, #new-document-view input[type="text"] {
   border: 1px solid #999;
@@ -820,10 +820,10 @@ header {
   font-family: Verdana, "Bitstream Vera Sans", sans-serif;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.4);
-  padding: 0.833% 1.667%;
+  padding: 1.042% 2.083%;
   float: left;
-  margin: 0.833%;
-  width: 98.333%;
+  margin: 1.042%;
+  width: 97.917%;
   box-sizing: border-box;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -834,23 +834,25 @@ header {
     outline: none; }
 #edit-view textarea, #new-document-view textarea {
   height: 400px; }
-#edit-view .annotation, #new-document-view .annotation {
+#edit-view .annotations, #new-document-view .annotations {
   float: left;
-  margin: 0.833%;
-  width: 31.667%;
-  box-sizing: border-box;
+  margin: 1.042%;
+  width: 31.25%;
+  box-sizing: border-box; }
+#edit-view .annotation, #new-document-view .annotation {
+  margin: 1.042%;
   border-radius: 3px;
   position: relative; }
   #edit-view .annotation:nth-child(odd), #new-document-view .annotation:nth-child(odd) {
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 0.833%; }
+    padding: 1.042%; }
   #edit-view .annotation:nth-child(even), #new-document-view .annotation:nth-child(even) {
     background: rgba(104, 179, 100, 0.3);
     border: 1px solid rgba(61, 119, 58, 0.3);
     border-radius: 2px;
-    padding: 0.833%; }
+    padding: 1.042%; }
   #edit-view .annotation blockquote, #edit-view .annotation .attachment, #new-document-view .annotation blockquote, #new-document-view .annotation .attachment {
     font-size: 1.3em;
     font-family: Menlo, Consolas, Inconsolata, monospace; }
@@ -863,6 +865,24 @@ header {
     position: absolute;
     bottom: 5px;
     right: 10px; }
+#edit-view .files, #new-document-view .files {
+  float: left;
+  margin: 1.042%;
+  width: 64.583%;
+  box-sizing: border-box; }
+  #edit-view .files #drop-zone, #new-document-view .files #drop-zone {
+    margin: 1.042%;
+    background: rgba(82, 171, 209, 0.3);
+    border: 1px solid rgba(40, 117, 149, 0.3);
+    border-radius: 2px;
+    padding: 1.042%;
+    border-style: dashed;
+    border-width: 3px; }
+    #edit-view .files #drop-zone h3, #new-document-view .files #drop-zone h3 {
+      margin: 20px;
+      text-align: center;
+      font-size: 2.618em;
+      font-style: italic; }
 
 #application div.view {
   display: none; }

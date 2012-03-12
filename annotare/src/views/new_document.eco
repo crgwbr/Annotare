@@ -12,7 +12,7 @@
   
       <input type="text" id="name" name="name" placeholder="The Hitchhiker's Guide to the Galaxy" value="<%= @title %>" />
   
-      <textarea id="editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun..."></textarea>
+      <textarea id="new-editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun..."></textarea>
     </article>
   </section>
 </div>

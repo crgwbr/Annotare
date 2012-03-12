@@ -13771,7 +13771,7 @@ require.define("/controllers/new_document.js", function (require, module, export
       }));
       this.unbind_actions();
       this.bind_actions();
-      $('#editor').autoResize({
+      $('#new-editor').autoResize({
         extraSpace: 100,
         maxHeight: 2000
       });
@@ -13781,7 +13781,7 @@ require.define("/controllers/new_document.js", function (require, module, export
     NewDocument.prototype.save = function(params) {
       var doc, name, text;
       name = $('#name').val();
-      text = $('#editor').val();
+      text = $('#new-editor').val();
       if (name.length > 0 && text.length > 0) {
         doc = new Document({
           name: name,
@@ -17008,7 +17008,7 @@ require.define("/views/new_document.js", function (require, module, exports, __d
       
         __out.push(__sanitize(this.title));
       
-        __out.push('" />\n  \n      <textarea id="editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun..."></textarea>\n    </article>\n  </section>\n</div>');
+        __out.push('" />\n  \n      <textarea id="new-editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun..."></textarea>\n    </article>\n  </section>\n</div>');
       
       }).call(this);
       
@@ -17410,6 +17410,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     __extends(Edit, Flakey.controllers.Controller);
 
     function Edit(config) {
+      this.drag_over = __bind(this.drag_over, this);
+      this.drop_file = __bind(this.drop_file, this);
       this.delete_note = __bind(this.delete_note, this);
       this.discard = __bind(this.discard, this);
       this.save = __bind(this.save, this);
@@ -17436,7 +17438,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.render = function() {
-      var context;
+      var context, dropZone;
       var _this = this;
       if (!this.query_params.id) return;
       this.doc = Document.get(this.query_params.id);
@@ -17455,15 +17457,18 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       }
       this.unbind_actions();
       this.bind_actions();
-      return $('#editor').autoResize({
+      $('#editor').autoResize({
         extraSpace: 100,
         maxHeight: 9000
       });
+      dropZone = document.getElementById('drop-zone');
+      dropZone.addEventListener('dragover', this.drag_over, false);
+      return dropZone.addEventListener('drop', this.drop_file, false);
     };
 
     Edit.prototype.save = function(event) {
       event.preventDefault();
-      this.doc.base_text = $('#editor').val();
+      this.doc.base_text = $('#edit-editor').val();
       this.doc.save();
       delete localStorage[this.autosave_key()];
       ui.info('Everything\'s Shiny Capt\'n!', "\"" + this.doc.name + "\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect);
@@ -17492,6 +17497,25 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
           return $(event.target).parent().slideUp();
         }
       });
+    };
+
+    Edit.prototype.drop_file = function(event) {
+      var file, files, output, _i, _len;
+      event.stopPropagation();
+      event.preventDefault();
+      files = event.dataTransfer.files;
+      output = "";
+      for (_i = 0, _len = files.length; _i < _len; _i++) {
+        file = files[_i];
+        output += "<li>" + (escape(file.name)) + "</li>";
+      }
+      return $(".files ul").html(output);
+    };
+
+    Edit.prototype.drag_over = function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      return event.dataTransfer.dropEffect = 'copy';
     };
 
     return Edit;
@@ -17552,11 +17576,11 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
       
         __out.push(__sanitize(this.doc.name));
       
-        __out.push('</em></h1>\n      <textarea id="editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun...">');
+        __out.push('</em></h1>\n      <textarea id="edit-editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun...">');
       
         __out.push(__sanitize(this.doc.base_text));
       
-        __out.push('</textarea>\n      <div class="annotations">\n        <h2>Notes & Highlights</h2>\n        ');
+        __out.push('</textarea>\n      \n      <div class="annotations">\n        <h2>Notes & Highlights</h2>\n        <div class="clear"></div>\n        ');
       
         _ref = this.doc.get_notes();
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -17570,7 +17594,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
           __out.push('</span>\n            <a href="#" class="delete">Delete</a>\n          </div>\n        ');
         }
       
-        __out.push('\n      </div>\n    </article>\n    \n  </section>\n</div>');
+        __out.push('\n      </div>\n      \n      <div class="files">\n        <h2>Attached Files</h2>\n        <div class="clear"></div>\n        <div id="drop-zone"><h3>Drop Files Here</h3></div>\n        <ul>\n        </ul>\n      </div>\n    </article>\n    \n  </section>\n</div>');
       
       }).call(this);
       

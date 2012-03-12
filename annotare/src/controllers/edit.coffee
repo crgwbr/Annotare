@@ -57,10 +57,15 @@ class Edit extends Flakey.controllers.Controller
       extraSpace: 100,
       maxHeight: 9000
     })
+    
+    # Drop Zone (jquery events dont work)
+    dropZone = document.getElementById('drop-zone');
+    dropZone.addEventListener('dragover', @drag_over, false);
+    dropZone.addEventListener('drop', @drop_file, false);
   
   save: (event) =>
     event.preventDefault()
-    @doc.base_text = $('#editor').val()
+    @doc.base_text = $('#edit-editor').val()
     @doc.save()
     delete localStorage[@autosave_key()]
     ui.info('Everything\'s Shiny Capt\'n!', "\"#{ @doc.name }\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect)
@@ -80,6 +85,24 @@ class Edit extends Flakey.controllers.Controller
         id = $(event.target).parent().attr('data-id')
         @doc.delete_annotation(id)
         $(event.target).parent().slideUp()
+        
+  drop_file: (event) =>
+    event.stopPropagation()
+    event.preventDefault()
+
+    files = event.dataTransfer.files; # FileList object.
+
+    # files is a FileList of File objects. List some properties.
+    output = ""
+    for file in files
+      output += "<li>#{escape(file.name)}</li>"
+    
+    $(".files ul").html output
+        
+  drag_over: (event) =>
+    event.stopPropagation()
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'copy' # Explicitly show this is a copy.
 
 
 module.exports = Edit

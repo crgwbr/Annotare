@@ -9,9 +9,11 @@
   <section class="one-column">
     <article>
       <h1>Editing <em><%= @doc.name %></em></h1>
-      <textarea id="editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun..."><%= @doc.base_text %></textarea>
+      <textarea id="edit-editor" placeholder="Far out in the uncharted backwaters of the unfashionable end of the Western Spiral arm of the Galaxy lies a small unregarded yellow sun..."><%= @doc.base_text %></textarea>
+      
       <div class="annotations">
         <h2>Notes & Highlights</h2>
+        <div class="clear"></div>
         <% for annotation in @doc.get_notes(): %>
           <div class="annotation" data-id="<%= annotation.id %>">
             <blockquote>&#8220;<%- annotation.text %>&#8221;</blockquote>
@@ -19,6 +21,14 @@
             <a href="#" class="delete">Delete</a>
           </div>
         <% end %>
+      </div>
+      
+      <div class="files">
+        <h2>Attached Files</h2>
+        <div class="clear"></div>
+        <div id="drop-zone"><h3>Drop Files Here</h3></div>
+        <ul>
+        </ul>
       </div>
     </article>
     

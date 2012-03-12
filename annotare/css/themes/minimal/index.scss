@@ -321,9 +321,12 @@ header {
   
   textarea { height: 400px; }
   
-  .annotation {   
-    @include grid(4);
-       
+  .annotations {
+    @include grid(4)
+  }
+  .annotation {
+	  margin: $gutter-width-percentage / 2;
+	      
     &:nth-child(odd) {
       @include box($secondary);
     }
@@ -346,6 +349,23 @@ header {
       position: absolute;
       bottom: 5px;
       right: 10px;
+    }
+  }
+  
+  .files {
+    @include grid(8);
+    
+    #drop-zone {
+      margin: $gutter-width-percentage / 2;
+      @include box($secondary);
+      border-style: dashed;
+      border-width: 3px;
+      h3 {
+        margin: 20px;
+        text-align: center;
+        font-size: modular-scale(2);
+        font-style: italic;
+      }
     }
   }
 }
