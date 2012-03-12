@@ -66,3 +66,25 @@
 
 @mixin hide { display: none; }
 @mixin reset { margin: 0 0 0 0; padding: 0 0 0 0; }
+
+@mixin transition($prop, $dur) {
+  transition: $prop $dur;
+  -moz-transition: $prop $dur;
+  -webkit-transition: $prop $dur;
+  -o-transition: $prop $dur;
+  -ie-transition: $prop $dur;
+}
+
+@mixin transition-delay($delay) {
+  transition-delay: $delay;
+  -moz-transition-delay: $delay;
+  -webkit-transition-delay: $delay;
+  -o-transition-delay: $delay;
+  -ie-transition-delay: $delay;
+}
+
+
+
+
+
+

@@ -1,11 +1,13 @@
 <div class="tool-bar-wrap">
-  <nav id="tool-bar">
-    <a href="#/detail?id=<%- @doc.id %>">Back to Normal View</a>
+  <nav class="tool-bar left">
+    <div>
+      <a href="#/detail?id=<%- @doc.id %>">Back to Normal View</a>
     
-    <label for="version-input">Version:</label>
-    <input type="range" min="0" max="<%= @max_version %>" value="<%= @version or @max_version %>" step="1" id="version-input" name="version-input" />
+      <label for="version-input">Version:</label>
+      <input type="range" min="0" max="<%= @max_version %>" value="<%= @version or @max_version %>" step="1" id="version-input" name="version-input" />
     
-    <a href="#" id="rollback">Rollback to this Version</a>
+      <a href="#" id="rollback">Rollback to this Version</a>
+    </div>
   </nav>
 </div>
 

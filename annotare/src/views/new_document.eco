@@ -1,7 +1,9 @@
 <div class="tool-bar-wrap">
-  <nav id="tool-bar">
-    <a href="#" class="discard">Discard Changes</a>
-    <a href="#" class="save">Save Changes</a>
+  <nav class="tool-bar left">
+    <div>
+      <a href="#" class="discard">Discard Changes</a>
+      <a href="#" class="save">Save Changes</a>
+    </div>
   </nav>
 </div>
 

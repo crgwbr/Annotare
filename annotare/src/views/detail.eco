@@ -1,10 +1,14 @@
 <div class="tool-bar-wrap">
-  <nav id="tool-bar">
-    <a href="#" class="edit">Edit</a>
-    <a href="#" class="highlighter">Highlight</a>
-    <a href="#" class="annotate">Create Note</a>
-    <a href="#/history?id=<%- @doc.id %>" class="">History</a>
-    <a href="#" class="delete">Delete</a>
+  <nav class="tool-bar left">
+    <div>
+      <a href="#" class="edit">Edit</a>
+      <a href="#/history?id=<%- @doc.id %>" class="">History</a>
+      <a href="#" class="delete">Delete</a>
+    </div>
+    <div>
+      <a href="#" class="highlighter">Highlight</a>
+      <a href="#" class="annotate">Create Note</a>
+    </div>
   </nav>
 </div>
 

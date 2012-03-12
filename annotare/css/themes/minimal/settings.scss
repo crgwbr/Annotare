@@ -27,9 +27,11 @@ $quaternary: rgba($quaternary_red, $quaternary_green, $quaternary_blue, 0.3);
 
 $black: rgba(0, 0, 0, 0.8);
 
+$nav-bar: $black;
+
 $column-nbr: 12;
 $column-width: 120;
-$gutter-width: 40;
+$gutter-width: 20;
 $max-width: (($column-nbr * $column-width) + ($column-nbr * $gutter-width));
 $gutter-width-percentage: (($gutter-width / $max-width) * 100%);
 

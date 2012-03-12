@@ -587,7 +587,7 @@ pre {
   background: rgba(122, 191, 220, 0.3);
   border: 1px solid rgba(50, 148, 190, 0.3);
   border-radius: 2px;
-  padding: 1.042%; }
+  padding: 0.595%; }
 
 code {
   font-family: Menlo, Consolas, Inconsolata, monospace; }
@@ -620,7 +620,7 @@ section.two-column aside {
   margin: 0 auto;
   padding: 0;
   width: 98%;
-  max-width: 1920px;
+  max-width: 1680px;
   position: relative; }
 
 #application {
@@ -642,20 +642,41 @@ header {
   margin: 0 auto;
   padding: 0;
   width: 98%;
-  max-width: 1920px; }
+  max-width: 1680px; }
   header nav {
     float: left;
-    margin: 1.042%;
-    width: 97.917%;
+    margin: 0.595%;
+    width: 98.81%;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     border-radius: 2px;
-    padding: 1.042%;
+    padding: 0.595%;
+    transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -ie-transition: all 0.5s;
+    transition-delay: 1s;
+    -moz-transition-delay: 1s;
+    -webkit-transition-delay: 1s;
+    -o-transition-delay: 1s;
+    -ie-transition-delay: 1s;
     border-top: none;
     margin-top: 0;
     border-top-left-radius: 0;
-    border-top-right-radius: 0; }
+    border-top-right-radius: 0;
+    opacity: 0.05; }
+    @media handheld {
+      header nav {
+        opacity: 1; } }
+    header nav:hover {
+      opacity: 1;
+      transition-delay: 0s;
+      -moz-transition-delay: 0s;
+      -webkit-transition-delay: 0s;
+      -o-transition-delay: 0s;
+      -ie-transition-delay: 0s; }
     header nav h1 {
       float: left; }
     header nav h1, header nav h1 a, header nav h1 a:visited, header nav h1 a:hover, header nav h1 a:active, header nav ul, header nav ul a, header nav ul a:visited, header nav ul a:hover, header nav ul a:active, header nav ul li, header nav ul li a, header nav ul li a:visited, header nav ul li a:hover, header nav ul li a:active {
@@ -679,27 +700,54 @@ header {
   margin: 0 auto;
   padding: 0;
   width: 98%;
-  max-width: 1920px; }
+  max-width: 1680px; }
   .tool-bar-wrap nav {
     float: left;
-    margin: 1.042%;
-    width: 97.917%;
+    margin: 0.595%;
+    width: 98.81%;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     border-radius: 2px;
-    padding: 1.042%;
+    padding: 0.595%;
+    transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -ie-transition: all 0.5s;
+    transition-delay: 1s;
+    -moz-transition-delay: 1s;
+    -webkit-transition-delay: 1s;
+    -o-transition-delay: 1s;
+    -ie-transition-delay: 1s;
+    border-bottom: none;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    margin-bottom: 0; }
-    .tool-bar-wrap nav a, .tool-bar-wrap nav label {
+    margin-bottom: 0;
+    opacity: 0.05; }
+    @media handheld {
+      .tool-bar-wrap nav {
+        opacity: 1; } }
+    .tool-bar-wrap nav:hover {
+      opacity: 1;
+      transition-delay: 0s;
+      -moz-transition-delay: 0s;
+      -webkit-transition-delay: 0s;
+      -o-transition-delay: 0s;
+      -ie-transition-delay: 0s; }
+    .tool-bar-wrap nav div:first-child {
+      float: left; }
+    .tool-bar-wrap nav div:nth-child(2) {
+      float: right; }
+    .tool-bar-wrap nav div, .tool-bar-wrap nav div a, .tool-bar-wrap nav div a:visited, .tool-bar-wrap nav div a:hover, .tool-bar-wrap nav div a:active {
+      font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+      font-weight: 400;
       font-size: 1em;
       line-height: 1.7;
       color: #EEE;
-      font-weight: bold;
       display: inline-block;
       margin-right: 20px; }
-    .tool-bar-wrap nav input[type='range'] {
+    .tool-bar-wrap nav div input[type='range'] {
       position: relative;
       top: 5px; }
 
@@ -709,14 +757,14 @@ header {
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 1.042%; }
+    padding: 0.595%; }
   .note:nth-child(odd), .note:nth-child(odd) .note-detail {
     background: rgba(104, 179, 100, 0.3);
     border: 1px solid rgba(61, 119, 58, 0.3);
     border-radius: 2px;
-    padding: 1.042%; }
+    padding: 0.595%; }
   .note .note-detail {
-    max-width: 31.25%;
+    max-width: 32.143%;
     padding: 0 0.5% !important;
     display: inline-block;
     height: 1.7em;
@@ -736,24 +784,24 @@ header {
   background: rgba(209, 82, 82, 0.3);
   border: 1px solid rgba(149, 40, 40, 0.3);
   border-radius: 2px;
-  padding: 1.042%;
+  padding: 0.595%;
   padding: 0 0.5%; }
 
 #detail-view .wrap, #history-view .wrap {
   float: left;
-  margin: 1.042%;
-  width: 97.917%;
+  margin: 0.595%;
+  width: 98.81%;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.4);
   border: 1px solid rgba(204, 204, 204, 0.4);
   border-radius: 2px;
-  padding: 1.042%;
+  padding: 0.595%;
   margin-bottom: 56px; }
 
 #list-view form#search-form {
   float: left;
-  margin: 1.042%;
-  width: 97.917%;
+  margin: 0.595%;
+  width: 98.81%;
   box-sizing: border-box; }
   #list-view form#search-form input {
     border: 1px solid #999;
@@ -761,7 +809,7 @@ header {
     font-family: Verdana, "Bitstream Vera Sans", sans-serif;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.4);
-    padding: 1.042% 2.083%;
+    padding: 0.595% 1.19%;
     width: 100%; }
     #list-view form#search-form input:focus {
       outline: none; }
@@ -771,39 +819,45 @@ header {
   background: rgba(82, 171, 209, 0.3);
   border: 1px solid rgba(40, 117, 149, 0.3);
   border-radius: 2px;
-  padding: 1.042%; }
+  padding: 0.595%; }
 #list-view article {
   float: left;
-  margin: 1.042%;
-  width: 31.25%;
+  margin: 0.595%;
+  width: 23.81%;
   box-sizing: border-box;
   height: 200px;
   float: left;
   cursor: pointer;
   border-radius: 3px;
   overflow: hidden; }
+  @media handheld and (max-width: 1100px) and (min-width: 800px), screen and (max-width: 1100px) and (min-width: 800px) {
+    #list-view article {
+      float: left;
+      margin: 0.595%;
+      width: 32.143%;
+      box-sizing: border-box; } }
   @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
     #list-view article {
       float: left;
-      margin: 1.042%;
-      width: 47.917%;
+      margin: 0.595%;
+      width: 48.81%;
       box-sizing: border-box; } }
   @media handheld and (max-width: 500px), screen and (max-width: 500px) {
     #list-view article {
       float: left;
-      margin: 1.042%;
-      width: 97.917%;
+      margin: 0.595%;
+      width: 98.81%;
       box-sizing: border-box; } }
   #list-view article:nth-child(odd) {
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 1.042%; }
+    padding: 0.595%; }
   #list-view article:nth-child(even) {
     background: rgba(104, 179, 100, 0.3);
     border: 1px solid rgba(61, 119, 58, 0.3);
     border-radius: 2px;
-    padding: 1.042%; }
+    padding: 0.595%; }
   #list-view article h1 {
     font-size: 2.618em; }
 #list-view #tool-bar {
@@ -811,8 +865,8 @@ header {
 
 #edit-view h1, #edit-view h2, #new-document-view h1, #new-document-view h2 {
   float: left;
-  margin: 1.042%;
-  width: 97.917%;
+  margin: 0.595%;
+  width: 98.81%;
   box-sizing: border-box; }
 #edit-view textarea, #edit-view input[type="text"], #new-document-view textarea, #new-document-view input[type="text"] {
   border: 1px solid #999;
@@ -820,10 +874,10 @@ header {
   font-family: Verdana, "Bitstream Vera Sans", sans-serif;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.4);
-  padding: 1.042% 2.083%;
+  padding: 0.595% 1.19%;
   float: left;
-  margin: 1.042%;
-  width: 97.917%;
+  margin: 0.595%;
+  width: 98.81%;
   box-sizing: border-box;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -836,23 +890,23 @@ header {
   height: 400px; }
 #edit-view .annotations, #new-document-view .annotations {
   float: left;
-  margin: 1.042%;
-  width: 31.25%;
+  margin: 0.595%;
+  width: 32.143%;
   box-sizing: border-box; }
 #edit-view .annotation, #new-document-view .annotation {
-  margin: 1.042%;
+  margin: 0.595%;
   border-radius: 3px;
   position: relative; }
   #edit-view .annotation:nth-child(odd), #new-document-view .annotation:nth-child(odd) {
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 1.042%; }
+    padding: 0.595%; }
   #edit-view .annotation:nth-child(even), #new-document-view .annotation:nth-child(even) {
     background: rgba(104, 179, 100, 0.3);
     border: 1px solid rgba(61, 119, 58, 0.3);
     border-radius: 2px;
-    padding: 1.042%; }
+    padding: 0.595%; }
   #edit-view .annotation blockquote, #edit-view .annotation .attachment, #new-document-view .annotation blockquote, #new-document-view .annotation .attachment {
     font-size: 1.3em;
     font-family: Menlo, Consolas, Inconsolata, monospace; }
@@ -867,15 +921,15 @@ header {
     right: 10px; }
 #edit-view .files, #new-document-view .files {
   float: left;
-  margin: 1.042%;
-  width: 64.583%;
+  margin: 0.595%;
+  width: 65.476%;
   box-sizing: border-box; }
   #edit-view .files #drop-zone, #new-document-view .files #drop-zone {
-    margin: 1.042%;
+    margin: 0.595%;
     background: rgba(82, 171, 209, 0.3);
     border: 1px solid rgba(40, 117, 149, 0.3);
     border-radius: 2px;
-    padding: 1.042%;
+    padding: 0.595%;
     border-style: dashed;
     border-width: 3px; }
     #edit-view .files #drop-zone h3, #new-document-view .files #drop-zone h3 {

@@ -17004,7 +17004,7 @@ require.define("/views/new_document.js", function (require, module, exports, __d
     (function() {
       (function() {
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav id="tool-bar">\n    <a href="#" class="discard">Discard Changes</a>\n    <a href="#" class="save">Save Changes</a>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Create a New Document</h1>\n  \n      <input type="text" id="name" name="name" placeholder="The Hitchhiker\'s Guide to the Galaxy" value="');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Discard Changes</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Create a New Document</h1>\n  \n      <input type="text" id="name" name="name" placeholder="The Hitchhiker\'s Guide to the Galaxy" value="');
       
         __out.push(__sanitize(this.title));
       
@@ -17142,7 +17142,7 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
       (function() {
         var doc, _i, _len, _ref;
       
-        __out.push('<div class="tool-bar-wrap">\n  <div id="tool-bar">\n    <p>"You have to be resourceful at Bethel." &mdash; Fred Rusk</p>\n  </div>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <form id="search-form" action="#" method="GET">\n        <input type="text" id="search-box" name="search-box" placeholder="Search Notes" />\n    </form>\n    \n    ');
+        __out.push('<div class="wrap">\n  <section class="one-column">\n    <form id="search-form" action="#" method="GET">\n        <input type="text" id="search-box" name="search-box" placeholder="Search Notes" />\n    </form>\n    \n    ');
       
         _ref = this.list;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -17360,11 +17360,11 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
     (function() {
       (function() {
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav id="tool-bar">\n    <a href="#" class="edit">Edit</a>\n    <a href="#" class="highlighter">Highlight</a>\n    <a href="#" class="annotate">Create Note</a>\n    <a href="#/history?id=');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="edit">Edit</a>\n      <a href="#/history?id=');
       
         __out.push(this.doc.id);
       
-        __out.push('" class="">History</a>\n    <a href="#" class="delete">Delete</a>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="two-column">\n    <article id="detail-');
+        __out.push('" class="">History</a>\n      <a href="#" class="delete">Delete</a>\n    </div>\n    <div>\n      <a href="#" class="highlighter">Highlight</a>\n      <a href="#" class="annotate">Create Note</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="two-column">\n    <article id="detail-');
       
         __out.push(__sanitize(this.doc.slug));
       
@@ -17572,7 +17572,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
       (function() {
         var annotation, _i, _len, _ref;
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav id="tool-bar">\n    <a href="#" class="discard">Discard Changes</a>\n    <a href="#" class="save">Save Changes</a>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Discard Changes</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
       
         __out.push(__sanitize(this.doc.name));
       
@@ -17734,11 +17734,11 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
       (function() {
         var html;
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav id="tool-bar">\n    <a href="#/detail?id=');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#/detail?id=');
       
         __out.push(this.doc.id);
       
-        __out.push('">Back to Normal View</a>\n    \n    <label for="version-input">Version:</label>\n    <input type="range" min="0" max="');
+        __out.push('">Back to Normal View</a>\n    \n      <label for="version-input">Version:</label>\n      <input type="range" min="0" max="');
       
         __out.push(__sanitize(this.max_version));
       
@@ -17746,7 +17746,7 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
       
         __out.push(__sanitize(this.version || this.max_version));
       
-        __out.push('" step="1" id="version-input" name="version-input" />\n    \n    <a href="#" id="rollback">Rollback to this Version</a>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="two-column">\n    <article id="history-');
+        __out.push('" step="1" id="version-input" name="version-input" />\n    \n      <a href="#" id="rollback">Rollback to this Version</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="two-column">\n    <article id="history-');
       
         __out.push(__sanitize(this.doc.slug));
       

@@ -1,9 +1,3 @@
-<div class="tool-bar-wrap">
-  <div id="tool-bar">
-    <p>"You have to be resourceful at Bethel." &mdash; Fred Rusk</p>
-  </div>
-</div>
-
 <div class="wrap">
   <section class="one-column">
     <form id="search-form" action="#" method="GET">
