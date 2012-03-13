@@ -17158,7 +17158,7 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
       
         __out.push('\n    \n    ');
       
-        if (this.query && this.list.length === 0) {
+        if (this.list.length === 0) {
           __out.push('\n    \t<article class="new_document">\n    \t  ');
           if (this.query) {
             __out.push('\n    \t    <section class="name"><h1>New Document: ');

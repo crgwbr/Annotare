@@ -13,7 +13,7 @@
       </article>
     <% end %>
     
-    <% if @query and @list.length == 0: %>
+    <% if @list.length == 0: %>
     	<article class="new_document">
     	  <% if @query: %>
     	    <section class="name"><h1>New Document: <%= @query %></h1></section>
