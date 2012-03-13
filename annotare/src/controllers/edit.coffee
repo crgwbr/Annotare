@@ -16,7 +16,7 @@ class Edit extends Flakey.controllers.Controller
       'click .save': 'save'
       'click .discard': 'discard'
       'click .delete': 'delete_note'
-      'keyup #editor': 'autosave'
+      'keyup #edit-editor': 'autosave'
     }
     
     super(config)

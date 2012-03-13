@@ -17422,7 +17422,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
         'click .save': 'save',
         'click .discard': 'discard',
         'click .delete': 'delete_note',
-        'keyup #editor': 'autosave'
+        'keyup #edit-editor': 'autosave'
       };
       Edit.__super__.constructor.call(this, config);
       this.tmpl = Flakey.templates.get_template('edit', require('../views/edit'));
