@@ -17430,7 +17430,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
     Edit.prototype.autosave = function(event) {
       event.preventDefault();
-      return localStorage[this.autosave_key()] = $('#editor').val();
+      return localStorage[this.autosave_key()] = $('#edit-editor').val();
     };
 
     Edit.prototype.autosave_key = function() {
@@ -17449,7 +17449,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       if ((localStorage[this.autosave_key()] != null) && localStorage[this.autosave_key()].length > 0) {
         ui.confirm('Restore?', 'An unsaved draft of this note was found. Would you like to restore it to the editor?').show(function(ok) {
           if (ok) {
-            return $('#editor').val(localStorage[_this.autosave_key()]);
+            return $('#edit-editor').val(localStorage[_this.autosave_key()]);
           } else {
             return delete localStorage[_this.autosave_key()];
           }
@@ -17457,7 +17457,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       }
       this.unbind_actions();
       this.bind_actions();
-      $('#editor').autoResize({
+      $('#edit-editor').autoResize({
         extraSpace: 100,
         maxHeight: 9000
       });

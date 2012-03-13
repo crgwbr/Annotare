@@ -24,7 +24,7 @@ class Edit extends Flakey.controllers.Controller
     
   autosave: (event) =>
     event.preventDefault()
-    localStorage[@autosave_key()] = $('#editor').val()
+    localStorage[@autosave_key()] = $('#edit-editor').val()
     
   autosave_key: () ->
     return "autosave-draft-#{@doc.id}";
@@ -44,7 +44,7 @@ class Edit extends Flakey.controllers.Controller
     if localStorage[@autosave_key()]? and localStorage[@autosave_key()].length > 0
       ui.confirm('Restore?', 'An unsaved draft of this note was found. Would you like to restore it to the editor?').show (ok) =>
         if ok
-          $('#editor').val(localStorage[@autosave_key()])
+          $('#edit-editor').val(localStorage[@autosave_key()])
         else
           delete localStorage[@autosave_key()]
     
@@ -53,7 +53,7 @@ class Edit extends Flakey.controllers.Controller
     @bind_actions()
     
     # Enable auto resizer
-    $('#editor').autoResize({
+    $('#edit-editor').autoResize({
       extraSpace: 100,
       maxHeight: 9000
     })
