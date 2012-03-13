@@ -17434,7 +17434,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.autosave_key = function() {
-      return "autosave-draft-" + this.id;
+      return "autosave-draft-" + this.doc.id;
     };
 
     Edit.prototype.render = function() {

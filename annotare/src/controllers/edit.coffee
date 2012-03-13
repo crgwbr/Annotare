@@ -27,7 +27,7 @@ class Edit extends Flakey.controllers.Controller
     localStorage[@autosave_key()] = $('#editor').val()
     
   autosave_key: () ->
-    return "autosave-draft-#{@id}";
+    return "autosave-draft-#{@doc.id}";
   
   render: () =>
     if not @query_params.id
