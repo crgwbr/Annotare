@@ -33,7 +33,8 @@ class NewDocument extends Flakey.controllers.Controller
       extraSpace: 100,
       maxHeight: 2000
     })
-    $('#name, #editor').blur()
+    $('#new-editor').blur()
+    $('#name').focus()
     
   save: (params) =>
     name = $('#name').val()

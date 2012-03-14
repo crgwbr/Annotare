@@ -28,8 +28,18 @@
       <div class="files">
         <h2>Attached Files</h2>
         <div class="clear"></div>
-        <div id="drop-zone"><h3>Drop Files Here</h3></div>
+        <div class="drop-zone" id="edit-drop-zone">
+          <h3>Drop Files Here</h3>
+          <p><em>Not recommended for files larger than 1 megabyte.</em></p>
+        </div>
         <ul>
+          <% for file in @doc.get_files(): %>
+            <li data-id="<%= file.id %>">
+              <a href="<%- file.data %>" target="_blank"><%= file.name %> (<%= file.mime %>)</a>
+              &nbsp;
+              <a href="#" class="delete-file" data-id="<%= file.id %>">[Delete]</a>
+            </li>
+          <% end %>
         </ul>
       </div>
     </article>

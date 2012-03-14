@@ -13775,7 +13775,8 @@ require.define("/controllers/new_document.js", function (require, module, export
         extraSpace: 100,
         maxHeight: 2000
       });
-      return $('#name, #editor').blur();
+      $('#new-editor').blur();
+      return $('#name').focus();
     };
 
     NewDocument.prototype.save = function(params) {
@@ -15489,8 +15490,8 @@ require.define("/settings.js", function (require, module, exports, __dirname, __
 
 require.define("/models/Document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Document, Flakey, Showdown;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Document, File, Flakey, Showdown;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -15498,22 +15499,19 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
   Annotation = require('./Annotation');
 
+  File = require('./File');
+
   Document = (function() {
 
     __extends(Document, Flakey.models.Model);
 
     function Document() {
-      this.render = __bind(this.render, this);
-      this.get_notes = __bind(this.get_notes, this);
-      this.generate_slug = __bind(this.generate_slug, this);
-      this.draw_annotations = __bind(this.draw_annotations, this);
-      this.annotate = __bind(this.annotate, this);
       Document.__super__.constructor.apply(this, arguments);
     }
 
     Document.model_name = 'Document';
 
-    Document.fields = ['id', 'name', 'slug', 'base_text', 'annotations'];
+    Document.fields = ['id', 'name', 'slug', 'base_text', 'annotations', 'files'];
 
     Document.prototype.annotate = function(selection, html, attachment) {
       var note, type;
@@ -15537,14 +15535,51 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
       return note.apply(html);
     };
 
+    Document.prototype.attach_file = function(raw_file, callback) {
+      var reader;
+      var _this = this;
+      if (callback == null) callback = void 0;
+      if (!this.files || this.files.constructor !== Array) this.files = [];
+      reader = new FileReader();
+      reader.onload = function(event) {
+        var data, file, mime;
+        mime = raw_file.type || "text/plain";
+        data = event.target.result + "";
+        if (data.slice(5, 11) === "base64") {
+          data = "data:text/plain;" + data.substr(5);
+        }
+        file = new File({
+          name: raw_file.fileName,
+          size: raw_file.fileSize,
+          last_modified: raw_file.lastModifiedDate,
+          mime: mime,
+          data: data,
+          date_uploaded: new Date()
+        });
+        file.save();
+        _this.files.push(file.id);
+        _this.save();
+        if (callback) return callback(file);
+      };
+      return reader.readAsDataURL(raw_file);
+    };
+
     Document.prototype["delete"] = function() {
-      var note, note_id, _i, _len, _ref;
+      var file, file_id, note, note_id, _i, _j, _len, _len2, _ref, _ref2;
       if (this.annotations != null) {
         _ref = this.annotations;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           note_id = _ref[_i];
           note = Annotation.get(note_id);
-          note["delete"]();
+          if (note != null) note["delete"]();
+        }
+      }
+      if (this.files != null) {
+        _ref2 = this.files;
+        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+          file_id = _ref2[_j];
+          file = File.get(file_id);
+          if (file != null) file["delete"]();
         }
       }
       return Document.__super__["delete"].call(this);
@@ -15555,6 +15590,15 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
       index = this.annotations.indexOf(id);
       if (index !== -1) {
         this.annotations.splice(index, 1);
+        return this.save();
+      }
+    };
+
+    Document.prototype.delete_file = function(file_id) {
+      var index;
+      index = this.files.indexOf(file_id);
+      if (index !== -1) {
+        this.files.splice(index, 1);
         return this.save();
       }
     };
@@ -15577,6 +15621,19 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
       slug = slug.toLowerCase().replace(/[^\_\ 0-9a-z-]/g, "").replace(/[ ]/g, '_');
       this.slug = slug;
       return slug;
+    };
+
+    Document.prototype.get_files = function() {
+      var file, files, id, _i, _len, _ref;
+      if (!this.files || this.files.constructor !== Array) this.files = [];
+      files = [];
+      _ref = this.files;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        id = _ref[_i];
+        file = File.get(id);
+        if (file != null) files.push(file);
+      }
+      return files;
     };
 
     Document.prototype.get_notes = function() {
@@ -16961,6 +17018,35 @@ require.define("/models/Annotation.js", function (require, module, exports, __di
 
 });
 
+require.define("/models/File.js", function (require, module, exports, __dirname, __filename) {
+(function() {
+  var File, Flakey;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  Flakey = require('flakey');
+
+  File = (function() {
+
+    __extends(File, Flakey.models.Model);
+
+    function File() {
+      File.__super__.constructor.apply(this, arguments);
+    }
+
+    File.model_name = 'File';
+
+    File.fields = ['id', 'name', 'size', 'last_modified', 'mime', 'data', 'date_uploaded'];
+
+    return File;
+
+  })();
+
+  module.exports = File;
+
+}).call(this);
+
+});
+
 require.define("/views/new_document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
   this.ecoTemplates || (this.ecoTemplates = {});
@@ -17204,6 +17290,9 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
     __extends(Detail, Flakey.controllers.Controller);
 
     function Detail(config) {
+      this.drag_over = __bind(this.drag_over, this);
+      this.drop_file = __bind(this.drop_file, this);
+      this.delete_file = __bind(this.delete_file, this);
       this.annotate = __bind(this.annotate, this);
       this.highlight = __bind(this.highlight, this);
       this["delete"] = __bind(this["delete"], this);
@@ -17216,6 +17305,7 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
         'click .highlighter': 'highlight',
         'click .annotate': 'annotate',
         'click .delete': 'delete',
+        'click .delete-file': 'delete_file',
         'blur .note-detail': 'edit_note'
       };
       Detail.__super__.constructor.call(this, config);
@@ -17223,7 +17313,7 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
     }
 
     Detail.prototype.render = function() {
-      var context;
+      var context, dropZone;
       if (!this.query_params.id) return;
       this.doc = Document.get(this.query_params.id);
       if (!(this.doc != null)) return;
@@ -17232,7 +17322,10 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
       };
       this.html(this.tmpl.render(context));
       this.unbind_actions();
-      return this.bind_actions();
+      this.bind_actions();
+      dropZone = document.getElementById('detail-drop-zone');
+      dropZone.addEventListener('dragover', this.drag_over, false);
+      return dropZone.addEventListener('drop', this.drop_file, false);
     };
 
     Detail.prototype.edit = function(event) {
@@ -17307,6 +17400,44 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
       }
     };
 
+    Detail.prototype.delete_file = function(event) {
+      var _this = this;
+      event.preventDefault();
+      event.preventDefault();
+      return ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show(function(ok) {
+        var id;
+        if (ok) {
+          id = $(event.target).attr('data-id');
+          _this.doc.delete_file(id);
+          return $(event.target).parent().slideUp();
+        }
+      });
+    };
+
+    Detail.prototype.drop_file = function(event) {
+      var file, files, _i, _len, _results;
+      var _this = this;
+      event.stopPropagation();
+      event.preventDefault();
+      files = event.dataTransfer.files;
+      _results = [];
+      for (_i = 0, _len = files.length; _i < _len; _i++) {
+        file = files[_i];
+        _results.push(this.doc.attach_file(file, function(file) {
+          $(".files ul").append("<li data-id='" + file.id + "'><a href='" + file.data + "' target='_blank'>" + file.name + " (" + file.mime + ")</a>&nbsp;<a href='#' class='delete-file' data-id='" + file.id + "'>[Delete]</a></li>");
+          _this.unbind_actions();
+          return _this.bind_actions();
+        }));
+      }
+      return _results;
+    };
+
+    Detail.prototype.drag_over = function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      return event.dataTransfer.dropEffect = 'copy';
+    };
+
     return Detail;
 
   })();
@@ -17359,6 +17490,7 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
     }
     (function() {
       (function() {
+        var file, _i, _len, _ref;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="edit">Edit</a>\n      <a href="#/history?id=');
       
@@ -17376,7 +17508,25 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
       
         __out.push(this.doc.draw_annotations(this.doc.render()));
       
-        __out.push('\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n</div>');
+        __out.push('\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  <hr />\n  \n  <section class="files">\n    <h2>Attached Files</h2>\n    <div class="clear"></div>\n    <div class="drop-zone" id="detail-drop-zone">\n      <h3>Drop Files Here</h3>\n      <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n    </div>\n    <ul>\n      ');
+      
+        _ref = this.doc.get_files();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          file = _ref[_i];
+          __out.push('\n        <li data-id="');
+          __out.push(__sanitize(file.id));
+          __out.push('">\n          <a href="');
+          __out.push(file.data);
+          __out.push('" target="_blank">');
+          __out.push(__sanitize(file.name));
+          __out.push(' (');
+          __out.push(__sanitize(file.mime));
+          __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
+          __out.push(__sanitize(file.id));
+          __out.push('">[Delete]</a>\n        </li>\n      ');
+        }
+      
+        __out.push('\n    </ul>\n  </section>\n</div>');
       
       }).call(this);
       
@@ -17413,6 +17563,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       this.drag_over = __bind(this.drag_over, this);
       this.drop_file = __bind(this.drop_file, this);
       this.delete_note = __bind(this.delete_note, this);
+      this.delete_file = __bind(this.delete_file, this);
       this.discard = __bind(this.discard, this);
       this.save = __bind(this.save, this);
       this.render = __bind(this.render, this);
@@ -17422,6 +17573,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
         'click .save': 'save',
         'click .discard': 'discard',
         'click .delete': 'delete_note',
+        'click .delete-file': 'delete_file',
         'keyup #edit-editor': 'autosave'
       };
       Edit.__super__.constructor.call(this, config);
@@ -17461,7 +17613,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
         extraSpace: 100,
         maxHeight: 9000
       });
-      dropZone = document.getElementById('drop-zone');
+      $('#edit-editor').blur().focus();
+      dropZone = document.getElementById('edit-drop-zone');
       dropZone.addEventListener('dragover', this.drag_over, false);
       return dropZone.addEventListener('drop', this.drop_file, false);
     };
@@ -17486,6 +17639,20 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       });
     };
 
+    Edit.prototype.delete_file = function(event) {
+      var _this = this;
+      event.preventDefault();
+      event.preventDefault();
+      return ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show(function(ok) {
+        var id;
+        if (ok) {
+          id = $(event.target).attr('data-id');
+          _this.doc.delete_file(id);
+          return $(event.target).parent().slideUp();
+        }
+      });
+    };
+
     Edit.prototype.delete_note = function(event) {
       var _this = this;
       event.preventDefault();
@@ -17500,16 +17667,21 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.drop_file = function(event) {
-      var file, files, output, _i, _len;
+      var file, files, _i, _len, _results;
+      var _this = this;
       event.stopPropagation();
       event.preventDefault();
       files = event.dataTransfer.files;
-      output = "";
+      _results = [];
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
-        output += "<li>" + (escape(file.name)) + "</li>";
+        _results.push(this.doc.attach_file(file, function(file) {
+          $(".files ul").append("<li data-id='" + file.id + "'><a href='" + file.data + "' target='_blank'>" + file.name + " (" + file.mime + ")</a>&nbsp;<a href='#' class='delete-file' data-id='" + file.id + "'>[Delete]</a></li>");
+          _this.unbind_actions();
+          return _this.bind_actions();
+        }));
       }
-      return $(".files ul").html(output);
+      return _results;
     };
 
     Edit.prototype.drag_over = function(event) {
@@ -17570,7 +17742,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
     }
     (function() {
       (function() {
-        var annotation, _i, _len, _ref;
+        var annotation, file, _i, _j, _len, _len2, _ref, _ref2;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Discard Changes</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
       
@@ -17594,7 +17766,25 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
           __out.push('</span>\n            <a href="#" class="delete">Delete</a>\n          </div>\n        ');
         }
       
-        __out.push('\n      </div>\n      \n      <div class="files">\n        <h2>Attached Files</h2>\n        <div class="clear"></div>\n        <div id="drop-zone"><h3>Drop Files Here</h3></div>\n        <ul>\n        </ul>\n      </div>\n    </article>\n    \n  </section>\n</div>');
+        __out.push('\n      </div>\n      \n      <div class="files">\n        <h2>Attached Files</h2>\n        <div class="clear"></div>\n        <div class="drop-zone" id="edit-drop-zone">\n          <h3>Drop Files Here</h3>\n          <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n        </div>\n        <ul>\n          ');
+      
+        _ref2 = this.doc.get_files();
+        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+          file = _ref2[_j];
+          __out.push('\n            <li data-id="');
+          __out.push(__sanitize(file.id));
+          __out.push('">\n              <a href="');
+          __out.push(file.data);
+          __out.push('" target="_blank">');
+          __out.push(__sanitize(file.name));
+          __out.push(' (');
+          __out.push(__sanitize(file.mime));
+          __out.push(')</a>\n              &nbsp;\n              <a href="#" class="delete-file" data-id="');
+          __out.push(__sanitize(file.id));
+          __out.push('">[Delete]</a>\n            </li>\n          ');
+        }
+      
+        __out.push('\n        </ul>\n      </div>\n    </article>\n    \n  </section>\n</div>');
       
       }).call(this);
       
@@ -17608,7 +17798,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/history.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Flakey, History, Showdown, ui;
+  var $, Document, File, Flakey, History, Showdown, ui;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
@@ -17620,6 +17810,8 @@ require.define("/controllers/history.js", function (require, module, exports, __
   Showdown = require('../lib/showdown');
 
   Document = require('../models/Document');
+
+  File = require('../models/File');
 
   History = (function() {
 
@@ -17669,7 +17861,7 @@ require.define("/controllers/history.js", function (require, module, exports, __
     };
 
     History.prototype.update = function(event) {
-      var converter, doc, html, rev, time, version_index;
+      var converter, doc, file, file_id, html, rev, time, version_index, _i, _len, _ref, _results;
       version_index = $('#version-input').val();
       doc = Document.get(this.query_params.id);
       time = new Date(doc.versions[version_index].time);
@@ -17677,7 +17869,16 @@ require.define("/controllers/history.js", function (require, module, exports, __
       converter = new Showdown.converter();
       html = converter.makeHtml(rev.base_text);
       $('#history-time').html(time.toLocaleString());
-      return $('#history-content').html(doc.draw_annotations(html, rev.annotations));
+      $('#history-content').html(doc.draw_annotations(html, rev.annotations));
+      $('#history-files').html("");
+      _ref = rev.files;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        file_id = _ref[_i];
+        file = File.get(file_id);
+        _results.push($('#history-files').append("<li data-id='" + file.id + "'><a target='_blank' href='" + file.data + "'>" + file.name + " (" + file.mime + ")</a></li>"));
+      }
+      return _results;
     };
 
     return History;
@@ -17732,7 +17933,7 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
     }
     (function() {
       (function() {
-        var html;
+        var file, html, _i, _len, _ref;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#/detail?id=');
       
@@ -17766,7 +17967,25 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
       
         __out.push(this.doc.draw_annotations(html));
       
-        __out.push('\n      </section>\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n</div>');
+        __out.push('\n      </section>\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  \n  <section class="files">\n    <h2>Attached Files</h2>\n    <div class="clear"></div>\n    <div class="drop-zone">\n      <h3>Drop Files Here</h3>\n      <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n    </div>\n    <ul id="history-files">\n      ');
+      
+        _ref = this.doc.get_files();
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          file = _ref[_i];
+          __out.push('\n        <li data-id="');
+          __out.push(__sanitize(file.id));
+          __out.push('">\n          <a href="');
+          __out.push(file.data);
+          __out.push('" target="_blank">');
+          __out.push(__sanitize(file.name));
+          __out.push(' (');
+          __out.push(__sanitize(file.mime));
+          __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
+          __out.push(__sanitize(file.id));
+          __out.push('">[Delete]</a>\n        </li>\n      ');
+        }
+      
+        __out.push('\n    </ul>\n  </section>\n</div>');
       
       }).call(this);
       
@@ -17812,6 +18031,7 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
     Flakey.init(settings);
     Flakey.models.backend_controller.sync('Document');
     Flakey.models.backend_controller.sync('Annotation');
+    Flakey.models.backend_controller.sync('File');
     annotare = window.Annotare = new Annotare();
     return annotare.make_active();
   });

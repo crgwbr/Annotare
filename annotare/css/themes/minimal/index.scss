@@ -148,16 +148,6 @@ header {
     margin-top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    opacity: 0.05;
-    
-    @media handheld {
-      opacity: 1;
-    }
-    
-    &:hover {
-      opacity: 1;
-      @include transition-delay(0s);
-    }
     
     h1 {
       float: left;
@@ -200,16 +190,6 @@ header {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-bottom: 0;
-    opacity: 0.05;
-    
-    @media handheld {
-      opacity: 1;
-    }
-    
-    &:hover {
-      opacity: 1;
-      @include transition-delay(0s);
-    }
     
     div:first-child {
       float: left;
@@ -257,7 +237,7 @@ header {
     height: $base-size * $line-height;
     position: absolute;
     right: 1%;
-    z-index: 5000;
+    z-index: 100;
     overflow: hidden;
   }
   &:hover .note-detail, .note-detail:focus {
@@ -275,6 +255,21 @@ header {
   padding: 0 0.5%;
 }
 
+.drop-zone {
+  margin: 0;
+  //margin-top: -1px;
+  @include box($secondary);
+  border-style: dashed;
+  border-width: 3px;
+  h3 {
+    margin: 20px;
+    text-align: center;
+    font-size: modular-scale(2);
+    font-style: italic;
+  }
+  p { text-align: center; }
+}
+
 
 // =================================================================================
 // Specific Views
@@ -284,6 +279,10 @@ header {
     @include grid(12);
     @include box($app-background);
     margin-bottom: 56px;
+  }
+  .files {
+    margin-top: 30px;
+    @include grid(4)
   }
 }
 
@@ -385,26 +384,13 @@ header {
       font-family: $sans;
       font-size: 1em;
       position: absolute;
-      bottom: 5px;
+      top: 5px;
       right: 10px;
     }
   }
   
   .files {
     @include grid(8);
-    
-    #drop-zone {
-      margin: $gutter-width-percentage / 2;
-      @include box($secondary);
-      border-style: dashed;
-      border-width: 3px;
-      h3 {
-        margin: 20px;
-        text-align: center;
-        font-size: modular-scale(2);
-        font-style: italic;
-      }
-    }
   }
 }
 

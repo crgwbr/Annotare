@@ -19,7 +19,7 @@ directory = os.sep.join(os.path.abspath(__file__).split(os.sep)[:-1])
 data_files = {
     'Document': os.path.join(directory, 'documents.json'),
     'Annotation': os.path.join(directory, 'annotations.json'),
-    'Setting': os.path.join(directory, 'settings.json')
+    'File': os.path.join(directory, 'files.json')
 }
 
 

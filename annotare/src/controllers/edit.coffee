@@ -16,6 +16,7 @@ class Edit extends Flakey.controllers.Controller
       'click .save': 'save'
       'click .discard': 'discard'
       'click .delete': 'delete_note'
+      'click .delete-file': 'delete_file'
       'keyup #edit-editor': 'autosave'
     }
     
@@ -58,8 +59,10 @@ class Edit extends Flakey.controllers.Controller
       maxHeight: 9000
     })
     
+    $('#edit-editor').blur().focus()
+    
     # Drop Zone (jquery events dont work)
-    dropZone = document.getElementById('drop-zone');
+    dropZone = document.getElementById('edit-drop-zone');
     dropZone.addEventListener('dragover', @drag_over, false);
     dropZone.addEventListener('drop', @drop_file, false);
   
@@ -78,6 +81,15 @@ class Edit extends Flakey.controllers.Controller
         delete localStorage[@autosave_key()]
         window.location.hash = "#/list"
         
+  delete_file: (event) =>
+    event.preventDefault()
+    event.preventDefault()
+    ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show (ok) =>
+      if ok
+        id = $(event.target).attr('data-id')
+        @doc.delete_file(id)
+        $(event.target).parent().slideUp()
+        
   delete_note: (event) =>
     event.preventDefault()
     ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show (ok) =>
@@ -92,13 +104,12 @@ class Edit extends Flakey.controllers.Controller
 
     files = event.dataTransfer.files; # FileList object.
 
-    # files is a FileList of File objects. List some properties.
-    output = ""
     for file in files
-      output += "<li>#{escape(file.name)}</li>"
-    
-    $(".files ul").html output
-        
+      @doc.attach_file file, (file) =>
+        $(".files ul").append "<li data-id='#{file.id}'><a href='#{file.data}' target='_blank'>#{file.name} (#{file.mime})</a>&nbsp;<a href='#' class='delete-file' data-id='#{file.id}'>[Delete]</a></li>"
+        @unbind_actions()
+        @bind_actions()
+  
   drag_over: (event) =>
     event.stopPropagation()
     event.preventDefault()

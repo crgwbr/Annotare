@@ -665,18 +665,7 @@ header {
     border-top: none;
     margin-top: 0;
     border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    opacity: 0.05; }
-    @media handheld {
-      header nav {
-        opacity: 1; } }
-    header nav:hover {
-      opacity: 1;
-      transition-delay: 0s;
-      -moz-transition-delay: 0s;
-      -webkit-transition-delay: 0s;
-      -o-transition-delay: 0s;
-      -ie-transition-delay: 0s; }
+    border-top-right-radius: 0; }
     header nav h1 {
       float: left; }
     header nav h1, header nav h1 a, header nav h1 a:visited, header nav h1 a:hover, header nav h1 a:active, header nav ul, header nav ul a, header nav ul a:visited, header nav ul a:hover, header nav ul a:active, header nav ul li, header nav ul li a, header nav ul li a:visited, header nav ul li a:hover, header nav ul li a:active {
@@ -723,18 +712,7 @@ header {
     border-bottom: none;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    margin-bottom: 0;
-    opacity: 0.05; }
-    @media handheld {
-      .tool-bar-wrap nav {
-        opacity: 1; } }
-    .tool-bar-wrap nav:hover {
-      opacity: 1;
-      transition-delay: 0s;
-      -moz-transition-delay: 0s;
-      -webkit-transition-delay: 0s;
-      -o-transition-delay: 0s;
-      -ie-transition-delay: 0s; }
+    margin-bottom: 0; }
     .tool-bar-wrap nav div:first-child {
       float: left; }
     .tool-bar-wrap nav div:nth-child(2) {
@@ -770,7 +748,7 @@ header {
     height: 1.7em;
     position: absolute;
     right: 1%;
-    z-index: 5000;
+    z-index: 100;
     overflow: hidden; }
   .note:hover .note-detail, .note .note-detail:focus {
     height: auto;
@@ -787,6 +765,22 @@ header {
   padding: 0.595%;
   padding: 0 0.5%; }
 
+.drop-zone {
+  margin: 0;
+  background: rgba(82, 171, 209, 0.3);
+  border: 1px solid rgba(40, 117, 149, 0.3);
+  border-radius: 2px;
+  padding: 0.595%;
+  border-style: dashed;
+  border-width: 3px; }
+  .drop-zone h3 {
+    margin: 20px;
+    text-align: center;
+    font-size: 2.618em;
+    font-style: italic; }
+  .drop-zone p {
+    text-align: center; }
+
 #detail-view .wrap, #history-view .wrap {
   float: left;
   margin: 0.595%;
@@ -797,6 +791,12 @@ header {
   border-radius: 2px;
   padding: 0.595%;
   margin-bottom: 56px; }
+#detail-view .files, #history-view .files {
+  margin-top: 30px;
+  float: left;
+  margin: 0.595%;
+  width: 32.143%;
+  box-sizing: border-box; }
 
 #list-view form#search-form {
   float: left;
@@ -917,26 +917,13 @@ header {
     font-family: Verdana, "Bitstream Vera Sans", sans-serif;
     font-size: 1em;
     position: absolute;
-    bottom: 5px;
+    top: 5px;
     right: 10px; }
 #edit-view .files, #new-document-view .files {
   float: left;
   margin: 0.595%;
   width: 65.476%;
   box-sizing: border-box; }
-  #edit-view .files #drop-zone, #new-document-view .files #drop-zone {
-    margin: 0.595%;
-    background: rgba(82, 171, 209, 0.3);
-    border: 1px solid rgba(40, 117, 149, 0.3);
-    border-radius: 2px;
-    padding: 0.595%;
-    border-style: dashed;
-    border-width: 3px; }
-    #edit-view .files #drop-zone h3, #new-document-view .files #drop-zone h3 {
-      margin: 20px;
-      text-align: center;
-      font-size: 2.618em;
-      font-style: italic; }
 
 #application div.view {
   display: none; }

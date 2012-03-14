@@ -17,6 +17,7 @@ class Detail extends Flakey.controllers.Controller
       'click .highlighter': 'highlight'
       'click .annotate': 'annotate'
       'click .delete': 'delete'
+      'click .delete-file': 'delete_file'
       'blur .note-detail': 'edit_note'
     }
     
@@ -38,6 +39,11 @@ class Detail extends Flakey.controllers.Controller
     @html @tmpl.render(context)
     @unbind_actions()
     @bind_actions()
+    
+    # Drop Zone (jquery events dont work)
+    dropZone = document.getElementById('detail-drop-zone');
+    dropZone.addEventListener('dragover', @drag_over, false);
+    dropZone.addEventListener('drop', @drop_file, false);
     
   edit: (event) =>
     event.preventDefault()
@@ -99,6 +105,32 @@ class Detail extends Flakey.controllers.Controller
       $("#detail-" + @doc.slug).html(html)
       @unbind_actions()
       @bind_actions()
+      
+  delete_file: (event) =>
+    event.preventDefault()
+    event.preventDefault()
+    ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show (ok) =>
+      if ok
+        id = $(event.target).attr('data-id')
+        @doc.delete_file(id)
+        $(event.target).parent().slideUp()
+      
+  drop_file: (event) =>
+    event.stopPropagation()
+    event.preventDefault()
+
+    files = event.dataTransfer.files; # FileList object.
+
+    for file in files
+      @doc.attach_file file, (file) =>
+        $(".files ul").append "<li data-id='#{file.id}'><a href='#{file.data}' target='_blank'>#{file.name} (#{file.mime})</a>&nbsp;<a href='#' class='delete-file' data-id='#{file.id}'>[Delete]</a></li>"
+        @unbind_actions()
+        @bind_actions()
+          
+  drag_over: (event) =>
+    event.stopPropagation()
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'copy' # Explicitly show this is a copy.
     
     
 module.exports = Detail

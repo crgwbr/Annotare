@@ -2,6 +2,7 @@
 *.sassc
 *.pyc
 annotare/server/*.json
+annotare/temp
 *.esproj
 .sass-cache
 .DS_Store
