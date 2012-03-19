@@ -18030,7 +18030,7 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
     }
     (function() {
       (function() {
-        var file, html, _i, _len, _ref;
+        var file, files, html, _i, _len;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#/detail?id=');
       
@@ -18064,25 +18064,32 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
       
         __out.push(this.doc.draw_annotations(html));
       
-        __out.push('\n      </section>\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  \n  <section class="files">\n    <h2>Attached Files</h2>\n    <div class="clear"></div>\n    <div class="drop-zone">\n      <h3>Drop Files Here</h3>\n      <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n    </div>\n    <ul id="history-files">\n      ');
+        __out.push('\n      </section>\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  \n  ');
       
-        _ref = this.doc.get_files();
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          file = _ref[_i];
-          __out.push('\n        <li data-id="');
-          __out.push(__sanitize(file.id));
-          __out.push('">\n          <a href="');
-          __out.push(file.data);
-          __out.push('" target="_blank">');
-          __out.push(__sanitize(file.name));
-          __out.push(' (');
-          __out.push(__sanitize(file.mime));
-          __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
-          __out.push(__sanitize(file.id));
-          __out.push('">[Delete]</a>\n        </li>\n      ');
+        files = this.doc.get_files();
+      
+        __out.push('\n  ');
+      
+        if (files.length > 0) {
+          __out.push('\n  <hr />\n  <section class="files">\n    <h2>Attached Files</h2>\n    <ul>\n      ');
+          for (_i = 0, _len = files.length; _i < _len; _i++) {
+            file = files[_i];
+            __out.push('\n        <li data-id="');
+            __out.push(__sanitize(file.id));
+            __out.push('">\n          <a href="');
+            __out.push(file.data);
+            __out.push('" target="_blank">');
+            __out.push(__sanitize(file.name));
+            __out.push(' (');
+            __out.push(__sanitize(file.mime));
+            __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
+            __out.push(__sanitize(file.id));
+            __out.push('">[Delete]</a>\n        </li>\n      ');
+          }
+          __out.push('\n    </ul>\n  </section>\n  ');
         }
       
-        __out.push('\n    </ul>\n  </section>\n</div>');
+        __out.push('\n</div>');
       
       }).call(this);
       
