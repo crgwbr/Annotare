@@ -13,11 +13,17 @@ class Edit extends Flakey.controllers.Controller
     @class_name = "edit_document view"
     
     @actions = {
+      # Normal Actions
       'click .save': 'save'
       'click .discard': 'discard'
       'click .delete': 'delete_note'
       'click .delete-file': 'delete_file'
       'keyup #edit-editor': 'autosave'
+      # Keyboard shortcuts
+      'keyup esc #edit-editor': 'discard'
+      'keyup esc': 'discard'
+      'keyup ctrl+s #edit-editor': 'save'
+      'keyup ctrl+s': 'save'
     }
     
     super(config)
@@ -25,10 +31,15 @@ class Edit extends Flakey.controllers.Controller
     
   autosave: (event) =>
     event.preventDefault()
-    localStorage[@autosave_key()] = $('#edit-editor').val()
+    if @doc.base_text != $('#edit-editor').val()
+      localStorage[@autosave_key()] = $('#edit-editor').val()
     
   autosave_key: () ->
     return "autosave-draft-#{@doc.id}";
+    
+  close_editor: () ->
+    delete localStorage[@autosave_key()]
+    window.location.hash = "#/detail?" + Flakey.util.querystring.build {id: @doc.id}
   
   render: () =>
     if not @query_params.id
@@ -72,14 +83,15 @@ class Edit extends Flakey.controllers.Controller
     @doc.save()
     delete localStorage[@autosave_key()]
     ui.info('Everything\'s Shiny Capt\'n!', "\"#{ @doc.name }\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect)
-    window.location.hash = "#/detail?" + Flakey.util.querystring.build(@query_params)
   
   discard: (event) =>
     event.preventDefault()
-    ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard all changes to this document?').show (ok) =>
+    if @doc.base_text == $('#edit-editor').val()
+      return @close_editor()
+    
+    ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard all unsaved changes to this document?').show (ok) =>
       if ok
-        delete localStorage[@autosave_key()]
-        window.location.hash = "#/list"
+        @close_editor()
         
   delete_file: (event) =>
     event.preventDefault()

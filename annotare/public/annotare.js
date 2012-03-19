@@ -346,6 +346,7 @@ module.exports = {"main":"./flakey.js"}
 
 require.define("/node_modules/flakey/flakey.js", function (require, module, exports, __dirname, __filename) {
 (function() {
+
   /**
  * Diff Match and Patch
  *
@@ -2533,6 +2534,7 @@ this['diff_match_patch'] = diff_match_patch;
 this['DIFF_DELETE'] = DIFF_DELETE;
 this['DIFF_INSERT'] = DIFF_INSERT;
 this['DIFF_EQUAL'] = DIFF_EQUAL;
+
   /*!
  * jQuery JavaScript Library v1.7.1
  * http://jquery.com/
@@ -11799,6 +11801,107 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 
 })( window );;
+
+  /*
+ * jQuery Hotkeys Plugin
+ * Copyright 2010, John Resig
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * Based upon the plugin by Tzury Bar Yochay:
+ * http://github.com/tzuryby/hotkeys
+ *
+ * Original idea by:
+ * Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
+*/
+
+(function(jQuery){
+	
+	jQuery.hotkeys = {
+		version: "0.8",
+
+		specialKeys: {
+			8: "backspace", 9: "tab", 13: "return", 16: "shift", 17: "ctrl", 18: "alt", 19: "pause",
+			20: "capslock", 27: "esc", 32: "space", 33: "pageup", 34: "pagedown", 35: "end", 36: "home",
+			37: "left", 38: "up", 39: "right", 40: "down", 45: "insert", 46: "del", 
+			96: "0", 97: "1", 98: "2", 99: "3", 100: "4", 101: "5", 102: "6", 103: "7",
+			104: "8", 105: "9", 106: "*", 107: "+", 109: "-", 110: ".", 111 : "/", 
+			112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 118: "f7", 119: "f8", 
+			120: "f9", 121: "f10", 122: "f11", 123: "f12", 144: "numlock", 145: "scroll", 191: "/", 224: "meta"
+		},
+	
+		shiftNums: {
+			"\`": "~", "1": "!", "2": "@", "3": "#", "4": "$", "5": "%", "6": "^", "7": "&", 
+			"8": "*", "9": "(", "0": ")", "-": "_", "=": "+", ";": ": ", "'": "\"", ",": "<", 
+			".": ">",  "/": "?",  "\\": "|"
+		}
+	};
+
+	function keyHandler( handleObj ) {
+		// Only care when a possible input has been specified
+		if ( typeof handleObj.data !== "string" ) {
+			return;
+		}
+		
+		var origHandler = handleObj.handler,
+			keys = handleObj.data.toLowerCase().split(" ");
+	
+		handleObj.handler = function( event ) {
+			// Don't fire in text-accepting inputs that we didn't directly bind to
+			if ( this !== event.target && (/textarea|select/i.test( event.target.nodeName ) ||
+				 event.target.type === "text") ) {
+				return;
+			}
+			
+			// Keypress represents characters, not special keys
+			var special = event.type !== "keypress" && jQuery.hotkeys.specialKeys[ event.which ],
+				character = String.fromCharCode( event.which ).toLowerCase(),
+				key, modif = "", possible = {};
+
+			// check combinations (alt|ctrl|shift+anything)
+			if ( event.altKey && special !== "alt" ) {
+				modif += "alt+";
+			}
+
+			if ( event.ctrlKey && special !== "ctrl" ) {
+				modif += "ctrl+";
+			}
+			
+			// TODO: Need to make sure this works consistently across platforms
+			if ( event.metaKey && !event.ctrlKey && special !== "meta" ) {
+				modif += "meta+";
+			}
+
+			if ( event.shiftKey && special !== "shift" ) {
+				modif += "shift+";
+			}
+
+			if ( special ) {
+				possible[ modif + special ] = true;
+
+			} else {
+				possible[ modif + character ] = true;
+				possible[ modif + jQuery.hotkeys.shiftNums[ character ] ] = true;
+
+				// "$" can be triggered as "Shift+4" or "Shift+$" or just "$"
+				if ( modif === "shift+" ) {
+					possible[ jQuery.hotkeys.shiftNums[ character ] ] = true;
+				}
+			}
+
+			for ( var i = 0, l = keys.length; i < l; i++ ) {
+				if ( possible[ keys[i] ] ) {
+					return origHandler.apply( this, arguments );
+				}
+			}
+		};
+	}
+
+	jQuery.each([ "keydown", "keyup", "keypress" ], function() {
+		jQuery.event.special[ this ] = { add: keyHandler };
+	});
+
+})( jQuery );;
+
   /*
     http://www.JSON.org/json2.js
     2011-10-19
@@ -12286,11 +12389,9 @@ if (!JSON) {
         };
     }
 }());;
-  var $, Backend, BackendController, Controller, Events, Flakey, JSON, LocalBackend, MemoryBackend, Model, ServerBackend, SocketIOBackend, Stack, Template, get_template,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  var $, Backend, BackendController, Controller, Events, Flakey, JSON, LocalBackend, MemoryBackend, Model, ServerBackend, SocketIOBackend, Stack, Template, get_template;
+  var __hasProp = Object.prototype.hasOwnProperty, __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (__hasProp.call(this, i) && this[i] === item) return i; } return -1; }, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Flakey = {
     diff_patch: new diff_match_patch(),
@@ -13096,9 +13197,9 @@ if (!JSON) {
 
   })();
 
-  MemoryBackend = (function(_super) {
+  MemoryBackend = (function() {
 
-    __extends(MemoryBackend, _super);
+    __extends(MemoryBackend, Backend);
 
     function MemoryBackend() {
       if (!window.memcache) window.memcache = {};
@@ -13115,11 +13216,11 @@ if (!JSON) {
 
     return MemoryBackend;
 
-  })(Backend);
+  })();
 
-  LocalBackend = (function(_super) {
+  LocalBackend = (function() {
 
-    __extends(LocalBackend, _super);
+    __extends(LocalBackend, Backend);
 
     function LocalBackend() {
       this.prefix = 'flakey-';
@@ -13141,11 +13242,11 @@ if (!JSON) {
 
     return LocalBackend;
 
-  })(Backend);
+  })();
 
-  ServerBackend = (function(_super) {
+  ServerBackend = (function() {
 
-    __extends(ServerBackend, _super);
+    __extends(ServerBackend, Backend);
 
     function ServerBackend() {
       this.server_cache = {};
@@ -13293,11 +13394,11 @@ if (!JSON) {
 
     return ServerBackend;
 
-  })(Backend);
+  })();
 
-  SocketIOBackend = (function(_super) {
+  SocketIOBackend = (function() {
 
-    __extends(SocketIOBackend, _super);
+    __extends(SocketIOBackend, Backend);
 
     function SocketIOBackend() {
       var _this = this;
@@ -13347,8 +13448,8 @@ if (!JSON) {
     };
 
     SocketIOBackend.prototype.save = function(name, id, versions, force_write) {
-      var cached_obj, proposed_obj,
-        _this = this;
+      var cached_obj, proposed_obj;
+      var _this = this;
       proposed_obj = {
         id: id,
         versions: versions
@@ -13407,7 +13508,7 @@ if (!JSON) {
 
     return SocketIOBackend;
 
-  })(Backend);
+  })();
 
   Flakey.models = {
     Model: Model,
@@ -13459,7 +13560,7 @@ if (!JSON) {
     };
 
     Controller.prototype.bind_actions = function() {
-      var action, fn, key, key_parts, selector, _ref, _results;
+      var action, fn, hotkey, key, key_parts, selector, _ref, _results;
       _ref = this.actions;
       _results = [];
       for (key in _ref) {
@@ -13467,25 +13568,27 @@ if (!JSON) {
         fn = _ref[key];
         key_parts = key.split(' ');
         action = key_parts.shift();
+        hotkey = "";
+        if (action === 'keydown' || action === 'keyup' || action === 'keypress') {
+          hotkey = key_parts.shift();
+        }
+        if ((hotkey.indexOf('#') !== -1 || hotkey.indexOf('.') !== -1) && hotkey.indexOf('+') === -1) {
+          key_parts.shift(hotkey);
+          hotkey = "";
+        }
         selector = key_parts.join(' ');
-        _results.push($(selector).bind(action, this[fn]));
+        if (selector.length <= 0) selector = document;
+        if (hotkey) {
+          _results.push($(selector).bind(action, hotkey, this[fn]));
+        } else {
+          _results.push($(selector).bind(action, this[fn]));
+        }
       }
       return _results;
     };
 
     Controller.prototype.unbind_actions = function() {
-      var action, fn, key, key_parts, selector, _ref, _results;
-      _ref = this.actions;
-      _results = [];
-      for (key in _ref) {
-        if (!__hasProp.call(_ref, key)) continue;
-        fn = _ref[key];
-        key_parts = key.split(' ');
-        action = key_parts.shift();
-        selector = key_parts.join(' ');
-        _results.push($(selector).unbind(action));
-      }
-      return _results;
+      return $(document).unbind();
     };
 
     Controller.prototype.html = function(htm) {
@@ -17290,8 +17393,6 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
     __extends(Detail, Flakey.controllers.Controller);
 
     function Detail(config) {
-      this.drag_over = __bind(this.drag_over, this);
-      this.drop_file = __bind(this.drop_file, this);
       this.delete_file = __bind(this.delete_file, this);
       this.annotate = __bind(this.annotate, this);
       this.highlight = __bind(this.highlight, this);
@@ -17306,14 +17407,18 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
         'click .annotate': 'annotate',
         'click .delete': 'delete',
         'click .delete-file': 'delete_file',
-        'blur .note-detail': 'edit_note'
+        'blur .note-detail': 'edit_note',
+        'keyup ctrl+e': 'edit',
+        'keyup ctrl+h': 'highlight',
+        'keyup ctrl+n': 'annotate',
+        'keyup ctrl+backspace': 'delete'
       };
       Detail.__super__.constructor.call(this, config);
       this.tmpl = Flakey.templates.get_template('detail', require('../views/detail'));
     }
 
     Detail.prototype.render = function() {
-      var context, dropZone;
+      var context;
       if (!this.query_params.id) return;
       this.doc = Document.get(this.query_params.id);
       if (!(this.doc != null)) return;
@@ -17322,10 +17427,7 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
       };
       this.html(this.tmpl.render(context));
       this.unbind_actions();
-      this.bind_actions();
-      dropZone = document.getElementById('detail-drop-zone');
-      dropZone.addEventListener('dragover', this.drag_over, false);
-      return dropZone.addEventListener('drop', this.drop_file, false);
+      return this.bind_actions();
     };
 
     Detail.prototype.edit = function(event) {
@@ -17414,30 +17516,6 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
       });
     };
 
-    Detail.prototype.drop_file = function(event) {
-      var file, files, _i, _len, _results;
-      var _this = this;
-      event.stopPropagation();
-      event.preventDefault();
-      files = event.dataTransfer.files;
-      _results = [];
-      for (_i = 0, _len = files.length; _i < _len; _i++) {
-        file = files[_i];
-        _results.push(this.doc.attach_file(file, function(file) {
-          $(".files ul").append("<li data-id='" + file.id + "'><a href='" + file.data + "' target='_blank'>" + file.name + " (" + file.mime + ")</a>&nbsp;<a href='#' class='delete-file' data-id='" + file.id + "'>[Delete]</a></li>");
-          _this.unbind_actions();
-          return _this.bind_actions();
-        }));
-      }
-      return _results;
-    };
-
-    Detail.prototype.drag_over = function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      return event.dataTransfer.dropEffect = 'copy';
-    };
-
     return Detail;
 
   })();
@@ -17490,7 +17568,7 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
     }
     (function() {
       (function() {
-        var file, _i, _len, _ref;
+        var file, files, _i, _len;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="edit">Edit</a>\n      <a href="#/history?id=');
       
@@ -17508,25 +17586,32 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
       
         __out.push(this.doc.draw_annotations(this.doc.render()));
       
-        __out.push('\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  <hr />\n  \n  <section class="files">\n    <h2>Attached Files</h2>\n    <div class="clear"></div>\n    <div class="drop-zone" id="detail-drop-zone">\n      <h3>Drop Files Here</h3>\n      <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n    </div>\n    <ul>\n      ');
+        __out.push('\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  \n  ');
       
-        _ref = this.doc.get_files();
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          file = _ref[_i];
-          __out.push('\n        <li data-id="');
-          __out.push(__sanitize(file.id));
-          __out.push('">\n          <a href="');
-          __out.push(file.data);
-          __out.push('" target="_blank">');
-          __out.push(__sanitize(file.name));
-          __out.push(' (');
-          __out.push(__sanitize(file.mime));
-          __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
-          __out.push(__sanitize(file.id));
-          __out.push('">[Delete]</a>\n        </li>\n      ');
+        files = this.doc.get_files();
+      
+        __out.push('\n  ');
+      
+        if (files.length > 0) {
+          __out.push('\n  <hr />\n  <section class="files">\n    <h2>Attached Files</h2>\n    <ul>\n      ');
+          for (_i = 0, _len = files.length; _i < _len; _i++) {
+            file = files[_i];
+            __out.push('\n        <li data-id="');
+            __out.push(__sanitize(file.id));
+            __out.push('">\n          <a href="');
+            __out.push(file.data);
+            __out.push('" target="_blank">');
+            __out.push(__sanitize(file.name));
+            __out.push(' (');
+            __out.push(__sanitize(file.mime));
+            __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
+            __out.push(__sanitize(file.id));
+            __out.push('">[Delete]</a>\n        </li>\n      ');
+          }
+          __out.push('\n    </ul>\n  </section>\n  ');
         }
       
-        __out.push('\n    </ul>\n  </section>\n</div>');
+        __out.push('\n</div>');
       
       }).call(this);
       
@@ -17574,7 +17659,11 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
         'click .discard': 'discard',
         'click .delete': 'delete_note',
         'click .delete-file': 'delete_file',
-        'keyup #edit-editor': 'autosave'
+        'keyup #edit-editor': 'autosave',
+        'keyup esc #edit-editor': 'discard',
+        'keyup esc': 'discard',
+        'keyup ctrl+s #edit-editor': 'save',
+        'keyup ctrl+s': 'save'
       };
       Edit.__super__.constructor.call(this, config);
       this.tmpl = Flakey.templates.get_template('edit', require('../views/edit'));
@@ -17582,11 +17671,20 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
     Edit.prototype.autosave = function(event) {
       event.preventDefault();
-      return localStorage[this.autosave_key()] = $('#edit-editor').val();
+      if (this.doc.base_text !== $('#edit-editor').val()) {
+        return localStorage[this.autosave_key()] = $('#edit-editor').val();
+      }
     };
 
     Edit.prototype.autosave_key = function() {
       return "autosave-draft-" + this.doc.id;
+    };
+
+    Edit.prototype.close_editor = function() {
+      delete localStorage[this.autosave_key()];
+      return window.location.hash = "#/detail?" + Flakey.util.querystring.build({
+        id: this.doc.id
+      });
     };
 
     Edit.prototype.render = function() {
@@ -17624,18 +17722,17 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       this.doc.base_text = $('#edit-editor').val();
       this.doc.save();
       delete localStorage[this.autosave_key()];
-      ui.info('Everything\'s Shiny Capt\'n!', "\"" + this.doc.name + "\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect);
-      return window.location.hash = "#/detail?" + Flakey.util.querystring.build(this.query_params);
+      return ui.info('Everything\'s Shiny Capt\'n!', "\"" + this.doc.name + "\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect);
     };
 
     Edit.prototype.discard = function(event) {
       var _this = this;
       event.preventDefault();
-      return ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard all changes to this document?').show(function(ok) {
-        if (ok) {
-          delete localStorage[_this.autosave_key()];
-          return window.location.hash = "#/list";
-        }
+      if (this.doc.base_text === $('#edit-editor').val()) {
+        return this.close_editor();
+      }
+      return ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard all unsaved changes to this document?').show(function(ok) {
+        if (ok) return _this.close_editor();
       });
     };
 
@@ -17744,7 +17841,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
       (function() {
         var annotation, file, _i, _j, _len, _len2, _ref, _ref2;
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Discard Changes</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Close Editor</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
       
         __out.push(__sanitize(this.doc.name));
       

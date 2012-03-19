@@ -25,17 +25,14 @@
   </section>
   
   <div class="clear"></div>
-  <hr />
   
+  <% files = @doc.get_files() %>
+  <% if files.length > 0: %>
+  <hr />
   <section class="files">
     <h2>Attached Files</h2>
-    <div class="clear"></div>
-    <div class="drop-zone" id="detail-drop-zone">
-      <h3>Drop Files Here</h3>
-      <p><em>Not recommended for files larger than 1 megabyte.</em></p>
-    </div>
     <ul>
-      <% for file in @doc.get_files(): %>
+      <% for file in files: %>
         <li data-id="<%= file.id %>">
           <a href="<%- file.data %>" target="_blank"><%= file.name %> (<%= file.mime %>)</a>
           &nbsp;
@@ -44,4 +41,5 @@
       <% end %>
     </ul>
   </section>
+  <% end %>
 </div>
