@@ -13,7 +13,7 @@ class FlakeyHandler(View):
         if not kwargs.has_key('model_type'):
             return self.error("No model_type given.")
             
-        if kwargs['model_type'] not in ('Document', 'Annotation'):
+        if kwargs['model_type'] not in ('Document', 'Annotation', 'File'):
             return self.error("Given model_type not allowed.")
         
         return super(FlakeyHandler, self).dispatch(*args, **kwargs)
@@ -26,14 +26,15 @@ class FlakeyHandler(View):
             'status': 1,
             'errors': errors,
         }
-        return HttpResponse(json.dumps(error), mimetype="application/json", status=code)
+        return self.render_response(error, status=code)
     
     def get(self, request, model_type, guid=None):
         if guid:
             results = self.get_one(request, model_type, guid)
         else:
             results = self.list(request, model_type)
-        return HttpResponse(json.dumps(results))
+        
+        return self.render_response(results)
     
     def get_one(self, request, model_type, guid):
         try:
@@ -44,17 +45,44 @@ class FlakeyHandler(View):
     
     def list(self, request, model_type):
         base = FlakeyModel.objects.filter(owner=request.user, type=model_type)
-        if base.count() == 0:
-            raise Http404()
-        
         results = []
         for model in base.all():
             results.append(model.assemble())
-        
+        print results
         return results
-        
+    
     def post(self, request, model_type, guid=None):
-        return HttpResponse("POST")
+        if not guid:
+            return self.error("Please provide a guid.")
+        print request.POST['versions']
+        versions = json.loads(request.POST['versions'])
+        obj = FlakeyModel.save(model_type, request.user, guid, versions)
+        return self.render_response(obj.assemble())
     
     def delete(self, request, model_type, guid=None):
-        return HttpResponse("DELETE")
+        if not guid:
+            return self.error("Please provide a guid.")
+        
+        try:
+            base = FlakeyModel.objects.get(owner=request.user, type=model_type, guid=guid)
+        except FlakeyModel.DoesNotExist:
+            raise Http404()
+        
+        response = base.assemble()
+        base.delete()
+        return self.render_response(response)
+    
+    def render_response(self, data, status=200):
+        return HttpResponse(json.dumps(data), mimetype="application/json", status=status)
+
+
+
+
+
+
+
+
+
+
+
+

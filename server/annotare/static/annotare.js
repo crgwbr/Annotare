@@ -13864,8 +13864,8 @@ require.define("/controllers/new_document.js", function (require, module, export
       this.save = __bind(this.save, this);      this.id = "new-document-view";
       this.class_name = "new_document view";
       this.actions = {
-        'click .save': 'save',
-        'click .discard': 'discard'
+        'click .new.save': 'save',
+        'click .new.discard': 'discard'
       };
       NewDocument.__super__.constructor.call(this, config);
       this.tmpl = Flakey.templates.get_template('new_document', require('../views/new_document'));
@@ -17203,7 +17203,7 @@ require.define("/views/new_document.js", function (require, module, exports, __d
     (function() {
       (function() {
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Discard Changes</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Create a New Document</h1>\n  \n      <input type="text" id="name" name="name" placeholder="The Hitchhiker\'s Guide to the Galaxy" value="');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="new discard">Discard Changes</a>\n      <a href="#" class="new save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Create a New Document</h1>\n  \n      <input type="text" id="name" name="name" placeholder="The Hitchhiker\'s Guide to the Galaxy" value="');
       
         __out.push(__sanitize(this.title));
       
@@ -17242,8 +17242,8 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
       this.render = __bind(this.render, this);      this.id = "list-view";
       this.class_name = "list view";
       this.actions = {
-        'click .document': 'select_doc',
-        'click .new_document': 'new_document',
+        'click .list.document': 'select_doc',
+        'click .list.new_document': 'new_document',
         'keyup #search-box': 'search'
       };
       List.__super__.constructor.call(this, config);
@@ -17348,7 +17348,7 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
         _ref = this.list;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           doc = _ref[_i];
-          __out.push('\n      <article class="document" id="document-');
+          __out.push('\n      <article class="list document" id="document-');
           __out.push(__sanitize(doc.id));
           __out.push('">\n        <section class="name"><h1>');
           __out.push(__sanitize(doc.name));
@@ -17360,7 +17360,7 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
         __out.push('\n    \n    ');
       
         if (this.list.length === 0) {
-          __out.push('\n    \t<article class="new_document">\n    \t  ');
+          __out.push('\n    \t<article class="list new_document">\n    \t  ');
           if (this.query) {
             __out.push('\n    \t    <section class="name"><h1>New Document: ');
             __out.push(__sanitize(this.query));
@@ -17671,10 +17671,10 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       this.autosave = __bind(this.autosave, this);      this.id = "edit-view";
       this.class_name = "edit_document view";
       this.actions = {
-        'click .save': 'save',
-        'click .discard': 'discard',
-        'click .delete': 'delete_note',
-        'click .delete-file': 'delete_file',
+        'click .edit.save': 'save',
+        'click .edit.discard': 'discard',
+        'click .edit.delete': 'delete_note',
+        'click .edit.delete-file': 'delete_file',
         'keyup #edit-editor': 'autosave',
         'keyup esc #edit-editor': 'discard',
         'keyup esc': 'discard',
@@ -17857,7 +17857,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
       (function() {
         var annotation, file, _i, _j, _len, _len2, _ref, _ref2;
       
-        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="discard">Close Editor</a>\n      <a href="#" class="save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
+        __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="edit discard">Close Editor</a>\n      <a href="#" class="edit save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
       
         __out.push(__sanitize(this.doc.name));
       
@@ -17876,7 +17876,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
           __out.push(annotation.text);
           __out.push('&#8221;</blockquote>\n            <span class="attachment">');
           __out.push(annotation.attachment);
-          __out.push('</span>\n            <a href="#" class="delete">Delete</a>\n          </div>\n        ');
+          __out.push('</span>\n            <a href="#" class="edit delete">Delete</a>\n          </div>\n        ');
         }
       
         __out.push('\n      </div>\n      \n      <div class="files">\n        <h2>Attached Files</h2>\n        <div class="clear"></div>\n        <div class="drop-zone" id="edit-drop-zone">\n          <h3>Drop Files Here</h3>\n          <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n        </div>\n        <ul>\n          ');
@@ -17892,7 +17892,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
           __out.push(__sanitize(file.name));
           __out.push(' (');
           __out.push(__sanitize(file.mime));
-          __out.push(')</a>\n              &nbsp;\n              <a href="#" class="delete-file" data-id="');
+          __out.push(')</a>\n              &nbsp;\n              <a href="#" class="edit delete-file" data-id="');
           __out.push(__sanitize(file.id));
           __out.push('">[Delete]</a>\n            </li>\n          ');
         }

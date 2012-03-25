@@ -10,8 +10,8 @@ class List extends Flakey.controllers.Controller
     @class_name = "list view"
 
     @actions = {
-      'click .document': 'select_doc'
-      'click .new_document': 'new_document'
+      'click .list.document': 'select_doc'
+      'click .list.new_document': 'new_document'
       'keyup #search-box': 'search'
     }
 

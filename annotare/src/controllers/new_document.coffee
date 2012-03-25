@@ -13,8 +13,8 @@ class NewDocument extends Flakey.controllers.Controller
     @class_name = "new_document view"
 
     @actions = {
-      'click .save': 'save'
-      'click .discard': 'discard'
+      'click .new.save': 'save'
+      'click .new.discard': 'discard'
     }
 
     super(config)

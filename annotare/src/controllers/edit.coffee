@@ -14,10 +14,10 @@ class Edit extends Flakey.controllers.Controller
     
     @actions = {
       # Normal Actions
-      'click .save': 'save'
-      'click .discard': 'discard'
-      'click .delete': 'delete_note'
-      'click .delete-file': 'delete_file'
+      'click .edit.save': 'save'
+      'click .edit.discard': 'discard'
+      'click .edit.delete': 'delete_note'
+      'click .edit.delete-file': 'delete_file'
       'keyup #edit-editor': 'autosave'
       # Keyboard shortcuts
       'keyup esc #edit-editor': 'discard'

@@ -1,8 +1,8 @@
 <div class="tool-bar-wrap">
   <nav class="tool-bar left">
     <div>
-      <a href="#" class="discard">Discard Changes</a>
-      <a href="#" class="save">Save Changes</a>
+      <a href="#" class="new discard">Discard Changes</a>
+      <a href="#" class="new save">Save Changes</a>
     </div>
   </nav>
 </div>
