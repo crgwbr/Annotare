@@ -12,34 +12,34 @@ option '-s', '--style [STRING]', 'CSS Output style. Can be nested (default), com
 
 task 'build_js', 'Build Annotare\'s CoffeeScript into a single JS file', (options) ->
   input = options.input or "src"
-  output_file = options.output or "public/annotare.js"
+  output_file = options.output or "../server/annotare/static/annotare.js"
   temp = options.temp or "temp"
   entry_point = options.entry or "index"
   build_annotare_js(input, output_file, temp, entry_point)
   
 task 'build_css', 'Build Annotare\'s stylesheets into a single CSS file', (options) ->
   input = options.input or 'css/index.scss'
-  output_file = options.output or 'public/annotare.css'
+  output_file = options.output or '../server/annotare/static/annotare.css'
   style = options.style or 'nested'
   build_annotare_css(input, output_file, style)
   
 task 'minify_js', 'Minify Annotare JS file with Google\'s closure compiler', (options) ->
-  input = options.input or "public/annotare.js"
-  output_file = options.output or "public/annotare.min.js"
+  input = options.input or "../server/annotare/static/annotare.js"
+  output_file = options.output or "../server/annotare/static/annotare.min.js"
   closure_compile(input, output_file)
   
 task 'full_build', 'Perform a full build of CSS and JS with default options', (options) ->
-  build_annotare_css 'css/index.scss', 'public/annotare.css', 'nested'
-  build_annotare_js 'src', "public/annotare.js", 'temp', 'index', () ->
-    closure_compile 'public/annotare.js', 'public/annotare.min.js'
+  build_annotare_css 'css/index.scss', '../server/annotare/static/annotare.css', 'nested'
+  build_annotare_js 'src', "../server/annotare/static/annotare.js", 'temp', 'index', () ->
+    closure_compile '../server/annotare/static/annotare.js', '../server/annotare/static/annotare.min.js'
   
 task 'watch', 'Perform a default full build whenever a file in src/ or css/ changes', (options) ->
   watch.watchTree "src/", (f, curr, prev) ->
-    build_annotare_js 'src', "public/annotare.js", 'temp', 'index', () ->
-      closure_compile 'public/annotare.js', 'public/annotare.min.js'
+    build_annotare_js 'src', "../server/annotare/static/annotare.js", 'temp', 'index', () ->
+      closure_compile '../server/annotare/static/annotare.js', '../server/annotare/static/annotare.min.js'
       
   watch.watchTree "css/", (f, curr, prev) ->
-    build_annotare_css 'css/index.scss', 'public/annotare.css', 'nested'
+    build_annotare_css 'css/index.scss', '../server/annotare/static/annotare.css', 'nested'
 
 
 # Build SASS or SCSS into CSS

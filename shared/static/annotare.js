@@ -13787,16 +13787,17 @@ if (!JSON) {
 
 require.define("/controllers/annotare.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Flakey, Main;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Flakey, Main,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
   $ = Flakey.$;
 
-  Main = (function() {
+  Main = (function(_super) {
 
-    __extends(Main, Flakey.controllers.Stack);
+    __extends(Main, _super);
 
     function Main(config) {
       var Detail, Edit, History, List, NewDocument;
@@ -13827,7 +13828,7 @@ require.define("/controllers/annotare.js", function (require, module, exports, _
 
     return Main;
 
-  })();
+  })(Flakey.controllers.Stack);
 
   module.exports = Main;
 
@@ -13837,8 +13838,10 @@ require.define("/controllers/annotare.js", function (require, module, exports, _
 
 require.define("/controllers/new_document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Flakey, NewDocument, autoresize, settings, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Flakey, NewDocument, autoresize, settings, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -13852,9 +13855,9 @@ require.define("/controllers/new_document.js", function (require, module, export
 
   Document = require('../models/Document');
 
-  NewDocument = (function() {
+  NewDocument = (function(_super) {
 
-    __extends(NewDocument, Flakey.controllers.Controller);
+    __extends(NewDocument, _super);
 
     function NewDocument(config) {
       this.discard = __bind(this.discard, this);
@@ -13908,7 +13911,7 @@ require.define("/controllers/new_document.js", function (require, module, export
 
     return NewDocument;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = NewDocument;
 
@@ -15583,18 +15586,22 @@ Card.prototype.render = function(options){
 });
 
 require.define("/settings.js", function (require, module, exports, __dirname, __filename) {
+(function() {
 
   module.exports = {
     growl_hide_after: 5000,
     growl_effect: 'slide'
   };
 
+}).call(this);
+
 });
 
 require.define("/models/Document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Document, File, Flakey, Showdown;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Document, File, Flakey, Showdown,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -15604,9 +15611,9 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
   File = require('./File');
 
-  Document = (function() {
+  Document = (function(_super) {
 
-    __extends(Document, Flakey.models.Model);
+    __extends(Document, _super);
 
     function Document() {
       Document.__super__.constructor.apply(this, arguments);
@@ -15639,8 +15646,8 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
     };
 
     Document.prototype.attach_file = function(raw_file, callback) {
-      var reader;
-      var _this = this;
+      var reader,
+        _this = this;
       if (callback == null) callback = void 0;
       if (!this.files || this.files.constructor !== Array) this.files = [];
       reader = new FileReader();
@@ -15763,7 +15770,7 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
     return Document;
 
-  })();
+  })(Flakey.models.Model);
 
   module.exports = Document;
 
@@ -17078,14 +17085,16 @@ module.exports = Showdown;
 
 require.define("/models/Annotation.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Flakey;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Flakey,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
-  Annotation = (function() {
+  Annotation = (function(_super) {
 
-    __extends(Annotation, Flakey.models.Model);
+    __extends(Annotation, _super);
 
     function Annotation() {
       this.apply = __bind(this.apply, this);
@@ -17113,7 +17122,7 @@ require.define("/models/Annotation.js", function (require, module, exports, __di
 
     return Annotation;
 
-  })();
+  })(Flakey.models.Model);
 
   module.exports = Annotation;
 
@@ -17123,14 +17132,15 @@ require.define("/models/Annotation.js", function (require, module, exports, __di
 
 require.define("/models/File.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var File, Flakey;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var File, Flakey,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
-  File = (function() {
+  File = (function(_super) {
 
-    __extends(File, Flakey.models.Model);
+    __extends(File, _super);
 
     function File() {
       File.__super__.constructor.apply(this, arguments);
@@ -17142,7 +17152,7 @@ require.define("/models/File.js", function (require, module, exports, __dirname,
 
     return File;
 
-  })();
+  })(Flakey.models.Model);
 
   module.exports = File;
 
@@ -17211,8 +17221,10 @@ require.define("/views/new_document.js", function (require, module, exports, __d
 
 require.define("/controllers/list.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Flakey, List;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Flakey, List,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -17220,9 +17232,9 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
   Document = require('../models/Document');
 
-  List = (function() {
+  List = (function(_super) {
 
-    __extends(List, Flakey.controllers.Controller);
+    __extends(List, _super);
 
     function List(config) {
       this.search = __bind(this.search, this);
@@ -17279,7 +17291,7 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
     return List;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = List;
 
@@ -17373,8 +17385,10 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/detail.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Annotation, Detail, Document, Flakey, settings, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Annotation, Detail, Document, Flakey, settings, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -17388,9 +17402,9 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
   Annotation = require('../models/Annotation');
 
-  Detail = (function() {
+  Detail = (function(_super) {
 
-    __extends(Detail, Flakey.controllers.Controller);
+    __extends(Detail, _super);
 
     function Detail(config) {
       this.delete_file = __bind(this.delete_file, this);
@@ -17518,7 +17532,7 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
     return Detail;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = Detail;
 
@@ -17625,8 +17639,10 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
 
 require.define("/controllers/edit.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Edit, Flakey, autoresize, settings, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Edit, Flakey, autoresize, settings, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -17640,9 +17656,9 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
   Document = require('../models/Document');
 
-  Edit = (function() {
+  Edit = (function(_super) {
 
-    __extends(Edit, Flakey.controllers.Controller);
+    __extends(Edit, _super);
 
     function Edit(config) {
       this.drag_over = __bind(this.drag_over, this);
@@ -17688,8 +17704,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.render = function() {
-      var context, dropZone;
-      var _this = this;
+      var context, dropZone,
+        _this = this;
       if (!this.query_params.id) return;
       this.doc = Document.get(this.query_params.id);
       context = {
@@ -17764,8 +17780,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.drop_file = function(event) {
-      var file, files, _i, _len, _results;
-      var _this = this;
+      var file, files, _i, _len, _results,
+        _this = this;
       event.stopPropagation();
       event.preventDefault();
       files = event.dataTransfer.files;
@@ -17789,7 +17805,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
     return Edit;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = Edit;
 
@@ -17895,8 +17911,10 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/history.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, File, Flakey, History, Showdown, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, File, Flakey, History, Showdown, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -17910,9 +17928,9 @@ require.define("/controllers/history.js", function (require, module, exports, __
 
   File = require('../models/File');
 
-  History = (function() {
+  History = (function(_super) {
 
-    __extends(History, Flakey.controllers.Controller);
+    __extends(History, _super);
 
     function History(config) {
       this.update = __bind(this.update, this);
@@ -17946,8 +17964,8 @@ require.define("/controllers/history.js", function (require, module, exports, __
     };
 
     History.prototype.rollback = function(event) {
-      var doc, time, version_index;
-      var _this = this;
+      var doc, time, version_index,
+        _this = this;
       event.preventDefault();
       version_index = $('#version-input').val();
       doc = Document.get(this.query_params.id);
@@ -17980,7 +17998,7 @@ require.define("/controllers/history.js", function (require, module, exports, __
 
     return History;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = History;
 
@@ -18103,8 +18121,9 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
 
 require.define("/index.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var $, Annotare, App, Flakey;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Annotare, App, Flakey,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = window.Flakey = require('flakey');
 
@@ -18112,9 +18131,9 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
 
   Annotare = require('./controllers/annotare');
 
-  App = (function() {
+  App = (function(_super) {
 
-    __extends(App, Flakey.controllers.Controller);
+    __extends(App, _super);
 
     function App() {
       App.__super__.constructor.apply(this, arguments);
@@ -18124,7 +18143,7 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
 
     return App;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   $(document).ready(function() {
     var annotare, settings;

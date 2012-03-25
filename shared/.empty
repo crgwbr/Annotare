@@ -1,0 +1,2 @@
+This folder is used for storage of uploaded files during development. Actual
+servers will probably set this somewhere else using settings_local.py
