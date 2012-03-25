@@ -6,3 +6,7 @@ annotare/temp
 *.esproj
 .sass-cache
 .DS_Store
+shared/static/*
+shared/uploads/*
+server/database.sqlite
+

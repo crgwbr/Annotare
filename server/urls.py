@@ -22,5 +22,5 @@ urlpatterns = patterns('',
     url(r'^api/', include('api.urls')),
     
     # Website App
-    url(r'^/', include('website.urls')),
+    url(r'^', include('website.urls')),
 )
