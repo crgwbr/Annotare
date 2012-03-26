@@ -1,7 +1,6 @@
 *.scssc
 *.sassc
 *.pyc
-annotare/server/*.json
 annotare/temp
 *.esproj
 .sass-cache
@@ -9,4 +8,5 @@ annotare/temp
 shared/static/*
 shared/uploads/*
 server/database.sqlite
-
+server/settings_local.py
+node_modules

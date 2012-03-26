@@ -2,6 +2,8 @@ fs     = require 'fs'
 {exec} = require 'child_process'
 browserify = require 'browserify'
 watch = require 'watch'
+jsp = require("uglify-js").parser
+pro = require("uglify-js").uglify
 
 
 option '-i', '--input [DIR]', 'Override source directory'
@@ -26,20 +28,22 @@ task 'build_css', 'Build Annotare\'s stylesheets into a single CSS file', (optio
 task 'minify_js', 'Minify Annotare JS file with Google\'s closure compiler', (options) ->
   input = options.input or "../server/annotare/static/annotare.js"
   output_file = options.output or "../server/annotare/static/annotare.min.js"
-  closure_compile(input, output_file)
+  uglify(input, output_file)
   
 task 'full_build', 'Perform a full build of CSS and JS with default options', (options) ->
   build_annotare_css 'css/index.scss', '../server/annotare/static/annotare.css', 'nested'
+  build_annotare_css 'css/index.scss', '../server/annotare/static/annotare.min.css', 'compressed'
   build_annotare_js 'src', "../server/annotare/static/annotare.js", 'temp', 'index', () ->
-    closure_compile '../server/annotare/static/annotare.js', '../server/annotare/static/annotare.min.js'
+    uglify '../server/annotare/static/annotare.js', '../server/annotare/static/annotare.min.js'
   
 task 'watch', 'Perform a default full build whenever a file in src/ or css/ changes', (options) ->
   watch.watchTree "src/", (f, curr, prev) ->
     build_annotare_js 'src', "../server/annotare/static/annotare.js", 'temp', 'index', () ->
-      closure_compile '../server/annotare/static/annotare.js', '../server/annotare/static/annotare.min.js'
+      uglify '../server/annotare/static/annotare.js', '../server/annotare/static/annotare.min.js'
       
   watch.watchTree "css/", (f, curr, prev) ->
     build_annotare_css 'css/index.scss', '../server/annotare/static/annotare.css', 'nested'
+    build_annotare_css 'css/index.scss', '../server/annotare/static/annotare.min.css', 'compressed'
 
 
 # Build SASS or SCSS into CSS
@@ -85,20 +89,16 @@ build_annotare_js = (input, output_file, temp, entry_point, callback) ->
     
 
 # Compile JS with Closure
-closure_compile = (input, output_file, callback) ->
-  # Standard options for ornery compilation
-  args = "--js #{ input }
-          --js_output_file #{ output_file }
-          --compilation_level=WHITESPACE_ONLY
-          --warning_level=VERBOSE
-          --summary_detail_level=3
-          --language_in ECMASCRIPT5_STRICT"
-
-  exec "java -jar '../tools/closure/compiler.jar' #{args}", { maxBuffer: 1000 * 1024 }, (error, stdout, stderr) ->
-    throw error if error
-    # Output compilation message and return
-    console.log stdout + stderr
-    console.log "Done. Compiled to #{ output_file }"
-    if callback?
-      callback()
+uglify = (input, output_file, callback) ->
+  fs.readFile input, 'utf8', (err, data) ->
+    throw err if err
+    ast = jsp.parse(data)
+    ast = pro.ast_mangle(ast)
+    ast = pro.ast_squeeze(ast)
+    final_code = pro.gen_code(ast)
+    fs.writeFile output_file, final_code, 'utf8', (err) ->
+      throw err if err
+      console.log "Uglified to #{output_file}"
+      if callback
+        callback()
     
