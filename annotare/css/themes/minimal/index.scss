@@ -340,16 +340,37 @@ header {
   }
 }
 
-#login-view {
-  @include box($secondary);
-  @include grid(4);
-  @include push(2);
+#login-view, #register-view {
   label, input[type="submit"] {
     display: block;
     margin-top: 20px;
   }
   textarea, input[type="text"], input[type="password"] {
     @include input();
+    @include grid(12);
+  }
+}
+#login-view {
+  @include box($secondary);
+  @include grid(4);
+  @include push(2);
+    
+  @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
+    @include grid(6);
+  }
+  @media handheld and (max-width: 500px), screen and (max-width: 500px) {
+    @include grid(12);
+  }
+}
+
+#register-view {
+  @include grid(4);
+  @include box($tertiary);
+  
+  @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
+    @include grid(6);
+  }
+  @media handheld and (max-width: 500px), screen and (max-width: 500px) {
     @include grid(12);
   }
 }
