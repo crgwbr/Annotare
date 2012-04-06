@@ -340,6 +340,20 @@ header {
   }
 }
 
+#login-view {
+  @include box($secondary);
+  @include grid(4);
+  @include push(2);
+  label, input[type="submit"] {
+    display: block;
+    margin-top: 20px;
+  }
+  textarea, input[type="text"], input[type="password"] {
+    @include input();
+    @include grid(12);
+  }
+}
+
 #edit-view, #new-document-view {
   h1, h2 { @include grid(12); }
   textarea, input[type="text"] {

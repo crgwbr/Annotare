@@ -1,0 +1,30 @@
+{% extends "common_base.html" %}
+{% load url from future %}
+
+{% block nav %}
+<h1><a href="{% url 'annotare.views.index' %}#/list">Annotare  ❧</a></h1>
+{% endblock %}
+
+{% block body %}
+<div id="login-view">
+  <h1>Login</h1>
+  {% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+  
+  <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    {% csrf_token %}
+    
+    {{ form.username.label_tag }}
+    {{ form.username }}
+    <div class="clear"></div>
+    
+    {{ form.password.label_tag }}
+    {{ form.password }}
+    <div class="clear"></div>
+    
+    <input type="submit" value="Login" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+</div>
+{% endblock %}

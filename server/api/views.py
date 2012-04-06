@@ -5,6 +5,7 @@ from django.utils import simplejson as json
 from django.utils.decorators import method_decorator
 
 from models import FlakeyModel
+from settings import ALLOWED_MODELS
 
 class FlakeyHandler(View):
     @method_decorator(login_required)
@@ -12,12 +13,12 @@ class FlakeyHandler(View):
         # Filter models
         if not kwargs.has_key('model_type'):
             return self.error("No model_type given.")
-            
-        if kwargs['model_type'] not in ('Document', 'Annotation', 'File'):
+        
+        if kwargs['model_type'] not in ALLOWED_MODELS:
             return self.error("Given model_type not allowed.")
         
         return super(FlakeyHandler, self).dispatch(*args, **kwargs)
-        
+    
     def error(self, errors, code=400):
         if not type(errors) == tuple and not type(errors) == list:
             errors = (errors, )
@@ -48,7 +49,6 @@ class FlakeyHandler(View):
         results = []
         for model in base.all():
             results.append(model.assemble())
-        print results
         return results
     
     def post(self, request, model_type, guid=None):
@@ -58,6 +58,9 @@ class FlakeyHandler(View):
         versions = json.loads(request.POST['versions'])
         obj = FlakeyModel.save(model_type, request.user, guid, versions)
         return self.render_response(obj.assemble())
+    
+    def put(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
     
     def delete(self, request, model_type, guid=None):
         if not guid:

@@ -28,6 +28,10 @@
   @return ((($column-width / $max-width) * $nbr) * 100%) + (($nbr - 1) * $gutter-width-percentage);
 }
 
+@mixin push($nbr) {
+  margin-left: ($gutter-width-percentage * 1.5) + grid_width($nbr);
+}
+
 @mixin grid($nbr) {
 	float:left;
 	margin: $gutter-width-percentage / 2;

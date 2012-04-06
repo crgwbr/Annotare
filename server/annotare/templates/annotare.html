@@ -1,0 +1,22 @@
+{% extends "common_base.html" %}
+{% load url from future %}
+
+{% block head %}
+{% if DEBUG %}
+<script src="{{ STATIC_URL }}annotare.js" type="text/javascript" charset="utf-8"></script>
+{% else %}
+<script src="{{ STATIC_URL }}annotare.min.js" type="text/javascript" charset="utf-8"></script>
+{% endif %}
+{% endblock %}
+
+{% block nav %}
+<h1><a href="{% url 'annotare.views.index' %}#/list">Annotare  ❧</a></h1>
+<ul>
+  <li><a href="{% url 'annotare.views.index' %}#/list">Home</a></li>
+  <li><a href="{% url 'annotare.views.index' %}#/new">New Document</a></li>
+  <li><a href="{% url 'django.contrib.auth.views.logout_then_login' %}">Logout</a></li>
+</ul>
+{% endblock %}
+
+{% block body %}
+{% endblock %}

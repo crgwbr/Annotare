@@ -66,7 +66,8 @@ STATIC_ROOT = os.path.join(PROJECT_PATH, '..', 'shared', 'static')
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/app/'
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.

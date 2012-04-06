@@ -6,4 +6,4 @@ from server import settings
 
 @login_required
 def index(request):
-    return render_to_response('index.html', {'DEBUG': settings.DEBUG}, context_instance=RequestContext(request))
+    return render_to_response('annotare.html', {'DEBUG': settings.DEBUG}, context_instance=RequestContext(request))
