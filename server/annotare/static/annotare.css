@@ -863,22 +863,7 @@ header {
 #list-view #tool-bar {
   display: none; }
 
-#login-view label, #login-view input[type="submit"], #register-view label, #register-view input[type="submit"] {
-  display: block;
-  margin-top: 20px; }
-#login-view textarea, #login-view input[type="text"], #login-view input[type="password"], #register-view textarea, #register-view input[type="text"], #register-view input[type="password"] {
-  border: 1px solid #999;
-  font-size: 1.3em;
-  font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.4);
-  padding: 0.595% 1.19%;
-  float: left;
-  margin: 0.595%;
-  width: 98.81%;
-  box-sizing: border-box; }
-
-#login-view {
+#login-view, #register-view {
   background: rgba(82, 171, 209, 0.3);
   border: 1px solid rgba(40, 117, 149, 0.3);
   border-radius: 2px;
@@ -887,41 +872,34 @@ header {
   margin: 0.595%;
   width: 32.143%;
   box-sizing: border-box;
-  margin-left: 17.262%; }
+  margin-left: 33.929%; }
   @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
-    #login-view {
+    #login-view, #register-view {
       float: left;
       margin: 0.595%;
       width: 48.81%;
-      box-sizing: border-box; } }
+      box-sizing: border-box;
+      margin-left: 25.595%; } }
   @media handheld and (max-width: 500px), screen and (max-width: 500px) {
-    #login-view {
+    #login-view, #register-view {
       float: left;
       margin: 0.595%;
       width: 98.81%;
       box-sizing: border-box; } }
-
-#register-view {
-  float: left;
-  margin: 0.595%;
-  width: 32.143%;
-  box-sizing: border-box;
-  background: rgba(209, 82, 82, 0.3);
-  border: 1px solid rgba(149, 40, 40, 0.3);
-  border-radius: 2px;
-  padding: 0.595%; }
-  @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
-    #register-view {
-      float: left;
-      margin: 0.595%;
-      width: 48.81%;
-      box-sizing: border-box; } }
-  @media handheld and (max-width: 500px), screen and (max-width: 500px) {
-    #register-view {
-      float: left;
-      margin: 0.595%;
-      width: 98.81%;
-      box-sizing: border-box; } }
+  #login-view label, #login-view input[type="submit"], #register-view label, #register-view input[type="submit"] {
+    display: block;
+    margin-top: 20px; }
+  #login-view textarea, #login-view input[type="text"], #login-view input[type="password"], #register-view textarea, #register-view input[type="text"], #register-view input[type="password"] {
+    border: 1px solid #999;
+    font-size: 1.3em;
+    font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 0.595% 1.19%;
+    float: left;
+    margin: 0.595%;
+    width: 98.81%;
+    box-sizing: border-box; }
 
 #edit-view h1, #edit-view h2, #new-document-view h1, #new-document-view h2 {
   float: left;

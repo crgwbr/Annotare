@@ -8,27 +8,26 @@
 {% block body %}
 <div id="login-view">
   <h1>Login</h1>
-  {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
+  
+  <p>New user? <a href="{% url 'website.views.register' %}">Sign up</a></p>
+  
+  {{ form.non_field_errors }}
   
   <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
     {% csrf_token %}
     
     {{ form.username.label_tag }}
+    {{ form.username.errors }}
     {{ form.username }}
     <div class="clear"></div>
     
     {{ form.password.label_tag }}
+    {{ form.password.errors }}
     {{ form.password }}
     <div class="clear"></div>
     
     <input type="submit" value="Login" />
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
-</div>
-
-<div id="register-view">
-  <h1>Register</h1>
 </div>
 {% endblock %}

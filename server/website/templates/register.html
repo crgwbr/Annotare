@@ -1,0 +1,37 @@
+{% extends "common_base.html" %}
+{% load url from future %}
+
+{% block nav %}
+<h1><a href="{% url 'annotare.views.index' %}#/list">Annotare  ❧</a></h1>
+{% endblock %}
+
+{% block body %}
+<div id="register-view">
+  <h1>Register</h1>
+  
+  <p>Already have an account? <a href="{% url 'django.contrib.auth.views.login' %}">Login</a></p>
+  
+  {{ form.non_field_errors }}
+  
+  <form method="post" action="{% url 'website.views.register' %}">
+    {% csrf_token %}
+    
+    {{ form.username.label_tag }}
+    {{ form.username.errors }}
+    {{ form.username }}
+    <div class="clear"></div>
+    
+    {{ form.password1.label_tag }}
+    {{ form.password1.errors }}
+    {{ form.password1 }}
+    <div class="clear"></div>
+    
+    {{ form.password2.label_tag }}
+    {{ form.password2.errors }}
+    {{ form.password2 }}
+    <div class="clear"></div>
+    
+    <input type="submit" value="Register" />
+  </form>
+</div>
+{% endblock %}

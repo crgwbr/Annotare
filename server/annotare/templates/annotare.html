@@ -14,7 +14,7 @@
 <ul>
   <li><a href="{% url 'annotare.views.index' %}#/list">Home</a></li>
   <li><a href="{% url 'annotare.views.index' %}#/new">New Document</a></li>
-  <li><a href="{% url 'django.contrib.auth.views.logout_then_login' %}">Logout</a></li>
+  <li><a href="#" id="logout-user" data-href="{% url 'django.contrib.auth.views.logout_then_login' %}">Logout</a></li>
 </ul>
 {% endblock %}
 

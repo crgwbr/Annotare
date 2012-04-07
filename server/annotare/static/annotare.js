@@ -4523,416 +4523,6 @@ if (!JSON) {
 
 });
 
-require.define("/controllers/annotare.js", function (require, module, exports, __dirname, __filename) {
-(function() {
-  var $, Flakey, Main;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-
-  Flakey = require('flakey');
-
-  $ = Flakey.$;
-
-  Main = (function() {
-
-    __extends(Main, Flakey.controllers.Stack);
-
-    function Main(config) {
-      var Detail, Edit, History, List, NewDocument;
-      NewDocument = require('./new_document');
-      List = require('./list');
-      Detail = require('./detail');
-      Edit = require('./edit');
-      History = require('./history');
-      this.id = 'main-stack';
-      this.class_name = 'stack';
-      this.controllers = {
-        new_document: NewDocument,
-        list: List,
-        detail: Detail,
-        edit: Edit,
-        history: History
-      };
-      this.routes = {
-        '^/new$': 'new_document',
-        '^/list$': 'list',
-        '^/detail$': 'detail',
-        '^/edit$': 'edit',
-        '^/history$': 'history'
-      };
-      this["default"] = '/list';
-      Main.__super__.constructor.call(this, config);
-    }
-
-    return Main;
-
-  })();
-
-  module.exports = Main;
-
-}).call(this);
-
-});
-
-require.define("/controllers/new_document.js", function (require, module, exports, __dirname, __filename) {
-(function() {
-  var $, Document, Flakey, NewDocument, autoresize, settings, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-
-  Flakey = require('flakey');
-
-  $ = Flakey.$;
-
-  autoresize = require('../lib/autoresize');
-
-  ui = require('../lib/uikit');
-
-  settings = require('../settings');
-
-  Document = require('../models/Document');
-
-  NewDocument = (function() {
-
-    __extends(NewDocument, Flakey.controllers.Controller);
-
-    function NewDocument(config) {
-      this.discard = __bind(this.discard, this);
-      this.save = __bind(this.save, this);      this.id = "new-document-view";
-      this.class_name = "new_document view";
-      this.actions = {
-        'click .new.save': 'save',
-        'click .new.discard': 'discard'
-      };
-      NewDocument.__super__.constructor.call(this, config);
-      this.tmpl = Flakey.templates.get_template('new_document', require('../views/new_document'));
-    }
-
-    NewDocument.prototype.render = function() {
-      this.html(this.tmpl.render({
-        title: this.query_params.title
-      }));
-      this.unbind_actions();
-      this.bind_actions();
-      $('#new-editor').autoResize({
-        extraSpace: 100,
-        maxHeight: 2000
-      });
-      $('#new-editor').blur();
-      return $('#name').focus();
-    };
-
-    NewDocument.prototype.save = function(params) {
-      var doc, name, text;
-      name = $('#name').val();
-      text = $('#new-editor').val();
-      if (name.length > 0 && text.length > 0) {
-        doc = new Document({
-          name: name,
-          base_text: text
-        });
-        doc.generate_slug();
-        doc.save();
-        ui.info('Everything\'s Shiny Capt\'n!', "\"" + doc.name + "\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect);
-        return window.location.hash = "#/detail?" + Flakey.util.querystring.build({
-          id: doc.id
-        });
-      }
-    };
-
-    NewDocument.prototype.discard = function(params) {
-      return ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard this document?').show(function(ok) {
-        if (ok) return window.location.hash = "#/list";
-      });
-    };
-
-    return NewDocument;
-
-  })();
-
-  module.exports = NewDocument;
-
-}).call(this);
-
-});
-
-require.define("/lib/autoresize.js", function (require, module, exports, __dirname, __filename) {
-/*
- * jQuery.fn.autoResize 1.14
- * --
- * https://github.com/jamespadolsey/jQuery.fn.autoResize
- * --
- * This program is free software. It comes without any warranty, to
- * the extent permitted by applicable law. You can redistribute it
- * and/or modify it under the terms of the Do What The Fuck You Want
- * To Public License, Version 2, as published by Sam Hocevar. See
- * http://sam.zoy.org/wtfpl/COPYING for more details. */ 
-
-(function($){
-
-	var uid = 'ar' + +new Date,
-
-		defaults = autoResize.defaults = {
-			onResize: function(){},
-			onBeforeResize: function(){return 123},
-			onAfterResize: function(){return 555},
-			animate: {
-				duration: 200,
-				complete: function(){}
-			},
-			extraSpace: 50,
-			minHeight: 'original',
-			maxHeight: 500,
-			minWidth: 'original',
-			maxWidth: 500
-		};
-
-	autoResize.cloneCSSProperties = [
-		'lineHeight', 'textDecoration', 'letterSpacing',
-		'fontSize', 'fontFamily', 'fontStyle', 'fontWeight',
-		'textTransform', 'textAlign', 'direction', 'wordSpacing', 'fontSizeAdjust',
-		'paddingTop', 'paddingLeft', 'paddingBottom', 'paddingRight', 'width'
-	];
-
-	autoResize.cloneCSSValues = {
-		position: 'absolute',
-		top: -9999,
-		left: -9999,
-		opacity: 0,
-		overflow: 'hidden'
-	};
-
-	autoResize.resizableFilterSelector = [
-		'textarea:not(textarea.' + uid + ')',
-		'input:not(input[type])',
-		'input[type=text]',
-		'input[type=password]',
-		'input[type=email]',
-		'input[type=url]'
-	].join(',');
-
-	autoResize.AutoResizer = AutoResizer;
-
-	$.fn.autoResize = autoResize;
-
-	function autoResize(config) {
-		this.filter(autoResize.resizableFilterSelector).each(function(){
-			new AutoResizer( $(this), config );
-		});
-		return this;
-	}
-
-	function AutoResizer(el, config) {
-
-		if (el.data('AutoResizer')) {
-			el.data('AutoResizer').destroy();
-		}
-		
-		config = this.config = $.extend({}, autoResize.defaults, config);
-		this.el = el;
-
-		this.nodeName = el[0].nodeName.toLowerCase();
-
-		this.originalHeight = el.height();
-		this.previousScrollTop = null;
-
-		this.value = el.val();
-
-		if (config.maxWidth === 'original') config.maxWidth = el.width();
-		if (config.minWidth === 'original') config.minWidth = el.width();
-		if (config.maxHeight === 'original') config.maxHeight = el.height();
-		if (config.minHeight === 'original') config.minHeight = el.height();
-
-		if (this.nodeName === 'textarea') {
-			el.css({
-				resize: 'none',
-				overflowY: 'hidden'
-			});
-		}
-
-		el.data('AutoResizer', this);
-
-		// Make sure onAfterResize is called upon animation completion
-		config.animate.complete = (function(f){
-			return function() {
-				config.onAfterResize.call(el);
-				return f.apply(this, arguments);
-			};
-		}(config.animate.complete));
-
-		this.bind();
-
-	}
-
-	AutoResizer.prototype = {
-
-		bind: function() {
-
-			var check = $.proxy(function(){
-				this.check();
-				return true;
-			}, this);
-
-			this.unbind();
-
-			this.el
-				.bind('keyup.autoResize', check)
-				//.bind('keydown.autoResize', check)
-				.bind('change.autoResize', check)
-				.bind('paste.autoResize', function() {
-					setTimeout(function() { check(); }, 0);
-				});
-			
-			if (!this.el.is(':hidden')) {
-				this.check(null, true);
-			}
-
-		},
-
-		unbind: function() {
-			this.el.unbind('.autoResize');
-		},
-
-		createClone: function() {
-
-			var el = this.el,
-				clone = this.nodeName === 'textarea' ? el.clone() : $('<span/>');
-
-			this.clone = clone;
-
-			$.each(autoResize.cloneCSSProperties, function(i, p){
-				clone[0].style[p] = el.css(p);
-			});
-
-			clone
-				.removeAttr('name')
-				.removeAttr('id')
-				.addClass(uid)
-				.attr('tabIndex', -1)
-				.css(autoResize.cloneCSSValues);
-
-			if (this.nodeName === 'textarea') {
-				clone.height('auto');
-			} else {
-				clone.width('auto').css({
-					whiteSpace: 'nowrap'
-				});
-			}
-
-		},
-
-		check: function(e, immediate) {
-
-			if (!this.clone) {
-		this.createClone();
-		this.injectClone();
-			}
-
-			var config = this.config,
-				clone = this.clone,
-				el = this.el,
-				value = el.val();
-
-			// Do nothing if value hasn't changed
-			if (value === this.prevValue) { return true; }
-			this.prevValue = value;
-
-			if (this.nodeName === 'input') {
-
-				clone.text(value);
-
-				// Calculate new width + whether to change
-				var cloneWidth = clone.width(),
-					newWidth = (cloneWidth + config.extraSpace) >= config.minWidth ?
-						cloneWidth + config.extraSpace : config.minWidth,
-					currentWidth = el.width();
-
-				newWidth = Math.min(newWidth, config.maxWidth);
-
-				if (
-					(newWidth < currentWidth && newWidth >= config.minWidth) ||
-					(newWidth >= config.minWidth && newWidth <= config.maxWidth)
-				) {
-
-					config.onBeforeResize.call(el);
-					config.onResize.call(el);
-
-					el.scrollLeft(0);
-
-					if (config.animate && !immediate) {
-						el.stop(1,1).animate({
-							width: newWidth
-						}, config.animate);
-					} else {
-						el.width(newWidth);
-						config.onAfterResize.call(el);
-					}
-
-				}
-
-				return;
-
-			}
-
-			// TEXTAREA
-			
-			clone.width(el.width()).height(0).val(value).scrollTop(10000);
-			
-			var scrollTop = clone[0].scrollTop;
-				
-			// Don't do anything if scrollTop hasen't changed:
-			if (this.previousScrollTop === scrollTop) {
-				return;
-			}
-
-			this.previousScrollTop = scrollTop;
-			
-			if (scrollTop + config.extraSpace >= config.maxHeight) {
-				el.css('overflowY', '');
-				scrollTop = config.maxHeight;
-				immediate = true;
-			} else if (scrollTop <= config.minHeight) {
-				scrollTop = config.minHeight;
-			} else {
-				el.css('overflowY', 'hidden');
-				scrollTop += config.extraSpace;
-			}
-
-			config.onBeforeResize.call(el);
-			config.onResize.call(el);
-
-			// Either animate or directly apply height:
-			if (config.animate && !immediate) {
-				el.stop(1,1).animate({
-					height: scrollTop
-				}, config.animate);
-			} else {
-				el.height(scrollTop);
-				config.onAfterResize.call(el);
-			}
-
-		},
-
-		destroy: function() {
-			this.unbind();
-			this.el.removeData('AutoResizer');
-			this.clone.remove();
-			delete this.el;
-			delete this.clone;
-		},
-
-		injectClone: function() {
-			(
-				autoResize.cloneContainer ||
-				(autoResize.cloneContainer = $('<arclones/>').appendTo('body'))
-			).append(this.clone);
-		}
-
-	};
-	
-})(jQuery);
-
-module.exports = $;
-});
-
 require.define("/lib/uikit.js", function (require, module, exports, __dirname, __filename) {
 var ui = {};
 module.exports = ui;
@@ -6320,19 +5910,436 @@ Card.prototype.render = function(options){
 })(ui, "<div class=\"card\">\n  <div class=\"wrapper\">\n    <div class=\"face front\">1</div>\n    <div class=\"face back\">2</div>\n  </div>\n</div>");
 });
 
+require.define("/controllers/annotare.js", function (require, module, exports, __dirname, __filename) {
+(function() {
+  var $, Flakey, Main,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  Flakey = require('flakey');
+
+  $ = Flakey.$;
+
+  Main = (function(_super) {
+
+    __extends(Main, _super);
+
+    function Main(config) {
+      var Detail, Edit, History, List, NewDocument;
+      NewDocument = require('./new_document');
+      List = require('./list');
+      Detail = require('./detail');
+      Edit = require('./edit');
+      History = require('./history');
+      this.id = 'main-stack';
+      this.class_name = 'stack';
+      this.controllers = {
+        new_document: NewDocument,
+        list: List,
+        detail: Detail,
+        edit: Edit,
+        history: History
+      };
+      this.routes = {
+        '^/new$': 'new_document',
+        '^/list$': 'list',
+        '^/detail$': 'detail',
+        '^/edit$': 'edit',
+        '^/history$': 'history'
+      };
+      this["default"] = '/list';
+      Main.__super__.constructor.call(this, config);
+    }
+
+    return Main;
+
+  })(Flakey.controllers.Stack);
+
+  module.exports = Main;
+
+}).call(this);
+
+});
+
+require.define("/controllers/new_document.js", function (require, module, exports, __dirname, __filename) {
+(function() {
+  var $, Document, Flakey, NewDocument, autoresize, settings, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
+  Flakey = require('flakey');
+
+  $ = Flakey.$;
+
+  autoresize = require('../lib/autoresize');
+
+  ui = require('../lib/uikit');
+
+  settings = require('../settings');
+
+  Document = require('../models/Document');
+
+  NewDocument = (function(_super) {
+
+    __extends(NewDocument, _super);
+
+    function NewDocument(config) {
+      this.discard = __bind(this.discard, this);
+      this.save = __bind(this.save, this);      this.id = "new-document-view";
+      this.class_name = "new_document view";
+      this.actions = {
+        'click .new.save': 'save',
+        'click .new.discard': 'discard'
+      };
+      NewDocument.__super__.constructor.call(this, config);
+      this.tmpl = Flakey.templates.get_template('new_document', require('../views/new_document'));
+    }
+
+    NewDocument.prototype.render = function() {
+      this.html(this.tmpl.render({
+        title: this.query_params.title
+      }));
+      this.unbind_actions();
+      this.bind_actions();
+      $('#new-editor').autoResize({
+        extraSpace: 100,
+        maxHeight: 2000
+      });
+      $('#new-editor').blur();
+      return $('#name').focus();
+    };
+
+    NewDocument.prototype.save = function(params) {
+      var doc, name, text;
+      name = $('#name').val();
+      text = $('#new-editor').val();
+      if (name.length > 0 && text.length > 0) {
+        doc = new Document({
+          name: name,
+          base_text: text
+        });
+        doc.generate_slug();
+        doc.save();
+        ui.info('Everything\'s Shiny Capt\'n!', "\"" + doc.name + "\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect);
+        return window.location.hash = "#/detail?" + Flakey.util.querystring.build({
+          id: doc.id
+        });
+      }
+    };
+
+    NewDocument.prototype.discard = function(params) {
+      return ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard this document?').show(function(ok) {
+        if (ok) return window.location.hash = "#/list";
+      });
+    };
+
+    return NewDocument;
+
+  })(Flakey.controllers.Controller);
+
+  module.exports = NewDocument;
+
+}).call(this);
+
+});
+
+require.define("/lib/autoresize.js", function (require, module, exports, __dirname, __filename) {
+/*
+ * jQuery.fn.autoResize 1.14
+ * --
+ * https://github.com/jamespadolsey/jQuery.fn.autoResize
+ * --
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://sam.zoy.org/wtfpl/COPYING for more details. */ 
+
+(function($){
+
+	var uid = 'ar' + +new Date,
+
+		defaults = autoResize.defaults = {
+			onResize: function(){},
+			onBeforeResize: function(){return 123},
+			onAfterResize: function(){return 555},
+			animate: {
+				duration: 200,
+				complete: function(){}
+			},
+			extraSpace: 50,
+			minHeight: 'original',
+			maxHeight: 500,
+			minWidth: 'original',
+			maxWidth: 500
+		};
+
+	autoResize.cloneCSSProperties = [
+		'lineHeight', 'textDecoration', 'letterSpacing',
+		'fontSize', 'fontFamily', 'fontStyle', 'fontWeight',
+		'textTransform', 'textAlign', 'direction', 'wordSpacing', 'fontSizeAdjust',
+		'paddingTop', 'paddingLeft', 'paddingBottom', 'paddingRight', 'width'
+	];
+
+	autoResize.cloneCSSValues = {
+		position: 'absolute',
+		top: -9999,
+		left: -9999,
+		opacity: 0,
+		overflow: 'hidden'
+	};
+
+	autoResize.resizableFilterSelector = [
+		'textarea:not(textarea.' + uid + ')',
+		'input:not(input[type])',
+		'input[type=text]',
+		'input[type=password]',
+		'input[type=email]',
+		'input[type=url]'
+	].join(',');
+
+	autoResize.AutoResizer = AutoResizer;
+
+	$.fn.autoResize = autoResize;
+
+	function autoResize(config) {
+		this.filter(autoResize.resizableFilterSelector).each(function(){
+			new AutoResizer( $(this), config );
+		});
+		return this;
+	}
+
+	function AutoResizer(el, config) {
+
+		if (el.data('AutoResizer')) {
+			el.data('AutoResizer').destroy();
+		}
+		
+		config = this.config = $.extend({}, autoResize.defaults, config);
+		this.el = el;
+
+		this.nodeName = el[0].nodeName.toLowerCase();
+
+		this.originalHeight = el.height();
+		this.previousScrollTop = null;
+
+		this.value = el.val();
+
+		if (config.maxWidth === 'original') config.maxWidth = el.width();
+		if (config.minWidth === 'original') config.minWidth = el.width();
+		if (config.maxHeight === 'original') config.maxHeight = el.height();
+		if (config.minHeight === 'original') config.minHeight = el.height();
+
+		if (this.nodeName === 'textarea') {
+			el.css({
+				resize: 'none',
+				overflowY: 'hidden'
+			});
+		}
+
+		el.data('AutoResizer', this);
+
+		// Make sure onAfterResize is called upon animation completion
+		config.animate.complete = (function(f){
+			return function() {
+				config.onAfterResize.call(el);
+				return f.apply(this, arguments);
+			};
+		}(config.animate.complete));
+
+		this.bind();
+
+	}
+
+	AutoResizer.prototype = {
+
+		bind: function() {
+
+			var check = $.proxy(function(){
+				this.check();
+				return true;
+			}, this);
+
+			this.unbind();
+
+			this.el
+				.bind('keyup.autoResize', check)
+				//.bind('keydown.autoResize', check)
+				.bind('change.autoResize', check)
+				.bind('paste.autoResize', function() {
+					setTimeout(function() { check(); }, 0);
+				});
+			
+			if (!this.el.is(':hidden')) {
+				this.check(null, true);
+			}
+
+		},
+
+		unbind: function() {
+			this.el.unbind('.autoResize');
+		},
+
+		createClone: function() {
+
+			var el = this.el,
+				clone = this.nodeName === 'textarea' ? el.clone() : $('<span/>');
+
+			this.clone = clone;
+
+			$.each(autoResize.cloneCSSProperties, function(i, p){
+				clone[0].style[p] = el.css(p);
+			});
+
+			clone
+				.removeAttr('name')
+				.removeAttr('id')
+				.addClass(uid)
+				.attr('tabIndex', -1)
+				.css(autoResize.cloneCSSValues);
+
+			if (this.nodeName === 'textarea') {
+				clone.height('auto');
+			} else {
+				clone.width('auto').css({
+					whiteSpace: 'nowrap'
+				});
+			}
+
+		},
+
+		check: function(e, immediate) {
+
+			if (!this.clone) {
+		this.createClone();
+		this.injectClone();
+			}
+
+			var config = this.config,
+				clone = this.clone,
+				el = this.el,
+				value = el.val();
+
+			// Do nothing if value hasn't changed
+			if (value === this.prevValue) { return true; }
+			this.prevValue = value;
+
+			if (this.nodeName === 'input') {
+
+				clone.text(value);
+
+				// Calculate new width + whether to change
+				var cloneWidth = clone.width(),
+					newWidth = (cloneWidth + config.extraSpace) >= config.minWidth ?
+						cloneWidth + config.extraSpace : config.minWidth,
+					currentWidth = el.width();
+
+				newWidth = Math.min(newWidth, config.maxWidth);
+
+				if (
+					(newWidth < currentWidth && newWidth >= config.minWidth) ||
+					(newWidth >= config.minWidth && newWidth <= config.maxWidth)
+				) {
+
+					config.onBeforeResize.call(el);
+					config.onResize.call(el);
+
+					el.scrollLeft(0);
+
+					if (config.animate && !immediate) {
+						el.stop(1,1).animate({
+							width: newWidth
+						}, config.animate);
+					} else {
+						el.width(newWidth);
+						config.onAfterResize.call(el);
+					}
+
+				}
+
+				return;
+
+			}
+
+			// TEXTAREA
+			
+			clone.width(el.width()).height(0).val(value).scrollTop(10000);
+			
+			var scrollTop = clone[0].scrollTop;
+				
+			// Don't do anything if scrollTop hasen't changed:
+			if (this.previousScrollTop === scrollTop) {
+				return;
+			}
+
+			this.previousScrollTop = scrollTop;
+			
+			if (scrollTop + config.extraSpace >= config.maxHeight) {
+				el.css('overflowY', '');
+				scrollTop = config.maxHeight;
+				immediate = true;
+			} else if (scrollTop <= config.minHeight) {
+				scrollTop = config.minHeight;
+			} else {
+				el.css('overflowY', 'hidden');
+				scrollTop += config.extraSpace;
+			}
+
+			config.onBeforeResize.call(el);
+			config.onResize.call(el);
+
+			// Either animate or directly apply height:
+			if (config.animate && !immediate) {
+				el.stop(1,1).animate({
+					height: scrollTop
+				}, config.animate);
+			} else {
+				el.height(scrollTop);
+				config.onAfterResize.call(el);
+			}
+
+		},
+
+		destroy: function() {
+			this.unbind();
+			this.el.removeData('AutoResizer');
+			this.clone.remove();
+			delete this.el;
+			delete this.clone;
+		},
+
+		injectClone: function() {
+			(
+				autoResize.cloneContainer ||
+				(autoResize.cloneContainer = $('<arclones/>').appendTo('body'))
+			).append(this.clone);
+		}
+
+	};
+	
+})(jQuery);
+
+module.exports = $;
+});
+
 require.define("/settings.js", function (require, module, exports, __dirname, __filename) {
+(function() {
 
   module.exports = {
     growl_hide_after: 5000,
     growl_effect: 'slide'
   };
 
+}).call(this);
+
 });
 
 require.define("/models/Document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Document, File, Flakey, Showdown;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Document, File, Flakey, Showdown,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -6342,9 +6349,9 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
   File = require('./File');
 
-  Document = (function() {
+  Document = (function(_super) {
 
-    __extends(Document, Flakey.models.Model);
+    __extends(Document, _super);
 
     function Document() {
       Document.__super__.constructor.apply(this, arguments);
@@ -6377,8 +6384,8 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
     };
 
     Document.prototype.attach_file = function(raw_file, callback) {
-      var reader;
-      var _this = this;
+      var reader,
+        _this = this;
       if (callback == null) callback = void 0;
       if (!this.files || this.files.constructor !== Array) this.files = [];
       reader = new FileReader();
@@ -6501,7 +6508,7 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
     return Document;
 
-  })();
+  })(Flakey.models.Model);
 
   module.exports = Document;
 
@@ -7816,14 +7823,16 @@ module.exports = Showdown;
 
 require.define("/models/Annotation.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Flakey;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Flakey,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
-  Annotation = (function() {
+  Annotation = (function(_super) {
 
-    __extends(Annotation, Flakey.models.Model);
+    __extends(Annotation, _super);
 
     function Annotation() {
       this.apply = __bind(this.apply, this);
@@ -7851,7 +7860,7 @@ require.define("/models/Annotation.js", function (require, module, exports, __di
 
     return Annotation;
 
-  })();
+  })(Flakey.models.Model);
 
   module.exports = Annotation;
 
@@ -7861,14 +7870,15 @@ require.define("/models/Annotation.js", function (require, module, exports, __di
 
 require.define("/models/File.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var File, Flakey;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var File, Flakey,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
-  File = (function() {
+  File = (function(_super) {
 
-    __extends(File, Flakey.models.Model);
+    __extends(File, _super);
 
     function File() {
       File.__super__.constructor.apply(this, arguments);
@@ -7880,7 +7890,7 @@ require.define("/models/File.js", function (require, module, exports, __dirname,
 
     return File;
 
-  })();
+  })(Flakey.models.Model);
 
   module.exports = File;
 
@@ -7949,8 +7959,10 @@ require.define("/views/new_document.js", function (require, module, exports, __d
 
 require.define("/controllers/list.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Flakey, List;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Flakey, List,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -7958,9 +7970,9 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
   Document = require('../models/Document');
 
-  List = (function() {
+  List = (function(_super) {
 
-    __extends(List, Flakey.controllers.Controller);
+    __extends(List, _super);
 
     function List(config) {
       this.search = __bind(this.search, this);
@@ -8017,7 +8029,7 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
     return List;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = List;
 
@@ -8111,8 +8123,10 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/detail.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Annotation, Detail, Document, Flakey, settings, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Annotation, Detail, Document, Flakey, settings, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -8126,9 +8140,9 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
   Annotation = require('../models/Annotation');
 
-  Detail = (function() {
+  Detail = (function(_super) {
 
-    __extends(Detail, Flakey.controllers.Controller);
+    __extends(Detail, _super);
 
     function Detail(config) {
       this.delete_file = __bind(this.delete_file, this);
@@ -8256,7 +8270,7 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
     return Detail;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = Detail;
 
@@ -8363,8 +8377,10 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
 
 require.define("/controllers/edit.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Edit, Flakey, autoresize, settings, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Edit, Flakey, autoresize, settings, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -8378,9 +8394,9 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
   Document = require('../models/Document');
 
-  Edit = (function() {
+  Edit = (function(_super) {
 
-    __extends(Edit, Flakey.controllers.Controller);
+    __extends(Edit, _super);
 
     function Edit(config) {
       this.drag_over = __bind(this.drag_over, this);
@@ -8426,8 +8442,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.render = function() {
-      var context, dropZone;
-      var _this = this;
+      var context, dropZone,
+        _this = this;
       if (!this.query_params.id) return;
       this.doc = Document.get(this.query_params.id);
       context = {
@@ -8502,8 +8518,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.drop_file = function(event) {
-      var file, files, _i, _len, _results;
-      var _this = this;
+      var file, files, _i, _len, _results,
+        _this = this;
       event.stopPropagation();
       event.preventDefault();
       files = event.dataTransfer.files;
@@ -8527,7 +8543,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
     return Edit;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = Edit;
 
@@ -8633,8 +8649,10 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/history.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, File, Flakey, History, Showdown, ui;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, File, Flakey, History, Showdown, ui,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -8648,9 +8666,9 @@ require.define("/controllers/history.js", function (require, module, exports, __
 
   File = require('../models/File');
 
-  History = (function() {
+  History = (function(_super) {
 
-    __extends(History, Flakey.controllers.Controller);
+    __extends(History, _super);
 
     function History(config) {
       this.update = __bind(this.update, this);
@@ -8684,8 +8702,8 @@ require.define("/controllers/history.js", function (require, module, exports, __
     };
 
     History.prototype.rollback = function(event) {
-      var doc, time, version_index;
-      var _this = this;
+      var doc, time, version_index,
+        _this = this;
       event.preventDefault();
       version_index = $('#version-input').val();
       doc = Document.get(this.query_params.id);
@@ -8718,7 +8736,7 @@ require.define("/controllers/history.js", function (require, module, exports, __
 
     return History;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   module.exports = History;
 
@@ -8841,28 +8859,45 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
 
 require.define("/index.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var $, Annotare, App, Flakey;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Annotare, App, Flakey, ui,
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = window.Flakey = require('flakey');
 
   $ = window.$ = Flakey.$;
 
+  ui = require('./lib/uikit');
+
   Annotare = require('./controllers/annotare');
 
-  App = (function() {
+  App = (function(_super) {
 
-    __extends(App, Flakey.controllers.Controller);
+    __extends(App, _super);
 
     function App() {
       App.__super__.constructor.apply(this, arguments);
-      this.annotare = new Annotare;
-      this.append(this.annotare);
+      this.append(Annotare);
+      this.actions = {
+        'click #logout-user': 'logout'
+      };
     }
+
+    App.prototype.logout = function(event) {
+      var url;
+      event.preventDefault();
+      url = $(this).attr('data-href');
+      return ui.confirm('Are you sure?', 'Logging out will remove all data from this computer. It will be downloaded form the server next time you log in.').show(function(ok) {
+        if (ok) {
+          localStorage.clear();
+          return window.location.href = url;
+        }
+      });
+    };
 
     return App;
 
-  })();
+  })(Flakey.controllers.Controller);
 
   $(document).ready(function() {
     var annotare, settings;
@@ -8874,7 +8909,7 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
     Flakey.models.backend_controller.sync('Document');
     Flakey.models.backend_controller.sync('Annotation');
     Flakey.models.backend_controller.sync('File');
-    annotare = window.Annotare = new Annotare();
+    annotare = window.Annotare = new App();
     return annotare.make_active();
   });
 
