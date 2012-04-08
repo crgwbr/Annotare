@@ -4,8 +4,6 @@ $ = Flakey.$
 ui = require('../lib/uikit')
 Showdown = require('../lib/showdown')
 Document = require('../models/Document')
-File = require('../models/File')
-
 
 class History extends Flakey.controllers.Controller
   constructor: (config) ->
@@ -62,10 +60,5 @@ class History extends Flakey.controllers.Controller
         
     $('#history-time').html(time.toLocaleString())
     $('#history-content').html(doc.draw_annotations(html, rev.annotations))
-    $('#history-files').html("")
-    for file_id in rev.files
-      file = File.get(file_id)
-      $('#history-files').append "<li data-id='#{file.id}'><a target='_blank' href='#{file.data}'>#{file.name} (#{file.mime})</a></li>"
-    
-    
+
 module.exports = History

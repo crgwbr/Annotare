@@ -1,11 +1,11 @@
-$html-font-size: 11px;
+$html-font-size: 16px;
 $base-size: 1em;
-$line-height: 1.7;
+$line-height: 1.5;
 
-$page-background: #EEE url('img/white_texture.png') repeat;
+$page-background: #FFF; //#EEE url('img/white_texture.png') repeat;
 $app-background: rgba(255, 255, 255, 0.4);
 
-$font-color: #222;
+$font-color: #111;
 
 $secondary: #52ABD1;
 $secondary_red: red($secondary);
@@ -25,9 +25,7 @@ $quaternary_green: green($quaternary);
 $quaternary_blue: blue($quaternary);
 $quaternary: rgba($quaternary_red, $quaternary_green, $quaternary_blue, 0.3);
 
-$black: rgba(0, 0, 0, 0.8);
-
-$nav-bar: $black;
+$nav-bar: #CCC;
 
 $column-nbr: 12;
 $column-width: 120;
@@ -35,11 +33,11 @@ $gutter-width: 20;
 $max-width: (($column-nbr * $column-width) + ($column-nbr * $gutter-width));
 $gutter-width-percentage: (($gutter-width / $max-width) * 100%);
 
-$golden: 1.61803399;
-$ratio: $golden;
-
 $border-radius: 3px;
 
-$sans: Verdana, 'Bitstream Vera Sans', sans-serif;
-$serif: 'Neuton', Palatino, Georgia, serif;
-$code: Menlo, Consolas, Inconsolata, monospace;
+$code: Courier, monospace;
+$body: $code;
+$controls: 'Lucida Grande', Verdana, 'Bitstream Vera Sans', sans-serif;
+$heading: $code;
+
+

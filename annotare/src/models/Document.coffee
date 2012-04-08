@@ -2,11 +2,10 @@ Flakey = require('flakey')
 
 Showdown = require('../lib/showdown')
 Annotation = require('./Annotation')
-File = require('./File')
 
 class Document extends Flakey.models.Model
   @model_name: 'Document'
-  @fields: ['id', 'name', 'slug', 'base_text', 'annotations', 'files']
+  @fields: ['id', 'name', 'slug', 'base_text', 'annotations']
   
   # Create a new highlght in this document
   annotate: (selection, html, attachment) ->
@@ -31,34 +30,6 @@ class Document extends Flakey.models.Model
     @save()
     return note.apply(html)
     
-  attach_file: (raw_file, callback = undefined) ->
-    if not @files or @files.constructor != Array
-      @files = []
-    reader = new FileReader()
-    
-    reader.onload = (event) =>
-      mime = raw_file.type or "text/plain"
-      
-      data = (event.target.result + "")
-      if data.slice(5, 11) == "base64"
-        data = "data:text/plain;" + data.substr(5)
-            
-      file = new File {
-        name: raw_file.fileName,
-        size: raw_file.fileSize,
-        last_modified: raw_file.lastModifiedDate,
-        mime: mime,
-        data: data,
-        date_uploaded: new Date()
-      }
-      file.save()
-      @files.push file.id
-      @save()
-      if callback
-        callback(file)
-      
-    reader.readAsDataURL(raw_file)
-    
   delete: () ->
     if @annotations?
       for note_id in @annotations
@@ -78,12 +49,6 @@ class Document extends Flakey.models.Model
     index = @annotations.indexOf(id)
     if index != -1
       @annotations.splice(index, 1)
-      @save()
-      
-  delete_file: (file_id) ->
-    index = @files.indexOf(file_id)
-    if index != -1
-      @files.splice(index, 1)
       @save()
     
   # Draw annotations on document

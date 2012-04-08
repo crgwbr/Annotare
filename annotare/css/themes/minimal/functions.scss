@@ -3,18 +3,17 @@
 // =================================================================================
 @mixin box($color) {
   background: $color;
-  border: 1px solid darken($color, 20%);
+  border: 1px solid darken($color, 10%);
   border-radius: 2px;
   padding: $gutter-width-percentage / 2;
 }
 
 @mixin input() {
-  border: 1px solid #999;
-  font-size: 1.3em;
-  @include sans;
+  border: none;
+  @include body;
   border-radius: $border-radius;
   background: $app-background;
-  padding: $gutter-width-percentage / 2 $gutter-width-percentage;
+  padding: 0;
 }
 
 @mixin container() {
@@ -53,19 +52,24 @@
   margin-right: 0;
 }
 
-@mixin sans { font-family: $sans; }
-@mixin serif { font-family: $serif; }
-
-@mixin extra-light { font-weight: 100; }
-@mixin light { font-weight: 200; }
-@mixin normal { font-weight: 400; }
-@mixin bold { font-weight: 800; }
-@mixin extra-bold { font-weight: 900; }
-
-@mixin cursive { 
-  @include serif;
-  @include light;
-  font-style: italic;
+@mixin code {
+  font-family: $code;
+  fonxt-size: 11px;
+  line-height: 1.5;
+}
+@mixin body {
+  font-family: $body;
+  font-size: 16px;
+  line-height: 1.5;
+}
+@mixin controls {
+  font-family: $controls;
+  font-size: 11px;
+  font-weight: normal;
+}
+@mixin heading {
+  font-family: $heading;
+  font-weight: normal;
 }
 
 @mixin hide { display: none; }

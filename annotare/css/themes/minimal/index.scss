@@ -3,7 +3,6 @@
 // =================================================================================
 
 @import 'settings.scss';
-@import 'type.scss';
 @import 'functions.scss';
 
 // =================================================================================
@@ -11,15 +10,13 @@
 // =================================================================================
 html {
   font-size: $html-font-size;
+  color: $font-color;
 }
 
 body {
   background: $page-background;
-  color: $font-color;
-  
   font-size: $base-size;
-  line-height: $line-height;
-  font-family: $sans;
+  @include body();
   
   box-sizing: border-box;
   
@@ -28,56 +25,47 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @include serif;
-  @include normal;
+  @include heading();
   line-height: 1;
-  color: lighten($font-color, 10%);
   margin: 20px 0 0 0;
-  a { color: lighten($font-color, 10%); }
-}
-
-h1 {
-  font-size: modular-scale(3);
-}
-h2 {
-  font-size: modular-scale(2);
-}
-h3 {
-  font-size: modular-scale(1);
-}
-h4 {
-  font-size: modular-scale(1);
-}
-h5 {
-  font-size: modular-scale(1);
-}
-h6 {
-  font-size: modular-scale(0);
-  @include sans();
-  @include bold();
 }
 
 p {
   margin: 0 0 20px 0;
 }
 
-a {
-  text-decoration: none;
-  color: $font-color;
-  font-weight: bold;
-}
-
 pre {
   @include box(lighten($secondary, 10%));
 }
+
 code {
-  font-family: $code;
+  @include code();
 }
 
 blockquote {
-  margin-left: 8px;
-  padding-left: 8px;
-  border-left: 8px solid $secondary;
+  margin-left: 0.25em;
+  padding-left: 0.25em;
+  border-left: 0.25em solid $secondary;
+}
+
+ul {
+  margin-left: 0.25em;
+}
+
+label, a, a:visited, a:hover, a:active {
+  @include controls();
+  text-decoration: none;
+  color: $font-color;
+}
+
+textarea {
+  @include input();
+}
+
+input[type=text], input[type=password] {
+  @include input();
+  border: 1px solid #CCC;
+  padding: $gutter-width-percentage / 2;
 }
 
 
@@ -103,12 +91,6 @@ section {
   }
 }
 
-.wrap {
-  display: block;
-  position: relative;
-  @extend .clearfix;
-}
-
 #grid-container {
   @include container;
   position: relative;
@@ -120,13 +102,7 @@ section {
 }
 
 #dialog, .notification {
-  h1, h2, h3, h4, h5, h6 {
-    @include serif;
-    font-size: 1.3em;
-    font-weight: bold;
-  }
-  @include sans;
-  font-size: 1.1em;
+  @include controls;
 }
 
 
@@ -142,8 +118,6 @@ header {
   nav {
     @include grid(12); 
     @include box($nav-bar);
-    @include transition(all, 0.5s);
-    @include transition-delay(1s);
     border-top: none;
     margin-top: 0;
     border-top-left-radius: 0;
@@ -155,12 +129,8 @@ header {
     
     h1, ul, ul li {
       &, a, a:visited, a:hover, a:active {
-        @include sans();
-        @include normal();
+        @include controls();
         margin: 0;
-        font-size: modular-scale(0);
-        line-height: $line-height;
-        color: #EEE;
         display: inline-block;
       }
     }
@@ -184,8 +154,6 @@ header {
   nav {
     @include grid(12);
     @include box($nav-bar);
-    @include transition(all, 0.5s);
-    @include transition-delay(1s);
     border-bottom: none;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -193,22 +161,20 @@ header {
     
     div:first-child {
       float: left;
-    }
-    div:nth-child(2) {
-      float: right;
-    }
-    
-    div {
-      &, a, a:visited, a:hover, a:active {
-        @include sans();
-        @include normal();
-        font-size: modular-scale(0);
-        line-height: $line-height;
-        color: #EEE;
+      a {
         display: inline-block;
         margin-right: 20px;
       }
-      
+    }
+    div:nth-child(2) {
+      float: right;
+      a {
+        display: inline-block;
+        margin-left: 20px;
+      }
+    }
+    
+    div {
       input[type='range'] {
         position: relative;
         top: 5px;
@@ -257,14 +223,13 @@ header {
 
 .drop-zone {
   margin: 0;
-  //margin-top: -1px;
   @include box($secondary);
+  border: 3px dashed darken($secondary, 10%);
   border-style: dashed;
   border-width: 3px;
   h3 {
     margin: 20px;
     text-align: center;
-    font-size: modular-scale(2);
     font-style: italic;
   }
   p { text-align: center; }
@@ -280,17 +245,12 @@ header {
     @include box($app-background);
     margin-bottom: 56px;
   }
-  .files {
-    margin-top: 30px;
-    @include grid(4)
-  }
 }
 
 #list-view {
   form#search-form {
     @include grid(12);
     input {
-      @include input();
       width: 100%;
       &:focus { outline: none; }
     }
@@ -330,9 +290,6 @@ header {
       $temp: rgba($temp_red, $temp_green, $temp_blue, 0.3);
       @include box($temp);
     }
-    h1 {
-      font-size: modular-scale(2);
-    }
   }
   
   #tool-bar {
@@ -359,7 +316,6 @@ header {
   }
   
   textarea, input[type="text"], input[type="password"] {
-    @include input();
     @include grid(12);
   }
 }
@@ -367,59 +323,18 @@ header {
 #edit-view, #new-document-view {
   h1, h2 { @include grid(12); }
   textarea, input[type="text"] {
-    @include input();
     @include grid(12);
     margin-top: 10px;
     margin-bottom: 10px;
-    font-family: $code;
-    line-height: $line-height;
-    font-size: 1.3em;
+    @include code();
     
     &:focus {
       outline: none;
     }
   }
   
-  textarea { height: 400px; }
-  
-  .annotations {
-    @include grid(4)
-  }
-  .annotation {
-	  margin: $gutter-width-percentage / 2;
-	      
-    &:nth-child(odd) {
-      @include box($secondary);
-    }
-    &:nth-child(even) {
-      @include box($quaternary);
-    }
-    border-radius: $border-radius;
-    position: relative;
-    blockquote, .attachment {
-      font-size: 1.3em;
-      font-family: $code;
-    }
-    blockquote {
-      border-left: 3px solid lighten($font-color, 20%);
-      color: lighten($font-color, 20%);
-    }
-    .delete {
-      font-family: $sans;
-      font-size: 1em;
-      position: absolute;
-      top: 5px;
-      right: 10px;
-    }
-  }
-  
-  .files {
-    @include grid(8);
-  }
+  textarea { height: 800px; }
 }
-
-
-
 
 
 

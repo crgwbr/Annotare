@@ -5914,17 +5914,16 @@ Card.prototype.render = function(options){
 
 require.define("/controllers/annotare.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Flakey, Main,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Flakey, Main;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
   $ = Flakey.$;
 
-  Main = (function(_super) {
+  Main = (function() {
 
-    __extends(Main, _super);
+    __extends(Main, Flakey.controllers.Stack);
 
     function Main(config) {
       var Detail, Edit, History, List, NewDocument;
@@ -5955,7 +5954,7 @@ require.define("/controllers/annotare.js", function (require, module, exports, _
 
     return Main;
 
-  })(Flakey.controllers.Stack);
+  })();
 
   module.exports = Main;
 
@@ -5965,10 +5964,8 @@ require.define("/controllers/annotare.js", function (require, module, exports, _
 
 require.define("/controllers/new_document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Flakey, NewDocument, autoresize, settings, ui,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Flakey, NewDocument, autoresize, settings, ui;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -5982,9 +5979,9 @@ require.define("/controllers/new_document.js", function (require, module, export
 
   Document = require('../models/Document');
 
-  NewDocument = (function(_super) {
+  NewDocument = (function() {
 
-    __extends(NewDocument, _super);
+    __extends(NewDocument, Flakey.controllers.Controller);
 
     function NewDocument(config) {
       this.discard = __bind(this.discard, this);
@@ -6038,7 +6035,7 @@ require.define("/controllers/new_document.js", function (require, module, export
 
     return NewDocument;
 
-  })(Flakey.controllers.Controller);
+  })();
 
   module.exports = NewDocument;
 
@@ -6326,22 +6323,18 @@ module.exports = $;
 });
 
 require.define("/settings.js", function (require, module, exports, __dirname, __filename) {
-(function() {
 
   module.exports = {
     growl_hide_after: 5000,
     growl_effect: 'slide'
   };
 
-}).call(this);
-
 });
 
 require.define("/models/Document.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Document, File, Flakey, Showdown,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Document, Flakey, Showdown;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -6349,11 +6342,9 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
   Annotation = require('./Annotation');
 
-  File = require('./File');
+  Document = (function() {
 
-  Document = (function(_super) {
-
-    __extends(Document, _super);
+    __extends(Document, Flakey.models.Model);
 
     function Document() {
       Document.__super__.constructor.apply(this, arguments);
@@ -6361,7 +6352,7 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
     Document.model_name = 'Document';
 
-    Document.fields = ['id', 'name', 'slug', 'base_text', 'annotations', 'files'];
+    Document.fields = ['id', 'name', 'slug', 'base_text', 'annotations'];
 
     Document.prototype.annotate = function(selection, html, attachment) {
       var note, type;
@@ -6383,35 +6374,6 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
       this.annotations.push(note.id);
       this.save();
       return note.apply(html);
-    };
-
-    Document.prototype.attach_file = function(raw_file, callback) {
-      var reader,
-        _this = this;
-      if (callback == null) callback = void 0;
-      if (!this.files || this.files.constructor !== Array) this.files = [];
-      reader = new FileReader();
-      reader.onload = function(event) {
-        var data, file, mime;
-        mime = raw_file.type || "text/plain";
-        data = event.target.result + "";
-        if (data.slice(5, 11) === "base64") {
-          data = "data:text/plain;" + data.substr(5);
-        }
-        file = new File({
-          name: raw_file.fileName,
-          size: raw_file.fileSize,
-          last_modified: raw_file.lastModifiedDate,
-          mime: mime,
-          data: data,
-          date_uploaded: new Date()
-        });
-        file.save();
-        _this.files.push(file.id);
-        _this.save();
-        if (callback) return callback(file);
-      };
-      return reader.readAsDataURL(raw_file);
     };
 
     Document.prototype["delete"] = function() {
@@ -6440,15 +6402,6 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
       index = this.annotations.indexOf(id);
       if (index !== -1) {
         this.annotations.splice(index, 1);
-        return this.save();
-      }
-    };
-
-    Document.prototype.delete_file = function(file_id) {
-      var index;
-      index = this.files.indexOf(file_id);
-      if (index !== -1) {
-        this.files.splice(index, 1);
         return this.save();
       }
     };
@@ -6510,7 +6463,7 @@ require.define("/models/Document.js", function (require, module, exports, __dirn
 
     return Document;
 
-  })(Flakey.models.Model);
+  })();
 
   module.exports = Document;
 
@@ -7825,16 +7778,14 @@ module.exports = Showdown;
 
 require.define("/models/Annotation.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var Annotation, Flakey,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var Annotation, Flakey;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
-  Annotation = (function(_super) {
+  Annotation = (function() {
 
-    __extends(Annotation, _super);
+    __extends(Annotation, Flakey.models.Model);
 
     function Annotation() {
       this.apply = __bind(this.apply, this);
@@ -7862,39 +7813,9 @@ require.define("/models/Annotation.js", function (require, module, exports, __di
 
     return Annotation;
 
-  })(Flakey.models.Model);
+  })();
 
   module.exports = Annotation;
-
-}).call(this);
-
-});
-
-require.define("/models/File.js", function (require, module, exports, __dirname, __filename) {
-(function() {
-  var File, Flakey,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
-
-  Flakey = require('flakey');
-
-  File = (function(_super) {
-
-    __extends(File, _super);
-
-    function File() {
-      File.__super__.constructor.apply(this, arguments);
-    }
-
-    File.model_name = 'File';
-
-    File.fields = ['id', 'name', 'size', 'last_modified', 'mime', 'data', 'date_uploaded'];
-
-    return File;
-
-  })(Flakey.models.Model);
-
-  module.exports = File;
 
 }).call(this);
 
@@ -7961,10 +7882,8 @@ require.define("/views/new_document.js", function (require, module, exports, __d
 
 require.define("/controllers/list.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Flakey, List,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Flakey, List;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -7972,9 +7891,9 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
   Document = require('../models/Document');
 
-  List = (function(_super) {
+  List = (function() {
 
-    __extends(List, _super);
+    __extends(List, Flakey.controllers.Controller);
 
     function List(config) {
       this.search = __bind(this.search, this);
@@ -8031,7 +7950,7 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
     return List;
 
-  })(Flakey.controllers.Controller);
+  })();
 
   module.exports = List;
 
@@ -8125,10 +8044,8 @@ require.define("/views/list.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/detail.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Annotation, Detail, Document, Flakey, settings, ui,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Annotation, Detail, Document, Flakey, settings, ui;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -8142,9 +8059,9 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
   Annotation = require('../models/Annotation');
 
-  Detail = (function(_super) {
+  Detail = (function() {
 
-    __extends(Detail, _super);
+    __extends(Detail, Flakey.controllers.Controller);
 
     function Detail(config) {
       this.delete_file = __bind(this.delete_file, this);
@@ -8272,7 +8189,7 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
     return Detail;
 
-  })(Flakey.controllers.Controller);
+  })();
 
   module.exports = Detail;
 
@@ -8322,7 +8239,6 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
     }
     (function() {
       (function() {
-        var file, files, _i, _len;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="edit">Edit</a>\n      <a href="#/history?id=');
       
@@ -8340,32 +8256,7 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
       
         __out.push(this.doc.draw_annotations(this.doc.render()));
       
-        __out.push('\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  \n  ');
-      
-        files = this.doc.get_files();
-      
-        __out.push('\n  ');
-      
-        if (files.length > 0) {
-          __out.push('\n  <hr />\n  <section class="files">\n    <h2>Attached Files</h2>\n    <ul>\n      ');
-          for (_i = 0, _len = files.length; _i < _len; _i++) {
-            file = files[_i];
-            __out.push('\n        <li data-id="');
-            __out.push(__sanitize(file.id));
-            __out.push('">\n          <a href="');
-            __out.push(file.data);
-            __out.push('" target="_blank">');
-            __out.push(__sanitize(file.name));
-            __out.push(' (');
-            __out.push(__sanitize(file.mime));
-            __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
-            __out.push(__sanitize(file.id));
-            __out.push('">[Delete]</a>\n        </li>\n      ');
-          }
-          __out.push('\n    </ul>\n  </section>\n  ');
-        }
-      
-        __out.push('\n</div>');
+        __out.push('\n    </article>\n  </section>\n</div>');
       
       }).call(this);
       
@@ -8379,10 +8270,8 @@ require.define("/views/detail.js", function (require, module, exports, __dirname
 
 require.define("/controllers/edit.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, Edit, Flakey, autoresize, settings, ui,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Edit, Flakey, autoresize, settings, ui;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -8396,15 +8285,12 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
 
   Document = require('../models/Document');
 
-  Edit = (function(_super) {
+  Edit = (function() {
 
-    __extends(Edit, _super);
+    __extends(Edit, Flakey.controllers.Controller);
 
     function Edit(config) {
-      this.drag_over = __bind(this.drag_over, this);
-      this.drop_file = __bind(this.drop_file, this);
       this.delete_note = __bind(this.delete_note, this);
-      this.delete_file = __bind(this.delete_file, this);
       this.discard = __bind(this.discard, this);
       this.save = __bind(this.save, this);
       this.render = __bind(this.render, this);
@@ -8414,7 +8300,6 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
         'click .edit.save': 'save',
         'click .edit.discard': 'discard',
         'click .edit.delete': 'delete_note',
-        'click .edit.delete-file': 'delete_file',
         'keyup #edit-editor': 'autosave',
         'keyup esc #edit-editor': 'discard',
         'keyup esc': 'discard',
@@ -8444,8 +8329,8 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
     };
 
     Edit.prototype.render = function() {
-      var context, dropZone,
-        _this = this;
+      var context;
+      var _this = this;
       if (!this.query_params.id) return;
       this.doc = Document.get(this.query_params.id);
       context = {
@@ -8467,10 +8352,7 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
         extraSpace: 100,
         maxHeight: 9000
       });
-      $('#edit-editor').blur().focus();
-      dropZone = document.getElementById('edit-drop-zone');
-      dropZone.addEventListener('dragover', this.drag_over, false);
-      return dropZone.addEventListener('drop', this.drop_file, false);
+      return $('#edit-editor').blur().focus();
     };
 
     Edit.prototype.save = function(event) {
@@ -8492,20 +8374,6 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       });
     };
 
-    Edit.prototype.delete_file = function(event) {
-      var _this = this;
-      event.preventDefault();
-      event.preventDefault();
-      return ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show(function(ok) {
-        var id;
-        if (ok) {
-          id = $(event.target).attr('data-id');
-          _this.doc.delete_file(id);
-          return $(event.target).parent().slideUp();
-        }
-      });
-    };
-
     Edit.prototype.delete_note = function(event) {
       var _this = this;
       event.preventDefault();
@@ -8519,33 +8387,9 @@ require.define("/controllers/edit.js", function (require, module, exports, __dir
       });
     };
 
-    Edit.prototype.drop_file = function(event) {
-      var file, files, _i, _len, _results,
-        _this = this;
-      event.stopPropagation();
-      event.preventDefault();
-      files = event.dataTransfer.files;
-      _results = [];
-      for (_i = 0, _len = files.length; _i < _len; _i++) {
-        file = files[_i];
-        _results.push(this.doc.attach_file(file, function(file) {
-          $(".files ul").append("<li data-id='" + file.id + "'><a href='" + file.data + "' target='_blank'>" + file.name + " (" + file.mime + ")</a>&nbsp;<a href='#' class='delete-file' data-id='" + file.id + "'>[Delete]</a></li>");
-          _this.unbind_actions();
-          return _this.bind_actions();
-        }));
-      }
-      return _results;
-    };
-
-    Edit.prototype.drag_over = function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      return event.dataTransfer.dropEffect = 'copy';
-    };
-
     return Edit;
 
-  })(Flakey.controllers.Controller);
+  })();
 
   module.exports = Edit;
 
@@ -8595,7 +8439,6 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
     }
     (function() {
       (function() {
-        var annotation, file, _i, _j, _len, _len2, _ref, _ref2;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#" class="edit discard">Close Editor</a>\n      <a href="#" class="edit save">Save Changes</a>\n    </div>\n  </nav>\n</div>\n\n<div class="wrap">\n  <section class="one-column">\n    <article>\n      <h1>Editing <em>');
       
@@ -8605,39 +8448,7 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
       
         __out.push(__sanitize(this.doc.base_text));
       
-        __out.push('</textarea>\n      \n      <div class="annotations">\n        <h2>Notes & Highlights</h2>\n        <div class="clear"></div>\n        ');
-      
-        _ref = this.doc.get_notes();
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          annotation = _ref[_i];
-          __out.push('\n          <div class="annotation" data-id="');
-          __out.push(__sanitize(annotation.id));
-          __out.push('">\n            <blockquote>&#8220;');
-          __out.push(annotation.text);
-          __out.push('&#8221;</blockquote>\n            <span class="attachment">');
-          __out.push(annotation.attachment);
-          __out.push('</span>\n            <a href="#" class="edit delete">Delete</a>\n          </div>\n        ');
-        }
-      
-        __out.push('\n      </div>\n      \n      <div class="files">\n        <h2>Attached Files</h2>\n        <div class="clear"></div>\n        <div class="drop-zone" id="edit-drop-zone">\n          <h3>Drop Files Here</h3>\n          <p><em>Not recommended for files larger than 1 megabyte.</em></p>\n        </div>\n        <ul>\n          ');
-      
-        _ref2 = this.doc.get_files();
-        for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-          file = _ref2[_j];
-          __out.push('\n            <li data-id="');
-          __out.push(__sanitize(file.id));
-          __out.push('">\n              <a href="');
-          __out.push(file.data);
-          __out.push('" target="_blank">');
-          __out.push(__sanitize(file.name));
-          __out.push(' (');
-          __out.push(__sanitize(file.mime));
-          __out.push(')</a>\n              &nbsp;\n              <a href="#" class="edit delete-file" data-id="');
-          __out.push(__sanitize(file.id));
-          __out.push('">[Delete]</a>\n            </li>\n          ');
-        }
-      
-        __out.push('\n        </ul>\n      </div>\n    </article>\n    \n  </section>\n</div>');
+        __out.push('</textarea>\n    </article>\n  </section>\n</div>');
       
       }).call(this);
       
@@ -8651,10 +8462,8 @@ require.define("/views/edit.js", function (require, module, exports, __dirname, 
 
 require.define("/controllers/history.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Document, File, Flakey, History, Showdown, ui,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Document, Flakey, History, Showdown, ui;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
@@ -8666,11 +8475,9 @@ require.define("/controllers/history.js", function (require, module, exports, __
 
   Document = require('../models/Document');
 
-  File = require('../models/File');
+  History = (function() {
 
-  History = (function(_super) {
-
-    __extends(History, _super);
+    __extends(History, Flakey.controllers.Controller);
 
     function History(config) {
       this.update = __bind(this.update, this);
@@ -8704,8 +8511,8 @@ require.define("/controllers/history.js", function (require, module, exports, __
     };
 
     History.prototype.rollback = function(event) {
-      var doc, time, version_index,
-        _this = this;
+      var doc, time, version_index;
+      var _this = this;
       event.preventDefault();
       version_index = $('#version-input').val();
       doc = Document.get(this.query_params.id);
@@ -8716,7 +8523,7 @@ require.define("/controllers/history.js", function (require, module, exports, __
     };
 
     History.prototype.update = function(event) {
-      var converter, doc, file, file_id, html, rev, time, version_index, _i, _len, _ref, _results;
+      var converter, doc, html, rev, time, version_index;
       version_index = $('#version-input').val();
       doc = Document.get(this.query_params.id);
       time = new Date(doc.versions[version_index].time);
@@ -8724,21 +8531,12 @@ require.define("/controllers/history.js", function (require, module, exports, __
       converter = new Showdown.converter();
       html = converter.makeHtml(rev.base_text);
       $('#history-time').html(time.toLocaleString());
-      $('#history-content').html(doc.draw_annotations(html, rev.annotations));
-      $('#history-files').html("");
-      _ref = rev.files;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        file_id = _ref[_i];
-        file = File.get(file_id);
-        _results.push($('#history-files').append("<li data-id='" + file.id + "'><a target='_blank' href='" + file.data + "'>" + file.name + " (" + file.mime + ")</a></li>"));
-      }
-      return _results;
+      return $('#history-content').html(doc.draw_annotations(html, rev.annotations));
     };
 
     return History;
 
-  })(Flakey.controllers.Controller);
+  })();
 
   module.exports = History;
 
@@ -8788,7 +8586,7 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
     }
     (function() {
       (function() {
-        var file, files, html, _i, _len;
+        var html;
       
         __out.push('<div class="tool-bar-wrap">\n  <nav class="tool-bar left">\n    <div>\n      <a href="#/detail?id=');
       
@@ -8822,32 +8620,7 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
       
         __out.push(this.doc.draw_annotations(html));
       
-        __out.push('\n      </section>\n    </article>\n    \n    <aside>\n      &nbsp;\n    </aside>\n  </section>\n  \n  <div class="clear"></div>\n  \n  ');
-      
-        files = this.doc.get_files();
-      
-        __out.push('\n  ');
-      
-        if (files.length > 0) {
-          __out.push('\n  <hr />\n  <section class="files">\n    <h2>Attached Files</h2>\n    <ul>\n      ');
-          for (_i = 0, _len = files.length; _i < _len; _i++) {
-            file = files[_i];
-            __out.push('\n        <li data-id="');
-            __out.push(__sanitize(file.id));
-            __out.push('">\n          <a href="');
-            __out.push(file.data);
-            __out.push('" target="_blank">');
-            __out.push(__sanitize(file.name));
-            __out.push(' (');
-            __out.push(__sanitize(file.mime));
-            __out.push(')</a>\n          &nbsp;\n          <a href="#" class="delete-file" data-id="');
-            __out.push(__sanitize(file.id));
-            __out.push('">[Delete]</a>\n        </li>\n      ');
-          }
-          __out.push('\n    </ul>\n  </section>\n  ');
-        }
-      
-        __out.push('\n</div>');
+        __out.push('\n      </section>\n    </article>\n  </section>\n</div>');
       
       }).call(this);
       
@@ -8861,9 +8634,8 @@ require.define("/views/history.js", function (require, module, exports, __dirnam
 
 require.define("/index.js", function (require, module, exports, __dirname, __filename) {
     (function() {
-  var $, Annotare, App, Flakey, ui,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Annotare, App, Flakey, ui;
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = window.Flakey = require('flakey');
 
@@ -8873,9 +8645,9 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
 
   Annotare = require('./controllers/annotare');
 
-  App = (function(_super) {
+  App = (function() {
 
-    __extends(App, _super);
+    __extends(App, Flakey.controllers.Controller);
 
     function App() {
       App.__super__.constructor.apply(this, arguments);
@@ -8899,7 +8671,7 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
 
     return App;
 
-  })(Flakey.controllers.Controller);
+  })();
 
   $(document).ready(function() {
     var annotare, settings;
@@ -8910,7 +8682,6 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
     Flakey.init(settings);
     Flakey.models.backend_controller.sync('Document');
     Flakey.models.backend_controller.sync('Annotation');
-    Flakey.models.backend_controller.sync('File');
     annotare = window.Annotare = new App();
     return annotare.make_active();
   });

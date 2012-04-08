@@ -18,28 +18,5 @@
       <h1 class="name"><%= @doc.name %></h1>
       <%- @doc.draw_annotations(@doc.render()) %>
     </article>
-    
-    <aside>
-      &nbsp;
-    </aside>
   </section>
-  
-  <div class="clear"></div>
-  
-  <% files = @doc.get_files() %>
-  <% if files.length > 0: %>
-  <hr />
-  <section class="files">
-    <h2>Attached Files</h2>
-    <ul>
-      <% for file in files: %>
-        <li data-id="<%= file.id %>">
-          <a href="<%- file.data %>" target="_blank"><%= file.name %> (<%= file.mime %>)</a>
-          &nbsp;
-          <a href="#" class="delete-file" data-id="<%= file.id %>">[Delete]</a>
-        </li>
-      <% end %>
-    </ul>
-  </section>
-  <% end %>
 </div>

@@ -483,119 +483,75 @@ td {
 .card.sideflip.flipped .wrapper {
   -webkit-transform: translateX(-100%) rotateY(180deg); }
 
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neuton-regular-webfont.eot");
-  src: url("type/Neuton/neuton-regular-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neuton-regular-webfont.woff") format("woff"), url("type/Neuton/neuton-regular-webfont.ttf") format("truetype"), url("type/Neuton/neuton-regular-webfont.svg#NeutonRegular") format("svg");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neuton-bold-webfont.eot");
-  src: url("type/Neuton/neuton-bold-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neuton-bold-webfont.woff") format("woff"), url("type/Neuton/neuton-bold-webfont.ttf") format("truetype"), url("type/Neuton/neuton-bold-webfont.svg#NeutonBold") format("svg");
-  font-weight: 700;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neuton-extrabold-webfont.eot");
-  src: url("type/Neuton/neuton-extrabold-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neuton-extrabold-webfont.woff") format("woff"), url("type/Neuton/neuton-extrabold-webfont.ttf") format("truetype"), url("type/Neuton/neuton-extrabold-webfont.svg#NeutonExtrabold") format("svg");
-  font-weight: 900;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neuton-extralight-webfont.eot");
-  src: url("type/Neuton/neuton-extralight-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neuton-extralight-webfont.woff") format("woff"), url("type/Neuton/neuton-extralight-webfont.ttf") format("truetype"), url("type/Neuton/neuton-extralight-webfont.svg#NeutonExtralight") format("svg");
-  font-weight: 100;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neuton-italic-webfont.eot");
-  src: url("type/Neuton/neuton-italic-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neuton-italic-webfont.woff") format("woff"), url("type/Neuton/neuton-italic-webfont.ttf") format("truetype"), url("type/Neuton/neuton-italic-webfont.svg#NeutonItalic") format("svg");
-  font-weight: 400;
-  font-style: italic; }
-
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neuton-light-webfont.eot");
-  src: url("type/Neuton/neuton-light-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neuton-light-webfont.woff") format("woff"), url("type/Neuton/neuton-light-webfont.ttf") format("truetype"), url("type/Neuton/neuton-light-webfont.svg#NeutonLight") format("svg");
-  font-weight: 200;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Neuton';
-  src: url("type/Neuton/neutoncursive-regular-webfont.eot");
-  src: url("type/Neuton/neutoncursive-regular-webfont.eot?#iefix") format("embedded-opentype"), url("type/Neuton/neutoncursive-regular-webfont.woff") format("woff"), url("type/Neuton/neutoncursive-regular-webfont.ttf") format("truetype"), url("type/Neuton/neutoncursive-regular-webfont.svg#NeutonCursiveRegular") format("svg");
-  font-weight: 200;
-  font-style: italic; }
-
 html {
-  font-size: 11px; }
+  font-size: 16px;
+  color: #111111; }
 
 body {
-  background: #eeeeee url("img/white_texture.png") repeat;
-  color: #222222;
+  background: white;
   font-size: 1em;
-  line-height: 1.7;
-  font-family: Verdana, "Bitstream Vera Sans", sans-serif;
+  font-family: Courier, monospace;
+  font-size: 16px;
+  line-height: 1.5;
   box-sizing: border-box;
   width: 100%;
   margin: 0 0 0 0;
   padding: 0 0 0 0; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Neuton", Palatino, Georgia, serif;
-  font-weight: 400;
+  font-family: Courier, monospace;
+  font-weight: normal;
   line-height: 1;
-  color: #3c3c3c;
   margin: 20px 0 0 0; }
-  h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-    color: #3c3c3c; }
-
-h1 {
-  font-size: 4.236em; }
-
-h2 {
-  font-size: 2.618em; }
-
-h3 {
-  font-size: 1.618em; }
-
-h4 {
-  font-size: 1.618em; }
-
-h5 {
-  font-size: 1.618em; }
-
-h6 {
-  font-size: 1em;
-  font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-  font-weight: 800; }
 
 p {
   margin: 0 0 20px 0; }
 
-a {
-  text-decoration: none;
-  color: #222222;
-  font-weight: bold; }
-
 pre {
   background: rgba(122, 191, 220, 0.3);
-  border: 1px solid rgba(50, 148, 190, 0.3);
+  border: 1px solid rgba(82, 171, 209, 0.3);
   border-radius: 2px;
   padding: 0.595%; }
 
 code {
-  font-family: Menlo, Consolas, Inconsolata, monospace; }
+  font-family: Courier, monospace;
+  fonxt-size: 11px;
+  line-height: 1.5; }
 
 blockquote {
-  margin-left: 8px;
-  padding-left: 8px;
-  border-left: 8px solid rgba(82, 171, 209, 0.3); }
+  margin-left: 0.25em;
+  padding-left: 0.25em;
+  border-left: 0.25em solid rgba(82, 171, 209, 0.3); }
+
+ul {
+  margin-left: 0.25em; }
+
+label, a, a:visited, a:hover, a:active {
+  font-family: "Lucida Grande", Verdana, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  text-decoration: none;
+  color: #111111; }
+
+textarea {
+  border: none;
+  font-family: Courier, monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0; }
+
+input[type=text], input[type=password] {
+  border: none;
+  font-family: Courier, monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0;
+  border: 1px solid #CCC;
+  padding: 0.595%; }
 
 section.one-column article {
   float: left;
@@ -612,10 +568,6 @@ section.two-column aside {
   width: 33.333%;
   box-sizing: border-box; }
 
-.wrap {
-  display: block;
-  position: relative; }
-
 #grid-container {
   margin: 0 auto;
   padding: 0;
@@ -628,12 +580,9 @@ section.two-column aside {
   margin-bottom: 56px; }
 
 #dialog, .notification {
-  font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-  font-size: 1.1em; }
-  #dialog h1, #dialog h2, #dialog h3, #dialog h4, #dialog h5, #dialog h6, .notification h1, .notification h2, .notification h3, .notification h4, .notification h5, .notification h6 {
-    font-family: "Neuton", Palatino, Georgia, serif;
-    font-size: 1.3em;
-    font-weight: bold; }
+  font-family: "Lucida Grande", Verdana, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  font-weight: normal; }
 
 header {
   position: fixed;
@@ -648,20 +597,10 @@ header {
     margin: 0.595%;
     width: 98.81%;
     box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
+    background: #cccccc;
+    border: 1px solid #b3b3b3;
     border-radius: 2px;
     padding: 0.595%;
-    transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    -ie-transition: all 0.5s;
-    transition-delay: 1s;
-    -moz-transition-delay: 1s;
-    -webkit-transition-delay: 1s;
-    -o-transition-delay: 1s;
-    -ie-transition-delay: 1s;
     border-top: none;
     margin-top: 0;
     border-top-left-radius: 0;
@@ -669,12 +608,10 @@ header {
     header nav h1 {
       float: left; }
     header nav h1, header nav h1 a, header nav h1 a:visited, header nav h1 a:hover, header nav h1 a:active, header nav ul, header nav ul a, header nav ul a:visited, header nav ul a:hover, header nav ul a:active, header nav ul li, header nav ul li a, header nav ul li a:visited, header nav ul li a:hover, header nav ul li a:active {
-      font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-      font-weight: 400;
+      font-family: "Lucida Grande", Verdana, "Bitstream Vera Sans", sans-serif;
+      font-size: 11px;
+      font-weight: normal;
       margin: 0;
-      font-size: 1em;
-      line-height: 1.7;
-      color: #EEE;
       display: inline-block; }
     header nav ul {
       float: right; }
@@ -695,36 +632,24 @@ header {
     margin: 0.595%;
     width: 98.81%;
     box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
+    background: #cccccc;
+    border: 1px solid #b3b3b3;
     border-radius: 2px;
     padding: 0.595%;
-    transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    -ie-transition: all 0.5s;
-    transition-delay: 1s;
-    -moz-transition-delay: 1s;
-    -webkit-transition-delay: 1s;
-    -o-transition-delay: 1s;
-    -ie-transition-delay: 1s;
     border-bottom: none;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-bottom: 0; }
     .tool-bar-wrap nav div:first-child {
       float: left; }
+      .tool-bar-wrap nav div:first-child a {
+        display: inline-block;
+        margin-right: 20px; }
     .tool-bar-wrap nav div:nth-child(2) {
       float: right; }
-    .tool-bar-wrap nav div, .tool-bar-wrap nav div a, .tool-bar-wrap nav div a:visited, .tool-bar-wrap nav div a:hover, .tool-bar-wrap nav div a:active {
-      font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-      font-weight: 400;
-      font-size: 1em;
-      line-height: 1.7;
-      color: #EEE;
-      display: inline-block;
-      margin-right: 20px; }
+      .tool-bar-wrap nav div:nth-child(2) a {
+        display: inline-block;
+        margin-left: 20px; }
     .tool-bar-wrap nav div input[type='range'] {
       position: relative;
       top: 5px; }
@@ -733,19 +658,19 @@ header {
   padding: 0 0.5% !important; }
   .note:nth-child(even), .note:nth-child(even) .note-detail {
     background: rgba(82, 171, 209, 0.3);
-    border: 1px solid rgba(40, 117, 149, 0.3);
+    border: 1px solid rgba(50, 148, 190, 0.3);
     border-radius: 2px;
     padding: 0.595%; }
   .note:nth-child(odd), .note:nth-child(odd) .note-detail {
     background: rgba(104, 179, 100, 0.3);
-    border: 1px solid rgba(61, 119, 58, 0.3);
+    border: 1px solid rgba(79, 153, 75, 0.3);
     border-radius: 2px;
     padding: 0.595%; }
   .note .note-detail {
     max-width: 32.143%;
     padding: 0 0.5% !important;
     display: inline-block;
-    height: 1.7em;
+    height: 1.5em;
     position: absolute;
     right: 1%;
     z-index: 100;
@@ -760,7 +685,7 @@ header {
 
 .highlight {
   background: rgba(209, 82, 82, 0.3);
-  border: 1px solid rgba(149, 40, 40, 0.3);
+  border: 1px solid rgba(190, 50, 50, 0.3);
   border-radius: 2px;
   padding: 0.595%;
   padding: 0 0.5%; }
@@ -768,15 +693,15 @@ header {
 .drop-zone {
   margin: 0;
   background: rgba(82, 171, 209, 0.3);
-  border: 1px solid rgba(40, 117, 149, 0.3);
+  border: 1px solid rgba(50, 148, 190, 0.3);
   border-radius: 2px;
   padding: 0.595%;
+  border: 3px dashed rgba(50, 148, 190, 0.3);
   border-style: dashed;
   border-width: 3px; }
   .drop-zone h3 {
     margin: 20px;
     text-align: center;
-    font-size: 2.618em;
     font-style: italic; }
   .drop-zone p {
     text-align: center; }
@@ -787,16 +712,10 @@ header {
   width: 98.81%;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(204, 204, 204, 0.4);
+  border: 1px solid rgba(230, 230, 230, 0.4);
   border-radius: 2px;
   padding: 0.595%;
   margin-bottom: 56px; }
-#detail-view .files, #history-view .files {
-  margin-top: 30px;
-  float: left;
-  margin: 0.595%;
-  width: 32.143%;
-  box-sizing: border-box; }
 
 #list-view form#search-form {
   float: left;
@@ -804,12 +723,6 @@ header {
   width: 98.81%;
   box-sizing: border-box; }
   #list-view form#search-form input {
-    border: 1px solid #999;
-    font-size: 1.3em;
-    font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-    border-radius: 3px;
-    background: rgba(255, 255, 255, 0.4);
-    padding: 0.595% 1.19%;
     width: 100%; }
     #list-view form#search-form input:focus {
       outline: none; }
@@ -817,7 +730,7 @@ header {
   cursor: pointer;
   border-radius: 3px;
   background: rgba(82, 171, 209, 0.3);
-  border: 1px solid rgba(40, 117, 149, 0.3);
+  border: 1px solid rgba(50, 148, 190, 0.3);
   border-radius: 2px;
   padding: 0.595%; }
 #list-view article {
@@ -850,22 +763,20 @@ header {
       box-sizing: border-box; } }
   #list-view article:nth-child(odd) {
     background: rgba(82, 171, 209, 0.3);
-    border: 1px solid rgba(40, 117, 149, 0.3);
+    border: 1px solid rgba(50, 148, 190, 0.3);
     border-radius: 2px;
     padding: 0.595%; }
   #list-view article:nth-child(even) {
     background: rgba(104, 179, 100, 0.3);
-    border: 1px solid rgba(61, 119, 58, 0.3);
+    border: 1px solid rgba(79, 153, 75, 0.3);
     border-radius: 2px;
     padding: 0.595%; }
-  #list-view article h1 {
-    font-size: 2.618em; }
 #list-view #tool-bar {
   display: none; }
 
 #login-view, #register-view {
   background: rgba(82, 171, 209, 0.3);
-  border: 1px solid rgba(40, 117, 149, 0.3);
+  border: 1px solid rgba(50, 148, 190, 0.3);
   border-radius: 2px;
   padding: 0.595%;
   float: left;
@@ -890,12 +801,6 @@ header {
     display: block;
     margin-top: 20px; }
   #login-view textarea, #login-view input[type="text"], #login-view input[type="password"], #register-view textarea, #register-view input[type="text"], #register-view input[type="password"] {
-    border: 1px solid #999;
-    font-size: 1.3em;
-    font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-    border-radius: 3px;
-    background: rgba(255, 255, 255, 0.4);
-    padding: 0.595% 1.19%;
     float: left;
     margin: 0.595%;
     width: 98.81%;
@@ -907,61 +812,19 @@ header {
   width: 98.81%;
   box-sizing: border-box; }
 #edit-view textarea, #edit-view input[type="text"], #new-document-view textarea, #new-document-view input[type="text"] {
-  border: 1px solid #999;
-  font-size: 1.3em;
-  font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.4);
-  padding: 0.595% 1.19%;
   float: left;
   margin: 0.595%;
   width: 98.81%;
   box-sizing: border-box;
   margin-top: 10px;
   margin-bottom: 10px;
-  font-family: Menlo, Consolas, Inconsolata, monospace;
-  line-height: 1.7;
-  font-size: 1.3em; }
+  font-family: Courier, monospace;
+  fonxt-size: 11px;
+  line-height: 1.5; }
   #edit-view textarea:focus, #edit-view input[type="text"]:focus, #new-document-view textarea:focus, #new-document-view input[type="text"]:focus {
     outline: none; }
 #edit-view textarea, #new-document-view textarea {
-  height: 400px; }
-#edit-view .annotations, #new-document-view .annotations {
-  float: left;
-  margin: 0.595%;
-  width: 32.143%;
-  box-sizing: border-box; }
-#edit-view .annotation, #new-document-view .annotation {
-  margin: 0.595%;
-  border-radius: 3px;
-  position: relative; }
-  #edit-view .annotation:nth-child(odd), #new-document-view .annotation:nth-child(odd) {
-    background: rgba(82, 171, 209, 0.3);
-    border: 1px solid rgba(40, 117, 149, 0.3);
-    border-radius: 2px;
-    padding: 0.595%; }
-  #edit-view .annotation:nth-child(even), #new-document-view .annotation:nth-child(even) {
-    background: rgba(104, 179, 100, 0.3);
-    border: 1px solid rgba(61, 119, 58, 0.3);
-    border-radius: 2px;
-    padding: 0.595%; }
-  #edit-view .annotation blockquote, #edit-view .annotation .attachment, #new-document-view .annotation blockquote, #new-document-view .annotation .attachment {
-    font-size: 1.3em;
-    font-family: Menlo, Consolas, Inconsolata, monospace; }
-  #edit-view .annotation blockquote, #new-document-view .annotation blockquote {
-    border-left: 3px solid #555555;
-    color: #555555; }
-  #edit-view .annotation .delete, #new-document-view .annotation .delete {
-    font-family: Verdana, "Bitstream Vera Sans", sans-serif;
-    font-size: 1em;
-    position: absolute;
-    top: 5px;
-    right: 10px; }
-#edit-view .files, #new-document-view .files {
-  float: left;
-  margin: 0.595%;
-  width: 65.476%;
-  box-sizing: border-box; }
+  height: 800px; }
 
 #application div.view {
   display: none; }
@@ -1010,14 +873,14 @@ header {
 .invisible {
   visibility: hidden; }
 
-.clearfix:before, .wrap:before, .clearfix:after, .wrap:after {
+.clearfix:before, .clearfix:after {
   content: "";
   display: table; }
 
-.clearfix:after, .wrap:after {
+.clearfix:after {
   clear: both; }
 
-.clearfix, .wrap {
+.clearfix {
   *zoom: 1; }
 
 .clear {
