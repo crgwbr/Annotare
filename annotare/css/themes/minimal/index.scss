@@ -242,7 +242,7 @@ header {
 #detail-view, #history-view {
   .wrap {
     @include grid(12);
-    @include box($app-background);
+    border: none;
     margin-bottom: 56px;
   }
 }
@@ -301,6 +301,7 @@ header {
   @include box($secondary);
   @include grid(4);
   @include push(4);
+  @include controls();
   
   @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
     @include grid(6);

@@ -711,10 +711,7 @@ header {
   margin: 0.595%;
   width: 98.81%;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(230, 230, 230, 0.4);
-  border-radius: 2px;
-  padding: 0.595%;
+  border: none;
   margin-bottom: 56px; }
 
 #list-view form#search-form {
@@ -783,7 +780,10 @@ header {
   margin: 0.595%;
   width: 32.143%;
   box-sizing: border-box;
-  margin-left: 33.929%; }
+  margin-left: 33.929%;
+  font-family: "Lucida Grande", Verdana, "Bitstream Vera Sans", sans-serif;
+  font-size: 11px;
+  font-weight: normal; }
   @media handheld and (max-width: 800px) and (min-width: 500px), screen and (max-width: 800px) and (min-width: 500px) {
     #login-view, #register-view {
       float: left;
