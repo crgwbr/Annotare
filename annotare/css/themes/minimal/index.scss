@@ -24,6 +24,10 @@ body {
   @include reset;
 }
 
+article, article *, a, a:hover, a:visited, a:active {
+  @include body();
+}
+
 h1, h2, h3, h4, h5, h6 {
   @include heading();
   line-height: 1;
