@@ -498,7 +498,7 @@ body {
   margin: 0 0 0 0;
   padding: 0 0 0 0; }
 
-article, article *, a, a:hover, a:visited, a:active {
+article a, article a:hover, article a:visited, article a:active {
   font-family: Courier, monospace;
   font-size: 16px;
   line-height: 1.5; }
@@ -508,6 +508,24 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   line-height: 1;
   margin: 20px 0 0 0; }
+
+h1 {
+  font-size: 2.2em; }
+
+h2 {
+  font-size: 2.0em; }
+
+h3 {
+  font-size: 1.8em; }
+
+h4 {
+  font-size: 1.6em; }
+
+h5 {
+  font-size: 1.4em; }
+
+h6 {
+  font-size: 1.2em; }
 
 p {
   margin: 0 0 20px 0; }

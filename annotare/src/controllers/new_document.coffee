@@ -13,8 +13,14 @@ class NewDocument extends Flakey.controllers.Controller
     @class_name = "new_document view"
 
     @actions = {
+      # Normal Actions
       'click .new.save': 'save'
       'click .new.discard': 'discard'
+      # Keyboard shortcuts
+      'keyup esc #new-editor': 'discard'
+      'keyup esc': 'discard'
+      'keyup ctrl+s #new-editor': 'save'
+      'keyup ctrl+s': 'save'
     }
 
     super(config)
@@ -36,7 +42,8 @@ class NewDocument extends Flakey.controllers.Controller
     $('#new-editor').blur()
     $('#name').focus()
     
-  save: (params) =>
+  save: (event) =>
+    event.preventDefault()
     name = $('#name').val()
     text = $('#new-editor').val()
     if name.length > 0 and text.length > 0
@@ -49,7 +56,8 @@ class NewDocument extends Flakey.controllers.Controller
       ui.info('Everything\'s Shiny Capt\'n!', "\"#{ doc.name }\" was successfully saved.").hide(settings.growl_hide_after).effect(settings.growl_effect)
       window.location.hash = "#/detail?" + Flakey.util.querystring.build({id: doc.id})
     
-  discard: (params) =>
+  discard: (event) =>
+    event.preventDefault()
     ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard this document?').show (ok) ->
       if ok
         window.location.hash = "#/list"

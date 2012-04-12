@@ -108,7 +108,6 @@ class Detail extends Flakey.controllers.Controller
       
   delete_file: (event) =>
     event.preventDefault()
-    event.preventDefault()
     ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show (ok) =>
       if ok
         id = $(event.target).attr('data-id')

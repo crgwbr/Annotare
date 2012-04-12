@@ -50,6 +50,7 @@ class History extends Flakey.controllers.Controller
         doc.rollback(doc.versions[version_index].version_id)
   
   update: (event) =>
+    event.preventDefault()
     version_index = $('#version-input').val()
     doc = Document.get(@query_params.id)
     time = new Date(doc.versions[version_index].time)

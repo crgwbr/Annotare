@@ -5989,7 +5989,11 @@ require.define("/controllers/new_document.js", function (require, module, export
       this.class_name = "new_document view";
       this.actions = {
         'click .new.save': 'save',
-        'click .new.discard': 'discard'
+        'click .new.discard': 'discard',
+        'keyup esc #new-editor': 'discard',
+        'keyup esc': 'discard',
+        'keyup ctrl+s #new-editor': 'save',
+        'keyup ctrl+s': 'save'
       };
       NewDocument.__super__.constructor.call(this, config);
       this.tmpl = Flakey.templates.get_template('new_document', require('../views/new_document'));
@@ -6009,8 +6013,9 @@ require.define("/controllers/new_document.js", function (require, module, export
       return $('#name').focus();
     };
 
-    NewDocument.prototype.save = function(params) {
+    NewDocument.prototype.save = function(event) {
       var doc, name, text;
+      event.preventDefault();
       name = $('#name').val();
       text = $('#new-editor').val();
       if (name.length > 0 && text.length > 0) {
@@ -6027,7 +6032,8 @@ require.define("/controllers/new_document.js", function (require, module, export
       }
     };
 
-    NewDocument.prototype.discard = function(params) {
+    NewDocument.prototype.discard = function(event) {
+      event.preventDefault();
       return ui.confirm('There be Monsters!', 'Careful there Captain; are you sure you want to discard this document?').show(function(ok) {
         if (ok) return window.location.hash = "#/list";
       });
@@ -7935,6 +7941,7 @@ require.define("/controllers/list.js", function (require, module, exports, __dir
 
     List.prototype.select_doc = function(event) {
       var id;
+      event.preventDefault();
       id = $(event.currentTarget).attr('id').replace('document-', '');
       return window.location.hash = "#/detail?" + Flakey.util.querystring.build({
         id: id
@@ -8175,7 +8182,6 @@ require.define("/controllers/detail.js", function (require, module, exports, __d
 
     Detail.prototype.delete_file = function(event) {
       var _this = this;
-      event.preventDefault();
       event.preventDefault();
       return ui.confirm('There be Monsters!', 'Are you sure you want to delete this annotation?').show(function(ok) {
         var id;
@@ -8524,6 +8530,7 @@ require.define("/controllers/history.js", function (require, module, exports, __
 
     History.prototype.update = function(event) {
       var converter, doc, html, rev, time, version_index;
+      event.preventDefault();
       version_index = $('#version-input').val();
       doc = Document.get(this.query_params.id);
       time = new Date(doc.versions[version_index].time);
