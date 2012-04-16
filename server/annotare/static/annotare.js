@@ -5914,18 +5914,23 @@ Card.prototype.render = function(options){
 
 require.define("/controllers/annotare.js", function (require, module, exports, __dirname, __filename) {
 (function() {
-  var $, Flakey, Main;
-  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+  var $, Flakey, Main, settings;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Flakey = require('flakey');
 
   $ = Flakey.$;
+
+  settings = require('../settings');
 
   Main = (function() {
 
     __extends(Main, Flakey.controllers.Stack);
 
     function Main(config) {
+      this.server_offline = __bind(this.server_offline, this);
+      this.server_online = __bind(this.server_online, this);
+      this.check_heartbeat = __bind(this.check_heartbeat, this);
       var Detail, Edit, History, List, NewDocument;
       NewDocument = require('./new_document');
       List = require('./list');
@@ -5949,8 +5954,46 @@ require.define("/controllers/annotare.js", function (require, module, exports, _
         '^/history$': 'history'
       };
       this["default"] = '/list';
+      this.status = true;
+      this.sync_models();
+      this.check_heartbeat();
       Main.__super__.constructor.call(this, config);
     }
+
+    Main.prototype.check_heartbeat = function() {
+      var interval;
+      var _this = this;
+      interval = 5000;
+      return $.ajax({
+        url: '/api/heartbeat/',
+        success: function(data) {
+          _this.server_online();
+          return setTimeout(_this.check_heartbeat, interval);
+        },
+        error: function(data) {
+          _this.server_offline();
+          return setTimeout(_this.check_heartbeat, interval);
+        }
+      });
+    };
+
+    Main.prototype.server_online = function() {
+      if (!this.status) this.sync_models();
+      this.status = true;
+      Flakey.events.trigger(settings.signals.online, settings.signals.namespace);
+      return $('#server_status').removeClass('offline').addClass('online').html('Server Online');
+    };
+
+    Main.prototype.server_offline = function() {
+      this.status = false;
+      Flakey.events.trigger(settings.signals.offline, settings.signals.namespace);
+      return $('#server_status').removeClass('online').addClass('offline').html('Server Offline');
+    };
+
+    Main.prototype.sync_models = function() {
+      Flakey.models.backend_controller.sync('Document');
+      return Flakey.models.backend_controller.sync('Annotation');
+    };
 
     return Main;
 
@@ -5959,6 +6002,20 @@ require.define("/controllers/annotare.js", function (require, module, exports, _
   module.exports = Main;
 
 }).call(this);
+
+});
+
+require.define("/settings.js", function (require, module, exports, __dirname, __filename) {
+
+  module.exports = {
+    growl_hide_after: 5000,
+    growl_effect: 'slide',
+    signals: {
+      namespace: 'annotare',
+      online: 'server_online',
+      offline: 'server_offline'
+    }
+  };
 
 });
 
@@ -6326,15 +6383,6 @@ require.define("/lib/autoresize.js", function (require, module, exports, __dirna
 })(jQuery);
 
 module.exports = $;
-});
-
-require.define("/settings.js", function (require, module, exports, __dirname, __filename) {
-
-  module.exports = {
-    growl_hide_after: 5000,
-    growl_effect: 'slide'
-  };
-
 });
 
 require.define("/models/Document.js", function (require, module, exports, __dirname, __filename) {
@@ -8687,8 +8735,6 @@ require.define("/index.js", function (require, module, exports, __dirname, __fil
       base_model_endpoint: '/api'
     };
     Flakey.init(settings);
-    Flakey.models.backend_controller.sync('Document');
-    Flakey.models.backend_controller.sync('Annotation');
     annotare = window.Annotare = new App();
     return annotare.make_active();
   });

@@ -6,7 +6,15 @@ from django.utils.decorators import method_decorator
 
 from models import FlakeyModel
 from settings import ALLOWED_MODELS
+from datetime import datetime
 
+# A Simple Server Heartbeat View used to check if the internet connection is online
+class Heartbeat(View):
+    def get(self, request):
+        return HttpResponse(json.dumps(str(datetime.now())))
+        
+
+# The main Flakey.js API handler
 class FlakeyHandler(View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):

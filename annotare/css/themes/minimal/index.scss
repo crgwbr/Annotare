@@ -129,6 +129,8 @@ section {
 header, .tool-bar-wrap {
   @include box($nav-bar);
   @include background-gradient();
+  padding-top: 3px;
+  padding-bottom: 3px;
   position: fixed;
   left: 0;
   z-index: 9999;
@@ -391,5 +393,9 @@ header {
   textarea { height: 800px; }
 }
 
+#server_status {
+  &.online { color: green; }
+  &.offline { color: red; }
+}
 
 

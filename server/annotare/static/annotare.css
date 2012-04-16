@@ -633,6 +633,8 @@ header, .tool-bar-wrap {
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#bababa',GradientType=0 );
   /* IE6-8 */
+  padding-top: 3px;
+  padding-bottom: 3px;
   position: fixed;
   left: 0;
   z-index: 9999;
@@ -879,6 +881,11 @@ header {
     outline: none; }
 #edit-view textarea, #new-document-view textarea {
   height: 800px; }
+
+#server_status.online {
+  color: green; }
+#server_status.offline {
+  color: red; }
 
 #application div.view {
   display: none; }
